@@ -21,7 +21,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="lg:pl-4"
+            className="lg:pl-8 xl:pl-16"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -33,12 +33,8 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               Analyse immobilière intelligente
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1]">
-              Analysez vos
-              <br />
-              documents
-              <br />
-              <span className="text-gradient">immobiliers</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] max-w-xl">
+              Analysez vos documents <span className="text-gradient">immobiliers</span>
             </h1>
 
             <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
@@ -89,7 +85,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden lg:flex justify-center relative"
+            className="hidden lg:flex justify-center relative mt-12"
           >
             {/* Floating badge — Sécurisé */}
             <motion.div
