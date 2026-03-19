@@ -15,6 +15,7 @@ import AccountPage from "@/pages/AccountPage";
 import SupportPage from "@/pages/SupportPage";
 import ComparisonPage from "@/pages/ComparisonPage";
 import ExamplePage from "@/pages/ExamplePage";
+import ContactPage from "@/pages/ContactPage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
