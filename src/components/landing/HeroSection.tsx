@@ -126,7 +126,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                 <div className="pt-12 px-5 space-y-4">
                   {/* App header */}
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-foreground tracking-tight">ImmoScan</span>
+                    <span className="text-xs font-bold text-foreground tracking-tight">Analymo</span>
                     <div className="flex gap-1">
                       <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />
                       <div className="w-3 h-3 rounded-full border border-muted-foreground/30" />

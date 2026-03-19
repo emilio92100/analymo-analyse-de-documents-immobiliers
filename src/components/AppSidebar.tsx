@@ -38,7 +38,7 @@ const AppSidebar = ({ user, onLogout }: AppSidebarProps) => {
     <>
       <div className="p-6 pb-2">
         <Link to="/">
-          <Logo light showSubtitle />
+          <Logo light size="lg" />
         </Link>
       </div>
 
