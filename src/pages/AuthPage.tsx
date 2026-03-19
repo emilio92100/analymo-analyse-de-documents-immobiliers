@@ -63,7 +63,7 @@ const AuthPage = ({ type, onAuth }: AuthPageProps) => {
       >
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
-            <Logo showSubtitle />
+            <Logo size="lg" />
           </Link>
         </div>
 
