@@ -14,6 +14,7 @@ import {
   Crown,
   Sparkles,
   Mail,
+  Lock,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { cn } from "@/lib/utils";
