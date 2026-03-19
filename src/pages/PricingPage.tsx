@@ -382,21 +382,45 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         </div>
       </div>
 
-      {/* Payment footer — refined */}
+      {/* Payment trust bar */}
       <motion.div
-        className="flex flex-col sm:flex-row items-center justify-center gap-4 py-8 border-t border-border/50"
+        className="py-10 border-t border-border/50"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <ShieldCheck size={16} className="text-primary" />
-        <span className="text-sm text-muted-foreground font-medium">Paiement 100% sécurisé</span>
-        <div className="flex gap-2">
-          {["VISA", "MASTERCARD", "STRIPE", "SSL"].map((label) => (
-            <span key={label} className="px-3 py-1.5 rounded-lg bg-muted/80 border border-border/50 text-[11px] font-bold text-muted-foreground">
-              {label}
-            </span>
-          ))}
+        <div className="flex flex-col items-center gap-5">
+          <div className="flex items-center gap-2 text-primary">
+            <ShieldCheck size={20} />
+            <span className="text-sm font-bold text-foreground">Paiement 100% sécurisé</span>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* Visa */}
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-muted/60 border border-border/50">
+              <CreditCard size={18} className="text-blue-600" />
+              <span className="text-xs font-bold text-muted-foreground">VISA</span>
+            </div>
+            {/* Mastercard */}
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-muted/60 border border-border/50">
+              <CreditCard size={18} className="text-amber-500" />
+              <span className="text-xs font-bold text-muted-foreground">MASTERCARD</span>
+            </div>
+            {/* Stripe */}
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-muted/60 border border-border/50">
+              <Zap size={18} className="text-violet-500" />
+              <span className="text-xs font-bold text-muted-foreground">STRIPE</span>
+            </div>
+            {/* SSL */}
+            <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-muted/60 border border-border/50">
+              <Lock size={18} className="text-emerald-500" />
+              <span className="text-xs font-bold text-muted-foreground">SSL</span>
+            </div>
+          </div>
+
+          <p className="text-xs text-muted-foreground/70 text-center max-w-md">
+            Vos données bancaires ne transitent jamais par nos serveurs. Le paiement est géré intégralement par Stripe, certifié PCI DSS niveau 1.
+          </p>
         </div>
       </motion.div>
     </div>
