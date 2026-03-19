@@ -38,7 +38,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Analyse détaillée d'un seul document",
         "PV d'AG, règlement, appel de charges ou diagnostic",
       ],
-      accent: "border-l-blue-500 bg-blue-50/50",
+      accent: "border-blue-200 bg-blue-50/60",
       cta: "Analyser un document",
     },
     {
@@ -54,7 +54,8 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
       ],
       recommended: true,
       badge: "Le plus populaire",
-      accent: "border-l-emerald-500 bg-emerald-50/50",
+      badgeColor: "bg-emerald-500 text-white",
+      accent: "border-emerald-300 bg-emerald-50/60",
       cta: "Analyser un bien",
     },
     {
@@ -69,7 +70,8 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Économisez 10€ vs 2 analyses séparées",
       ],
       badge: "Économique",
-      accent: "border-l-amber-500 bg-amber-50/50",
+      badgeColor: "bg-amber-500 text-white",
+      accent: "border-amber-300 bg-amber-50/60",
       cta: "Comparer 2 biens",
     },
     {
@@ -83,7 +85,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Outil de comparaison avancé",
         "Économisez 20€ vs 3 analyses séparées",
       ],
-      accent: "border-l-violet-500 bg-violet-50/50",
+      accent: "border-violet-200 bg-violet-50/60",
       cta: "Comparer 3 biens",
     },
   ];
@@ -133,7 +135,10 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
             whileHover={{ y: -3, transition: { duration: 0.2 } }}
           >
             {offer.badge && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold whitespace-nowrap">
+              <div className={cn(
+                "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold whitespace-nowrap",
+                offer.badgeColor || "bg-primary text-primary-foreground"
+              )}>
                 {offer.badge}
               </div>
             )}
@@ -149,10 +154,10 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
               <span className="text-muted-foreground font-medium text-sm">€</span>
             </div>
 
-            {/* Idéal pour — colored accent */}
-            <div className={cn("p-3 rounded-lg border-l-[3px] mb-4", offer.accent)}>
+            {/* Idéal pour — bordered box */}
+            <div className={cn("p-3 rounded-xl border mb-4", offer.accent)}>
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5">
-                Idéal pour
+                ✦ Idéal pour
               </p>
               <p className="text-sm font-medium text-foreground leading-snug">
                 {offer.perfectFor}
