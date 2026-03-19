@@ -38,11 +38,6 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Analyse détaillée d'un seul document",
         "PV d'AG, règlement, appel de charges ou diagnostic",
       ],
-      colorClass: "from-blue-500/10 to-blue-600/5 border-blue-200",
-      iconBg: "bg-blue-100 text-blue-600",
-      idealBg: "bg-blue-50 border border-blue-200",
-      idealText: "text-blue-700",
-      idealLabel: "text-blue-500",
       cta: "Analyser un document",
     },
     {
@@ -57,11 +52,6 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Conclusion claire + rapport PDF",
       ],
       recommended: true,
-      colorClass: "from-emerald-500/10 to-emerald-600/5 border-emerald-300",
-      iconBg: "bg-emerald-100 text-emerald-600",
-      idealBg: "bg-emerald-50 border border-emerald-200",
-      idealText: "text-emerald-700",
-      idealLabel: "text-emerald-500",
       badge: "Le plus populaire",
       cta: "Analyser un bien",
     },
@@ -76,11 +66,6 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Comparaison côte à côte",
         "Économisez 10€ vs 2 analyses séparées",
       ],
-      colorClass: "from-amber-500/10 to-amber-600/5 border-amber-200",
-      iconBg: "bg-amber-100 text-amber-600",
-      idealBg: "bg-amber-50 border border-amber-200",
-      idealText: "text-amber-700",
-      idealLabel: "text-amber-500",
       badge: "Économique",
       cta: "Comparer 2 biens",
     },
@@ -95,11 +80,6 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Outil de comparaison avancé",
         "Économisez 20€ vs 3 analyses séparées",
       ],
-      colorClass: "from-violet-500/10 to-violet-600/5 border-violet-200",
-      iconBg: "bg-violet-100 text-violet-600",
-      idealBg: "bg-violet-50 border border-violet-200",
-      idealText: "text-violet-700",
-      idealLabel: "text-violet-500",
       cta: "Comparer 3 biens",
     },
   ];
@@ -132,49 +112,45 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         </p>
       </motion.div>
 
-      {/* Offers Grid — 4 columns */}
+      {/* Offers Grid */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
         {offers.map((offer, i) => (
           <motion.div
             key={offer.id}
             className={cn(
-              "relative bg-gradient-to-b rounded-3xl border-2 p-6 flex flex-col",
-              offer.colorClass,
-              offer.recommended && "shadow-xl shadow-emerald-500/10 ring-2 ring-emerald-400/30"
+              "relative bg-background rounded-2xl border p-6 flex flex-col transition-shadow",
+              offer.recommended
+                ? "border-primary shadow-lg shadow-primary/5 ring-1 ring-primary/20"
+                : "border-border hover:shadow-md"
             )}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileHover={{ y: -3, transition: { duration: 0.2 } }}
           >
             {offer.badge && (
-              <div className={cn(
-                "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold whitespace-nowrap",
-                offer.recommended
-                  ? "bg-emerald-500 text-white"
-                  : "bg-amber-500 text-white"
-              )}>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold whitespace-nowrap">
                 {offer.badge}
               </div>
             )}
 
-            <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-3", offer.iconBg)}>
-              <offer.icon size={20} />
+            <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center mb-3">
+              <offer.icon size={18} className="text-primary" />
             </div>
 
             <h3 className="text-base font-bold text-foreground">{offer.name}</h3>
 
             <div className="mt-2 mb-3">
               <span className="text-3xl font-extrabold text-foreground">{offer.price}</span>
-              <span className="text-foreground font-medium text-sm">€</span>
+              <span className="text-muted-foreground font-medium text-sm">€</span>
             </div>
 
-            {/* Colored "Idéal pour" */}
-            <div className={cn("p-3 rounded-xl mb-4", offer.idealBg)}>
-              <p className={cn("text-[10px] font-bold uppercase tracking-wider mb-1", offer.idealLabel)}>
-                ✦ Idéal pour
+            {/* Idéal pour — subtle */}
+            <div className="p-3 rounded-xl bg-muted/60 border border-border/50 mb-4">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                Idéal pour
               </p>
-              <p className={cn("text-sm font-medium leading-snug", offer.idealText)}>
+              <p className="text-sm text-foreground leading-snug">
                 {offer.perfectFor}
               </p>
             </div>
@@ -182,7 +158,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
             <ul className="space-y-2.5 mb-5 flex-1">
               {offer.items.map((item, j) => (
                 <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 size={15} className="text-emerald-500 mt-0.5 shrink-0" />
+                  <CheckCircle2 size={15} className="text-primary mt-0.5 shrink-0" />
                   {item}
                 </li>
               ))}
@@ -191,9 +167,9 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
             <button
               onClick={() => handlePurchase(offer)}
               className={cn(
-                "w-full py-3 rounded-2xl font-bold text-sm transition-all hover:scale-[1.02]",
+                "w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.01]",
                 offer.recommended
-                  ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
+                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/15"
                   : "bg-foreground text-background hover:bg-foreground/90"
               )}
             >
