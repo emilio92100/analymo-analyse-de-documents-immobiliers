@@ -399,6 +399,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
           ))}
         </div>
       </motion.div>
+    </div>
   );
 
   if (inApp) return content;
