@@ -143,15 +143,15 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
               </div>
             )}
 
-            <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center mb-3">
-              <offer.icon size={18} className="text-primary" />
+            <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-3 mx-auto">
+              <offer.icon size={20} className="text-primary" />
             </div>
 
-            <h3 className="text-base font-bold text-foreground">{offer.name}</h3>
+            <h3 className="text-base font-bold text-foreground text-center">{offer.name}</h3>
 
-            <div className="mt-2 mb-3">
-              <span className="text-3xl font-extrabold text-foreground">{offer.price}</span>
-              <span className="text-muted-foreground font-medium text-sm">€</span>
+            <div className="mt-2 mb-4 text-center">
+              <span className="text-4xl font-extrabold text-foreground">{offer.price}</span>
+              <span className="text-muted-foreground font-medium text-base ml-0.5">€</span>
             </div>
 
             {/* Idéal pour — bordered box */}
