@@ -54,7 +54,8 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
       ],
       recommended: true,
       badge: "Le plus populaire",
-      accent: "border-l-emerald-500 bg-emerald-50/50",
+      badgeColor: "bg-emerald-500 text-white",
+      accent: "border-emerald-300 bg-emerald-50/60",
       cta: "Analyser un bien",
     },
     {
