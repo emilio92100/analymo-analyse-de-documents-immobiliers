@@ -356,12 +356,12 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
           {/* Stats */}
           <div className="flex md:flex-col gap-6 shrink-0">
             {[
-              { value: "15 000€", label: "Économisés" },
-              { value: "30 sec", label: "D'analyse" },
+              { value: "15\u00a0000€", label: "Économisés" },
+              { value: "30\u00a0sec", label: "D'analyse" },
               { value: "4.9/5", label: "Satisfaction" },
             ].map((stat, i) => (
               <div key={i} className="text-center">
-                <p className="text-2xl font-black text-primary">{stat.value}</p>
+                <p className="text-xl md:text-2xl font-black text-primary whitespace-nowrap">{stat.value}</p>
                 <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">{stat.label}</p>
               </div>
             ))}
