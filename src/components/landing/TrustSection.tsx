@@ -1,46 +1,71 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { ShieldCheck, Lock, Zap, FileText, Clock, Users } from "lucide-react";
+import { useEffect, useRef } from "react";
+
+const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v).toLocaleString());
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const controls = animate(count, target, { duration: 2, ease: "easeOut" });
+    return controls.stop;
+  }, [target, count]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+};
 
 const TrustSection = () => {
   const trustItems = [
     {
       title: "Confidentiel",
-      desc: "Vos documents sont analysés puis automatiquement supprimés. Aucune donnée n'est revendue ni partagée.",
+      desc: "Documents analysés puis automatiquement supprimés. Aucune donnée revendue.",
       icon: ShieldCheck,
     },
     {
       title: "Sécurisé",
-      desc: "Chiffrement de bout en bout et infrastructure bancaire pour la protection de vos données sensibles.",
+      desc: "Chiffrement de bout en bout et infrastructure de niveau bancaire.",
       icon: Lock,
     },
     {
-      title: "Rapide",
-      desc: "Obtenez votre rapport complet en moins de 2 minutes, disponible 24h/24 et 7j/7.",
+      title: "Instantané",
+      desc: "Rapport complet en moins de 2 minutes, disponible 24h/24.",
       icon: Zap,
     },
   ];
 
   const stats = [
-    { value: "10 000+", label: "Documents analysés", icon: FileText },
-    { value: "< 2 min", label: "Temps moyen d'analyse", icon: Clock },
-    { value: "4.8/5", label: "Satisfaction client", icon: Users },
+    { value: 10000, suffix: "+", label: "Documents analysés", icon: FileText },
+    { value: 2, suffix: " min", label: "Temps moyen", icon: Clock },
+    { value: 4.8, suffix: "/5", label: "Satisfaction client", icon: Users },
   ];
 
   return (
-    <section className="py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-28 bg-bg-light relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[120px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold">
-            Une sécurité sans compromis
+          <motion.span
+            className="inline-block px-4 py-1.5 rounded-full bg-primary/8 text-primary text-sm font-semibold mb-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            Confiance
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
+            Sécurité <span className="text-gradient">sans compromis</span>
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Nous utilisons les meilleures technologies pour protéger vos données
-            et garantir la fiabilité de nos analyses.
+          <p className="mt-5 text-muted-foreground text-lg">
+            Vos données sont protégées avec les standards les plus exigeants du marché.
           </p>
         </motion.div>
 
@@ -48,35 +73,53 @@ const TrustSection = () => {
           {trustItems.map((item, i) => (
             <motion.div
               key={i}
-              className="p-8 rounded-3xl bg-card border border-border text-center card-hover"
+              className="group p-8 rounded-3xl bg-card border border-border text-center hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
-                <item.icon size={26} className="text-primary" />
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <item.icon size={28} className="text-primary" />
               </div>
-              <h3 className="text-xl font-bold text-foreground">{item.title}</h3>
-              <p className="text-muted-foreground mt-3 leading-relaxed">{item.desc}</p>
+              <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+              <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>
 
         {/* Stats bar */}
         <motion.div
-          className="gradient-primary rounded-3xl p-8 md:p-10"
+          className="gradient-primary rounded-[2rem] p-10 md:p-12 relative overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="grid sm:grid-cols-3 gap-8 text-center text-primary-foreground">
+          <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-white/5" />
+          <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full bg-white/5" />
+
+          <div className="grid sm:grid-cols-3 gap-10 text-center text-primary-foreground relative">
             {stats.map((stat, i) => (
-              <div key={i}>
-                <stat.icon size={24} className="mx-auto mb-3 opacity-80" />
-                <p className="text-3xl md:text-4xl font-black">{stat.value}</p>
-                <p className="text-sm mt-1 opacity-80">{stat.label}</p>
-              </div>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+              >
+                <stat.icon size={24} className="mx-auto mb-3 opacity-70" />
+                <p className="text-4xl md:text-5xl font-black">
+                  {typeof stat.value === 'number' && stat.value > 100 ? (
+                    <>
+                      <AnimatedCounter target={stat.value} />
+                      {stat.suffix}
+                    </>
+                  ) : (
+                    <>{"< "}{stat.value}{stat.suffix}</>
+                  )}
+                </p>
+                <p className="text-sm mt-2 opacity-70">{stat.label}</p>
+              </motion.div>
             ))}
           </div>
         </motion.div>
