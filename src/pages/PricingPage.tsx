@@ -407,7 +407,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar user={user} onLogout={onLogout} />
-      <div className="pt-16">{content}</div>
+      <div className="pt-20">{content}</div>
     </div>
   );
 };
