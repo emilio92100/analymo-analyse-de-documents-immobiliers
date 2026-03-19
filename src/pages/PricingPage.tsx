@@ -154,10 +154,10 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
               <span className="text-muted-foreground font-medium text-sm">€</span>
             </div>
 
-            {/* Idéal pour — colored accent */}
-            <div className={cn("p-3 rounded-lg border-l-[3px] mb-4", offer.accent)}>
+            {/* Idéal pour — bordered box */}
+            <div className={cn("p-3 rounded-xl border mb-4", offer.accent)}>
               <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5">
-                Idéal pour
+                ✦ Idéal pour
               </p>
               <p className="text-sm font-medium text-foreground leading-snug">
                 {offer.perfectFor}
