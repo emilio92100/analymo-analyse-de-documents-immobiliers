@@ -203,90 +203,56 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         ))}
       </div>
 
-      {/* Pro Offer — redesigned */}
+      {/* Pro Offer — compact elegant banner */}
       <motion.div
-        className="relative overflow-hidden rounded-[2rem] mb-14"
+        className="relative overflow-hidden rounded-2xl mb-14"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,90%,12%)] via-[hsl(200,80%,18%)] to-[hsl(220,70%,22%)]" />
-        {/* Decorative elements */}
-        <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-white/5 blur-sm" />
-        <div className="absolute -left-10 -bottom-10 w-60 h-60 rounded-full bg-white/5 blur-sm" />
-        <div className="absolute right-10 bottom-10 w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(200,90%,12%)] to-[hsl(220,70%,20%)]" />
+        <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-amber-400/10 blur-2xl" />
 
-        <div className="relative grid md:grid-cols-2 gap-8 p-8 md:p-14">
-          {/* Left */}
-          <div>
-            <motion.div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-amber-300 text-xs font-bold uppercase tracking-widest mb-6"
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <Crown size={14} />
-              Professionnel
-            </motion.div>
-            <h3 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
-              Offre
-              <br />
-              <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                Professionnelle
-              </span>
-            </h3>
-            <p className="text-white/60 text-lg mb-8 max-w-md">
-              Une solution sur mesure pour les acteurs de l'immobilier qui traitent un volume important de dossiers.
-            </p>
-            <div className="flex flex-wrap gap-3 mb-8">
-              {["Notaires", "Agents immobiliers", "Syndics", "Marchands de biens"].map((role, i) => (
-                <motion.span
-                  key={i}
-                  className="px-4 py-2 rounded-xl bg-white/10 text-white text-sm font-medium backdrop-blur-sm border border-white/10"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  {role}
-                </motion.span>
-              ))}
+        <div className="relative flex flex-col md:flex-row items-center gap-6 p-6 md:p-8">
+          {/* Icon + Title */}
+          <div className="flex items-center gap-4 shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
+              <Crown size={22} className="text-amber-300" />
             </div>
-            <button
-              onClick={() => window.location.href = "mailto:contact@analymo.fr"}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 text-foreground font-bold text-sm hover:from-amber-300 hover:to-amber-400 transition-all shadow-xl shadow-amber-500/20 hover:scale-[1.02]"
-            >
-              <Mail size={18} />
-              Nous contacter
-              <ArrowRight size={16} />
-            </button>
+            <div>
+              <h3 className="text-xl font-black text-white leading-tight">
+                Offre <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">Pro</span>
+              </h3>
+              <p className="text-white/50 text-xs mt-0.5">Notaires · Agents · Syndics · Marchands</p>
+            </div>
           </div>
 
-          {/* Right — features grid */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Features inline */}
+          <div className="flex flex-wrap items-center gap-2 flex-1 justify-center">
             {[
-              { icon: Users, label: "Multi-utilisateurs", desc: "Toute votre équipe sur un seul compte" },
-              { icon: Zap, label: "API dédiée", desc: "Intégrez Analymo dans vos outils" },
-              { icon: FileText, label: "Rapports sur-mesure", desc: "Personnalisez vos livrables clients" },
-              { icon: ShieldCheck, label: "Support premium", desc: "Un interlocuteur dédié réactif" },
+              { icon: Users, label: "Multi-utilisateurs" },
+              { icon: Zap, label: "API dédiée" },
+              { icon: FileText, label: "Rapports sur-mesure" },
+              { icon: ShieldCheck, label: "Support premium" },
             ].map((feat, i) => (
-              <motion.div
+              <span
                 key={i}
-                className="p-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-colors"
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 text-white/80 text-xs font-medium border border-white/5"
               >
-                <div className="w-9 h-9 rounded-xl bg-amber-400/20 flex items-center justify-center mb-3">
-                  <feat.icon size={16} className="text-amber-300" />
-                </div>
-                <h4 className="text-white font-bold text-sm mb-1">{feat.label}</h4>
-                <p className="text-white/50 text-xs leading-relaxed">{feat.desc}</p>
-              </motion.div>
+                <feat.icon size={12} className="text-amber-300/80" />
+                {feat.label}
+              </span>
             ))}
           </div>
+
+          {/* CTA */}
+          <button
+            onClick={() => window.location.href = "mailto:contact@analymo.fr"}
+            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-foreground font-bold text-sm hover:from-amber-300 hover:to-amber-400 transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.02]"
+          >
+            <Mail size={15} />
+            Nous contacter
+          </button>
         </div>
       </motion.div>
 
