@@ -38,6 +38,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Analyse détaillée d'un seul document",
         "PV d'AG, règlement, appel de charges ou diagnostic",
       ],
+      accent: "border-l-blue-500 bg-blue-50/50",
       cta: "Analyser un document",
     },
     {
@@ -53,6 +54,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
       ],
       recommended: true,
       badge: "Le plus populaire",
+      accent: "border-l-emerald-500 bg-emerald-50/50",
       cta: "Analyser un bien",
     },
     {
@@ -67,6 +69,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Économisez 10€ vs 2 analyses séparées",
       ],
       badge: "Économique",
+      accent: "border-l-amber-500 bg-amber-50/50",
       cta: "Comparer 2 biens",
     },
     {
@@ -80,6 +83,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Outil de comparaison avancé",
         "Économisez 20€ vs 3 analyses séparées",
       ],
+      accent: "border-l-violet-500 bg-violet-50/50",
       cta: "Comparer 3 biens",
     },
   ];
@@ -145,12 +149,12 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
               <span className="text-muted-foreground font-medium text-sm">€</span>
             </div>
 
-            {/* Idéal pour — subtle */}
-            <div className="p-3 rounded-xl bg-muted/60 border border-border/50 mb-4">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+            {/* Idéal pour — colored accent */}
+            <div className={cn("p-3 rounded-lg border-l-[3px] mb-4", offer.accent)}>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5">
                 Idéal pour
               </p>
-              <p className="text-sm text-foreground leading-snug">
+              <p className="text-sm font-medium text-foreground leading-snug">
                 {offer.perfectFor}
               </p>
             </div>
