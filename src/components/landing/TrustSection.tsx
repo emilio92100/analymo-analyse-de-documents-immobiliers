@@ -41,7 +41,7 @@ const TrustSection = () => {
   ];
 
   return (
-    <section className="py-28 bg-bg-light relative overflow-hidden">
+    <section className="py-16 bg-bg-light relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[120px]" />
       </div>
