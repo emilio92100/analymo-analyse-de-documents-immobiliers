@@ -44,36 +44,34 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
             <Logo />
           </Link>
 
-          {/* Desktop Nav — centered pill */}
-          <div className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40">
-            {navLinks.map((link) => {
-              const isActive = location.pathname === link.path;
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={cn(
-                    "relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                    isActive
-                      ? "text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-full bg-primary shadow-sm"
-                      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                    />
-                  )}
-                  <span className="relative z-10">{link.name}</span>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Desktop CTA */}
+          {/* Desktop Nav — pill attached to right actions */}
           <div className="hidden md:flex items-center gap-3">
+            <div className="flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.path;
+                return (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={cn(
+                      "relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                      isActive
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-active"
+                        className="absolute inset-0 rounded-full bg-primary shadow-sm"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                      />
+                    )}
+                    <span className="relative z-10">{link.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
             {user ? (
               <>
                 <button
