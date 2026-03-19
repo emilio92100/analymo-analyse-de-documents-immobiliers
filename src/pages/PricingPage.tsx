@@ -203,95 +203,185 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         ))}
       </div>
 
-      {/* Pro Offer — compact elegant banner */}
+      {/* Pro Offer — enriched */}
       <motion.div
         className="relative overflow-hidden rounded-2xl mb-14"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(200,90%,12%)] to-[hsl(220,70%,20%)]" />
-        <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-amber-400/10 blur-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,90%,12%)] via-[hsl(200,80%,16%)] to-[hsl(220,70%,20%)]" />
+        <div className="absolute -right-20 -top-20 w-56 h-56 rounded-full bg-amber-400/8 blur-3xl" />
+        <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
 
-        <div className="relative flex flex-col md:flex-row items-center gap-6 p-6 md:p-8">
-          {/* Icon + Title */}
-          <div className="flex items-center gap-4 shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-amber-400/20 flex items-center justify-center">
-              <Crown size={22} className="text-amber-300" />
+        <div className="relative p-7 md:p-10">
+          {/* Top row: badge + title + CTA */}
+          <div className="flex flex-col md:flex-row md:items-center gap-5 mb-6">
+            <div className="flex items-center gap-3 flex-1">
+              <div className="w-11 h-11 rounded-xl bg-amber-400/20 flex items-center justify-center shrink-0">
+                <Crown size={20} className="text-amber-300" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-black text-white leading-tight">
+                  Offre <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">Professionnelle</span>
+                </h3>
+                <p className="text-white/50 text-sm mt-0.5">
+                  Volumes illimités · Tarif dégressif · Sur devis
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xl font-black text-white leading-tight">
-                Offre <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">Pro</span>
-              </h3>
-              <p className="text-white/50 text-xs mt-0.5">Notaires · Agents · Syndics · Marchands</p>
-            </div>
+            <button
+              onClick={() => window.location.href = "mailto:contact@analymo.fr"}
+              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-foreground font-bold text-sm hover:from-amber-300 hover:to-amber-400 transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.02]"
+            >
+              <Mail size={15} />
+              Demander un devis
+              <ArrowRight size={14} />
+            </button>
           </div>
 
-          {/* Features inline */}
-          <div className="flex flex-wrap items-center gap-2 flex-1 justify-center">
+          {/* Who is it for */}
+          <div className="flex flex-wrap gap-2 mb-6">
             {[
-              { icon: Users, label: "Multi-utilisateurs" },
-              { icon: Zap, label: "API dédiée" },
-              { icon: FileText, label: "Rapports sur-mesure" },
-              { icon: ShieldCheck, label: "Support premium" },
-            ].map((feat, i) => (
+              { label: "Notaires", icon: ShieldCheck },
+              { label: "Agents immobiliers", icon: Users },
+              { label: "Syndics de copropriété", icon: Building2 },
+              { label: "Marchands de biens", icon: Zap },
+              { label: "Promoteurs", icon: Building2 },
+              { label: "Gestionnaires de patrimoine", icon: Crown },
+            ].map((role, i) => (
               <span
                 key={i}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 text-white/80 text-xs font-medium border border-white/5"
               >
-                <feat.icon size={12} className="text-amber-300/80" />
-                {feat.label}
+                <role.icon size={11} className="text-amber-300/70" />
+                {role.label}
               </span>
             ))}
           </div>
 
-          {/* CTA */}
-          <button
-            onClick={() => window.location.href = "mailto:contact@analymo.fr"}
-            className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-foreground font-bold text-sm hover:from-amber-300 hover:to-amber-400 transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.02]"
-          >
-            <Mail size={15} />
-            Nous contacter
-          </button>
+          {/* Features grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { icon: Users, label: "Multi-utilisateurs", desc: "Gérez toute votre équipe" },
+              { icon: Zap, label: "API dédiée", desc: "Intégration dans vos outils" },
+              { icon: FileText, label: "Rapports sur-mesure", desc: "À votre image de marque" },
+              { icon: ShieldCheck, label: "Support prioritaire", desc: "Interlocuteur dédié" },
+              { icon: History, label: "Analyses illimitées", desc: "Sans plafond mensuel" },
+              { icon: Star, label: "Formation incluse", desc: "Onboarding personnalisé" },
+              { icon: CreditCard, label: "Facturation flexible", desc: "Mensuel ou à l'usage" },
+              { icon: Building2, label: "White-label", desc: "Votre marque, notre techno" },
+            ].map((feat, i) => (
+              <motion.div
+                key={i}
+                className="p-3.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/8 transition-colors"
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.04 }}
+              >
+                <feat.icon size={14} className="text-amber-300/80 mb-1.5" />
+                <p className="text-white text-xs font-bold leading-tight">{feat.label}</p>
+                <p className="text-white/40 text-[10px] mt-0.5">{feat.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
-      {/* Why Section */}
-      <div className="grid md:grid-cols-3 gap-6 mb-14">
+      {/* Why Analymo — visual cards */}
+      <div className="grid md:grid-cols-3 gap-5 mb-14">
         {[
-          { title: "Audit de pointe", desc: "Notre algorithme est entraîné sur des milliers de documents juridiques immobiliers.", icon: Zap },
-          { title: "Gain de temps précieux", desc: "Évitez des heures de lecture fastidieuse. Obtenez une synthèse en 30 secondes.", icon: History },
-          { title: "Sécurité maximale", desc: "Détectez les vices cachés et les charges imprévues avant de signer.", icon: ShieldCheck },
+          {
+            title: "Audit de pointe",
+            desc: "Notre IA est entraînée sur des milliers de documents juridiques immobiliers français.",
+            icon: Zap,
+            gradient: "from-blue-500/10 to-blue-600/5",
+            iconBg: "bg-blue-100 text-blue-600",
+            accent: "bg-blue-500",
+          },
+          {
+            title: "Résultat en 30 secondes",
+            desc: "Évitez des heures de lecture fastidieuse. Obtenez une synthèse claire et actionnable.",
+            icon: History,
+            gradient: "from-emerald-500/10 to-emerald-600/5",
+            iconBg: "bg-emerald-100 text-emerald-600",
+            accent: "bg-emerald-500",
+          },
+          {
+            title: "Sécurité maximale",
+            desc: "Détectez vices cachés, charges imprévues et travaux à venir avant de signer.",
+            icon: ShieldCheck,
+            gradient: "from-violet-500/10 to-violet-600/5",
+            iconBg: "bg-violet-100 text-violet-600",
+            accent: "bg-violet-500",
+          },
         ].map((item, i) => (
           <motion.div
             key={i}
-            className="p-6 rounded-2xl border border-border text-center"
+            className={cn(
+              "relative p-7 rounded-2xl bg-gradient-to-b border border-border overflow-hidden group hover:shadow-lg transition-shadow",
+              item.gradient
+            )}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
           >
-            <item.icon size={24} className="text-primary mx-auto mb-3" />
-            <h4 className="font-bold text-foreground">{item.title}</h4>
-            <p className="text-sm text-muted-foreground mt-2">{item.desc}</p>
+            <div className={cn("absolute top-0 left-0 w-full h-0.5", item.accent)} />
+            <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center mb-4", item.iconBg)}>
+              <item.icon size={20} />
+            </div>
+            <h4 className="font-bold text-foreground text-lg mb-2">{item.title}</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
           </motion.div>
         ))}
       </div>
 
-      {/* Testimonial */}
+      {/* Testimonial — prominent */}
       <motion.div
-        className="p-8 rounded-3xl bg-primary-light text-center mb-14"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        className="relative overflow-hidden rounded-2xl mb-14"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <Star size={24} className="text-amber-500 mx-auto mb-4" />
-        <p className="text-lg text-foreground italic max-w-2xl mx-auto">
-          "Analymo m'a permis de détecter un ravalement de façade non voté mais imminent
-          sur un appartement. J'ai pu négocier 15 000€ de baisse sur le prix."
-        </p>
-        <p className="mt-4 font-bold text-foreground">Marc D.</p>
-        <p className="text-sm text-muted-foreground">Investisseur immobilier</p>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-amber-500/5" />
+        <div className="relative flex flex-col md:flex-row items-center gap-8 p-8 md:p-12">
+          {/* Big quote */}
+          <div className="flex-1">
+            <div className="flex gap-1 mb-4">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={18} className="text-amber-400 fill-amber-400" />
+              ))}
+            </div>
+            <blockquote className="text-xl md:text-2xl font-bold text-foreground leading-snug mb-5">
+              "Analymo m'a permis de détecter un ravalement de façade non voté mais imminent.
+              J'ai pu négocier <span className="text-primary">15 000€ de baisse</span> sur le prix."
+            </blockquote>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                MD
+              </div>
+              <div>
+                <p className="font-bold text-foreground text-sm">Marc D.</p>
+                <p className="text-xs text-muted-foreground">Investisseur immobilier · Paris</p>
+              </div>
+            </div>
+          </div>
+          {/* Stats */}
+          <div className="flex md:flex-col gap-6 shrink-0">
+            {[
+              { value: "15 000€", label: "Économisés" },
+              { value: "30 sec", label: "D'analyse" },
+              { value: "4.9/5", label: "Satisfaction" },
+            ].map((stat, i) => (
+              <div key={i} className="text-center">
+                <p className="text-2xl font-black text-primary">{stat.value}</p>
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </motion.div>
 
       {/* FAQ */}
