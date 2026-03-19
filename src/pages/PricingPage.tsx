@@ -70,7 +70,8 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Économisez 10€ vs 2 analyses séparées",
       ],
       badge: "Économique",
-      accent: "border-l-amber-500 bg-amber-50/50",
+      badgeColor: "bg-amber-500 text-white",
+      accent: "border-amber-300 bg-amber-50/60",
       cta: "Comparer 2 biens",
     },
     {
