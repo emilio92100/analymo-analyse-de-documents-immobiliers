@@ -135,7 +135,10 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
             whileHover={{ y: -3, transition: { duration: 0.2 } }}
           >
             {offer.badge && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold whitespace-nowrap">
+              <div className={cn(
+                "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold whitespace-nowrap",
+                offer.badgeColor || "bg-primary text-primary-foreground"
+              )}>
                 {offer.badge}
               </div>
             )}
