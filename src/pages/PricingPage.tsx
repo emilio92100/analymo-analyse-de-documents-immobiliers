@@ -119,55 +119,56 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
       </motion.div>
 
       {/* Offers Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
         {offers.map((offer, i) => (
           <motion.div
             key={offer.id}
             className={cn(
-              "relative bg-background rounded-2xl border p-6 flex flex-col transition-shadow",
+              "relative bg-background rounded-2xl border p-5 flex flex-col transition-all",
               offer.recommended
-                ? "border-primary shadow-lg shadow-primary/5 ring-1 ring-primary/20"
-                : "border-border hover:shadow-md"
+                ? "border-primary/30 shadow-lg shadow-primary/5"
+                : "border-border hover:shadow-md hover:border-border/80"
             )}
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            whileHover={{ y: -3, transition: { duration: 0.2 } }}
+            whileHover={{ y: -2, transition: { duration: 0.2 } }}
           >
             {offer.badge && (
               <div className={cn(
-                "absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold whitespace-nowrap",
+                "absolute -top-2.5 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[11px] font-bold whitespace-nowrap",
                 offer.badgeColor || "bg-primary text-primary-foreground"
               )}>
                 {offer.badge}
               </div>
             )}
 
-            <div className="w-12 h-12 rounded-xl bg-primary/8 flex items-center justify-center mb-3 mx-auto">
-              <offer.icon size={20} className="text-primary" />
+            {/* Centered header */}
+            <div className="text-center pt-2 pb-4 border-b border-border/50 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center mx-auto mb-2">
+                <offer.icon size={18} className="text-primary" />
+              </div>
+              <h3 className="text-sm font-bold text-foreground">{offer.name}</h3>
+              <div className="mt-1.5">
+                <span className="text-3xl font-extrabold text-foreground">{offer.price}</span>
+                <span className="text-muted-foreground font-medium ml-0.5">€</span>
+              </div>
             </div>
 
-            <h3 className="text-base font-bold text-foreground text-center">{offer.name}</h3>
-
-            <div className="mt-2 mb-4 text-center">
-              <span className="text-4xl font-extrabold text-foreground">{offer.price}</span>
-              <span className="text-muted-foreground font-medium text-base ml-0.5">€</span>
-            </div>
-
-            {/* Idéal pour — bordered box */}
-            <div className={cn("p-3 rounded-xl border mb-4", offer.accent)}>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5">
+            {/* Idéal pour */}
+            <div className={cn("p-2.5 rounded-lg border mb-3", offer.accent)}>
+              <p className="text-[9px] font-bold uppercase tracking-wider text-muted-foreground mb-0.5">
                 ✦ Idéal pour
               </p>
-              <p className="text-sm font-medium text-foreground leading-snug">
+              <p className="text-xs font-medium text-foreground leading-snug">
                 {offer.perfectFor}
               </p>
             </div>
 
-            <ul className="space-y-2.5 mb-5 flex-1">
+            <ul className="space-y-2 mb-4 flex-1">
               {offer.items.map((item, j) => (
-                <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 size={15} className="text-primary mt-0.5 shrink-0" />
+                <li key={j} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+                  <CheckCircle2 size={13} className="text-primary mt-0.5 shrink-0" />
                   {item}
                 </li>
               ))}
@@ -176,9 +177,9 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
             <button
               onClick={() => handlePurchase(offer)}
               className={cn(
-                "w-full py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.01]",
+                "w-full py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-[1.01]",
                 offer.recommended
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/15"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "bg-foreground text-background hover:bg-foreground/90"
               )}
             >
@@ -188,90 +189,29 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         ))}
       </div>
 
-      {/* Pro Offer — enriched */}
+      {/* Pro Offer — simple row */}
       <motion.div
-        className="relative overflow-hidden rounded-2xl mb-14"
-        initial={{ opacity: 0, y: 20 }}
+        className="flex flex-col sm:flex-row items-center gap-5 p-6 rounded-2xl bg-foreground mb-14"
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,90%,12%)] via-[hsl(200,80%,16%)] to-[hsl(220,70%,20%)]" />
-        <div className="absolute -right-20 -top-20 w-56 h-56 rounded-full bg-amber-400/8 blur-3xl" />
-        <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
-
-        <div className="relative p-7 md:p-10">
-          {/* Top row: badge + title + CTA */}
-          <div className="flex flex-col md:flex-row md:items-center gap-5 mb-6">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="w-11 h-11 rounded-xl bg-amber-400/20 flex items-center justify-center shrink-0">
-                <Crown size={20} className="text-amber-300" />
-              </div>
-              <div>
-                <h3 className="text-2xl font-black text-white leading-tight">
-                  Offre <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">Professionnelle</span>
-                </h3>
-                <p className="text-white/50 text-sm mt-0.5">
-                  Volumes illimités · Tarif dégressif · Sur devis
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => window.location.href = "mailto:contact@analymo.fr"}
-              className="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-foreground font-bold text-sm hover:from-amber-300 hover:to-amber-400 transition-all shadow-lg shadow-amber-500/20 hover:scale-[1.02]"
-            >
-              <Mail size={15} />
-              Demander un devis
-              <ArrowRight size={14} />
-            </button>
-          </div>
-
-          {/* Who is it for */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {[
-              { label: "Notaires", icon: ShieldCheck },
-              { label: "Agents immobiliers", icon: Users },
-              { label: "Syndics de copropriété", icon: Building2 },
-              { label: "Marchands de biens", icon: Zap },
-              { label: "Promoteurs", icon: Building2 },
-              { label: "Gestionnaires de patrimoine", icon: Crown },
-            ].map((role, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/8 text-white/80 text-xs font-medium border border-white/5"
-              >
-                <role.icon size={11} className="text-amber-300/70" />
-                {role.label}
-              </span>
-            ))}
-          </div>
-
-          {/* Features grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[
-              { icon: Users, label: "Multi-utilisateurs", desc: "Gérez toute votre équipe" },
-              { icon: Zap, label: "API dédiée", desc: "Intégration dans vos outils" },
-              { icon: FileText, label: "Rapports sur-mesure", desc: "À votre image de marque" },
-              { icon: ShieldCheck, label: "Support prioritaire", desc: "Interlocuteur dédié" },
-              { icon: History, label: "Analyses illimitées", desc: "Sans plafond mensuel" },
-              { icon: Star, label: "Formation incluse", desc: "Onboarding personnalisé" },
-              { icon: CreditCard, label: "Facturation flexible", desc: "Mensuel ou à l'usage" },
-              { icon: Building2, label: "White-label", desc: "Votre marque, notre techno" },
-            ].map((feat, i) => (
-              <motion.div
-                key={i}
-                className="p-3.5 rounded-xl bg-white/5 border border-white/5 hover:bg-white/8 transition-colors"
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.04 }}
-              >
-                <feat.icon size={14} className="text-amber-300/80 mb-1.5" />
-                <p className="text-white text-xs font-bold leading-tight">{feat.label}</p>
-                <p className="text-white/40 text-[10px] mt-0.5">{feat.desc}</p>
-              </motion.div>
-            ))}
-          </div>
+        <Crown size={20} className="text-amber-400 shrink-0" />
+        <div className="flex-1 text-center sm:text-left">
+          <h3 className="text-lg font-bold text-primary-foreground">
+            Offre Professionnelle
+          </h3>
+          <p className="text-primary-foreground/60 text-sm mt-0.5">
+            Notaires, agents, syndics, marchands de biens — volumes illimités, API, rapports sur-mesure, support dédié.
+          </p>
         </div>
+        <button
+          onClick={() => window.location.href = "mailto:contact@analymo.fr"}
+          className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 text-foreground font-bold text-sm hover:bg-amber-300 transition-colors"
+        >
+          <Mail size={14} />
+          Nous contacter
+        </button>
       </motion.div>
 
       {/* Why Analymo — visual cards */}
