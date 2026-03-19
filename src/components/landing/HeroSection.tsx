@@ -33,12 +33,8 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               Analyse immobilière intelligente
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1]">
-              Analysez vos
-              <br />
-              documents
-              <br />
-              <span className="text-gradient">immobiliers</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] max-w-xl">
+              Analysez vos documents <span className="text-gradient">immobiliers</span>
             </h1>
 
             <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
