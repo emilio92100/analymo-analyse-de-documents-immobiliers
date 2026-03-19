@@ -47,6 +47,7 @@ const App = () => {
             <Route path="/" element={<LandingPage user={user} onLogout={handleLogout} />} />
             <Route path="/pricing" element={<PricingPage user={user} onLogout={handleLogout} />} />
             <Route path="/example" element={<ExamplePage user={user} onLogout={handleLogout} />} />
+            <Route path="/contact" element={<ContactPage user={user} onLogout={handleLogout} />} />
             <Route path="/login" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="login" onAuth={handleAuth} />} />
             <Route path="/signup" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="signup" onAuth={handleAuth} />} />
 
