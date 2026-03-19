@@ -38,6 +38,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Analyse détaillée d'un seul document",
         "PV d'AG, règlement, appel de charges ou diagnostic",
       ],
+      accent: "border-l-blue-500 bg-blue-50/50",
       cta: "Analyser un document",
     },
     {
@@ -53,6 +54,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
       ],
       recommended: true,
       badge: "Le plus populaire",
+      accent: "border-l-emerald-500 bg-emerald-50/50",
       cta: "Analyser un bien",
     },
     {
@@ -67,6 +69,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Économisez 10€ vs 2 analyses séparées",
       ],
       badge: "Économique",
+      accent: "border-l-amber-500 bg-amber-50/50",
       cta: "Comparer 2 biens",
     },
     {
@@ -80,6 +83,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Outil de comparaison avancé",
         "Économisez 20€ vs 3 analyses séparées",
       ],
+      accent: "border-l-violet-500 bg-violet-50/50",
       cta: "Comparer 3 biens",
     },
   ];
