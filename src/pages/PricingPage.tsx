@@ -38,7 +38,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Analyse détaillée d'un seul document",
         "PV d'AG, règlement, appel de charges ou diagnostic",
       ],
-      accent: "border-l-blue-500 bg-blue-50/50",
+      accent: "border-blue-200 bg-blue-50/60",
       cta: "Analyser un document",
     },
     {
