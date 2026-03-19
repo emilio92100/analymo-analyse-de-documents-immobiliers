@@ -85,7 +85,7 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         "Outil de comparaison avancé",
         "Économisez 20€ vs 3 analyses séparées",
       ],
-      accent: "border-l-violet-500 bg-violet-50/50",
+      accent: "border-violet-200 bg-violet-50/60",
       cta: "Comparer 3 biens",
     },
   ];
