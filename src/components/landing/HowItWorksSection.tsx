@@ -27,7 +27,7 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <section className="py-28 bg-bg-light relative overflow-hidden">
+    <section className="py-16 bg-bg-light relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[100px]" />
       </div>
