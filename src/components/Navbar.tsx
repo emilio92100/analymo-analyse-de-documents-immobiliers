@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Logo from "./Logo";
-import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   user: any;
@@ -14,9 +13,9 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: "Accueil", path: "/" },
     { name: "Tarifs", path: "/pricing" },
     { name: "Exemple", path: "/example" },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (
@@ -45,14 +44,14 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
               <>
                 <button
                   onClick={() => navigate("/app/dashboard")}
-                  className="px-4 py-2 text-sm font-medium rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  className="px-5 py-2.5 text-sm font-semibold rounded-xl gradient-primary text-primary-foreground hover:opacity-90 transition-all shadow-md shadow-primary/20"
                 >
                   Mon espace
                 </button>
                 {onLogout && (
                   <button
                     onClick={onLogout}
-                    className="px-4 py-2 text-sm font-medium rounded-xl text-muted-foreground hover:text-foreground transition-colors"
+                    className="px-4 py-2.5 text-sm font-medium rounded-xl text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Déconnexion
                   </button>
@@ -62,13 +61,13 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Connexion
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-4 py-2 text-sm font-medium rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  className="px-5 py-2.5 text-sm font-semibold rounded-xl gradient-primary text-primary-foreground hover:opacity-90 transition-all shadow-md shadow-primary/20"
                 >
                   S'inscrire
                 </Link>
@@ -103,7 +102,7 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
             {user ? (
               <button
                 onClick={() => { navigate("/app/dashboard"); setIsMenuOpen(false); }}
-                className="w-full px-4 py-3 text-sm font-medium rounded-xl bg-primary text-primary-foreground"
+                className="w-full px-4 py-3 text-sm font-semibold rounded-xl gradient-primary text-primary-foreground"
               >
                 Mon espace
               </button>
@@ -119,7 +118,7 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
                 <Link
                   to="/signup"
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-3 text-sm font-medium text-center rounded-xl bg-primary text-primary-foreground"
+                  className="block px-4 py-3 text-sm font-semibold text-center rounded-xl gradient-primary text-primary-foreground"
                 >
                   S'inscrire
                 </Link>

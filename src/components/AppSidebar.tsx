@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -11,7 +11,6 @@ import {
   Menu,
   X,
   ArrowLeftRight,
-  ShieldCheck,
 } from "lucide-react";
 import Logo from "./Logo";
 import { cn } from "@/lib/utils";
@@ -29,62 +28,86 @@ const AppSidebar = ({ user, onLogout }: AppSidebarProps) => {
     { name: "Dashboard", icon: LayoutDashboard, path: "/app/dashboard" },
     { name: "Nouvelle analyse", icon: PlusCircle, path: "/app/new-analysis" },
     { name: "Mes analyses", icon: History, path: "/app/history" },
-    { name: "Comparer", icon: ArrowLeftRight, path: "/app/comparison" },
+    { name: "Comparer mes biens", icon: ArrowLeftRight, path: "/app/comparison" },
     { name: "Tarifs", icon: CreditCard, path: "/app/pricing" },
     { name: "Compte", icon: UserIcon, path: "/app/account" },
     { name: "Support", icon: LifeBuoy, path: "/app/support" },
   ];
 
-  return (
+  const SidebarContent = () => (
     <>
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-72 bg-background border-r border-border min-h-screen p-6 gap-6">
+      <div className="p-6 pb-2">
         <Link to="/">
-          <Logo />
+          <Logo light showSubtitle />
         </Link>
+      </div>
 
-        <nav className="flex-1 space-y-1">
-          {navItems.map((item) => (
+      {/* Credits box */}
+      <div className="mx-4 mt-4 mb-6">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center">
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-sidebar-muted">
+            Analyses restantes
+          </p>
+          <p className="text-4xl font-black text-sidebar-foreground mt-1">
+            {user?.credits ?? 0}
+          </p>
+        </div>
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 px-3 space-y-1">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
             <Link
               key={item.path}
               to={item.path}
+              onClick={() => setMobileMenuOpen(false)}
               className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all",
-                location.pathname === item.path
-                  ? "bg-primary text-primary-foreground shadow-lg"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                isActive
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-lg shadow-primary/30"
+                  : "text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground"
               )}
             >
               <item.icon size={18} />
               {item.name}
             </Link>
-          ))}
-        </nav>
+          );
+        })}
+      </nav>
 
-        <div className="border-t border-border pt-4 space-y-3">
-          <div className="bg-primary-light rounded-2xl p-4 text-center">
-            <p className="text-xs font-medium text-muted-foreground">Analyses restantes</p>
-            <p className="text-2xl font-bold text-primary">{user?.credits ?? "∞"}</p>
+      {/* User & Logout */}
+      <div className="p-4 mt-auto border-t border-white/10">
+        <div className="flex items-center gap-3 px-2 mb-3">
+          <div className="w-9 h-9 rounded-full bg-sidebar-primary text-sidebar-primary-foreground flex items-center justify-center text-sm font-bold uppercase">
+            {user?.email?.[0] || "U"}
           </div>
-
-          <div className="flex items-center gap-3 px-2">
-            <div className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
-              {user?.email?.[0]?.toUpperCase() || "U"}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">{user?.email?.split("@")[0] || "Utilisateur"}</p>
-              <p className="text-xs text-muted-foreground truncate">{user?.email || "user@analymo.fr"}</p>
-            </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-sidebar-foreground truncate">
+              {user?.email?.split("@")[0] || "Utilisateur"}
+            </p>
+            <p className="text-xs text-sidebar-muted truncate">
+              {user?.email || "user@analymo.fr"}
+            </p>
           </div>
-
-          <button
-            onClick={onLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-2xl text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
-          >
-            <LogOut size={18} />
-            Déconnexion
-          </button>
         </div>
+        <button
+          onClick={() => { onLogout(); setMobileMenuOpen(false); }}
+          className="flex items-center gap-3 w-full px-4 py-2.5 rounded-xl text-sm font-medium text-sidebar-muted hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider text-xs"
+        >
+          <LogOut size={16} />
+          Déconnexion
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex flex-col w-72 bg-sidebar min-h-screen">
+        <SidebarContent />
       </aside>
 
       {/* Mobile Header */}
@@ -102,34 +125,8 @@ const AppSidebar = ({ user, onLogout }: AppSidebarProps) => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-background pt-16 px-4 overflow-y-auto">
-          <nav className="space-y-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "flex items-center gap-4 px-6 py-4 rounded-2xl transition-all font-medium text-base",
-                  location.pathname === item.path
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "text-muted-foreground hover:bg-muted"
-                )}
-              >
-                <item.icon size={20} />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-          <div className="mt-4 pt-4 border-t border-border">
-            <button
-              onClick={() => { onLogout(); setMobileMenuOpen(false); }}
-              className="flex items-center gap-4 px-6 py-4 w-full text-destructive font-medium"
-            >
-              <LogOut size={20} />
-              Déconnexion
-            </button>
-          </div>
+        <div className="lg:hidden fixed inset-0 z-40 bg-sidebar pt-16 flex flex-col">
+          <SidebarContent />
         </div>
       )}
     </>
