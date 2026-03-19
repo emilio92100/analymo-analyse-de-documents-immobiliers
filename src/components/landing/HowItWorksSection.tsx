@@ -1,66 +1,90 @@
 import { motion } from "framer-motion";
-import { FileText, Zap, ShieldCheck } from "lucide-react";
+import { Upload, Search, FileCheck } from "lucide-react";
 
 const HowItWorksSection = () => {
   const steps = [
     {
       step: "01",
-      title: "Importez vos documents",
-      desc: "Déposez vos PV d'AG, règlements de copropriété, diagnostics techniques ou appels de fonds.",
-      icon: FileText,
+      title: "Importez",
+      desc: "Déposez vos PV d'AG, règlements de copropriété, diagnostics ou appels de fonds.",
+      icon: Upload,
+      color: "bg-primary",
     },
     {
       step: "02",
-      title: "Analyse par notre IA",
-      desc: "Notre technologie scanne chaque ligne pour détecter les risques cachés et les points d'attention.",
-      icon: Zap,
+      title: "Analyse automatique",
+      desc: "Notre technologie scanne chaque ligne pour détecter les risques et points d'attention.",
+      icon: Search,
+      color: "bg-primary",
     },
     {
       step: "03",
-      title: "Rapport détaillé",
-      desc: "Recevez une synthèse claire avec un score de fiabilité, des alertes et des recommandations.",
-      icon: ShieldCheck,
+      title: "Rapport complet",
+      desc: "Score de fiabilité, alertes détaillées et recommandations claires en moins de 2 minutes.",
+      icon: FileCheck,
+      color: "bg-primary",
     },
   ];
 
   return (
-    <section className="py-24 bg-bg-light">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-28 bg-bg-light relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[100px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold">Comment ça marche ?</h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Trois étapes simples pour sécuriser votre investissement immobilier.
+          <motion.span
+            className="inline-block px-4 py-1.5 rounded-full bg-primary/8 text-primary text-sm font-semibold mb-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            Comment ça marche
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
+            Trois étapes, <span className="text-gradient">zéro stress</span>
+          </h2>
+          <p className="mt-5 text-muted-foreground text-lg">
+            Une analyse complète de vos documents immobiliers en quelques clics.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 relative">
+          {/* Connector lines */}
+          <div className="hidden md:block absolute top-16 left-[25%] right-[25%] h-px">
+            <div className="w-full h-full border-t-2 border-dashed border-primary/15" />
+          </div>
+
           {steps.map((item, i) => (
             <motion.div
               key={i}
-              className="relative text-center"
-              initial={{ opacity: 0, y: 20 }}
+              className="relative text-center group"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
             >
-              {/* Connector line */}
-              {i < 2 && (
-                <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-px border-t-2 border-dashed border-primary/20" />
-              )}
+              {/* Step number */}
+              <motion.div
+                className="w-[72px] h-[72px] rounded-3xl gradient-primary flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20 group-hover:scale-110 transition-transform duration-300"
+                whileHover={{ rotate: [0, -5, 5, 0] }}
+                transition={{ duration: 0.4 }}
+              >
+                <item.icon size={30} className="text-primary-foreground" />
+              </motion.div>
 
-              <div className="w-16 h-16 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-primary/20">
-                <item.icon size={28} className="text-primary-foreground" />
-              </div>
-              <span className="text-xs font-bold text-primary uppercase tracking-[0.2em]">
+              <div className="inline-block px-3 py-1 rounded-full bg-primary/8 text-primary text-xs font-bold uppercase tracking-[0.2em] mb-3">
                 Étape {item.step}
-              </span>
-              <h3 className="text-xl font-bold mt-2 text-foreground">{item.title}</h3>
-              <p className="text-muted-foreground mt-3 leading-relaxed">{item.desc}</p>
+              </div>
+
+              <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
+              <p className="text-muted-foreground leading-relaxed max-w-xs mx-auto">{item.desc}</p>
             </motion.div>
           ))}
         </div>

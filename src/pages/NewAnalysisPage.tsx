@@ -32,7 +32,7 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
     "Réception des documents...",
     "Extraction du texte...",
     "Numérisation des pages (OCR)...",
-    "Analyse croisée par l'IA...",
+    "Analyse croisée des données...",
     "Détection des points de vigilance...",
     "Génération du rapport d'audit...",
   ];

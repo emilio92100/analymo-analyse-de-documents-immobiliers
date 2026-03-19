@@ -5,7 +5,9 @@ import {
   UserIcon,
   LayoutDashboard,
   Zap,
+  ArrowRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ForWhoSection = () => {
   const professionals = [
@@ -16,7 +18,7 @@ const ForWhoSection = () => {
     },
     {
       title: "Agents Immobiliers",
-      desc: "Valorisez votre devoir de conseil avec un rapport de transparence pour vos clients.",
+      desc: "Valorisez votre devoir de conseil avec un rapport de transparence.",
       icon: UserIcon,
     },
     {
@@ -32,38 +34,56 @@ const ForWhoSection = () => {
   ];
 
   return (
-    <section className="py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-28 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-0 w-[500px] h-[500px] rounded-full bg-primary/3 blur-[100px] -translate-y-1/2" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center max-w-2xl mx-auto mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold">
-            Pour qui est fait Analymo ?
+          <motion.span
+            className="inline-block px-4 py-1.5 rounded-full bg-primary/8 text-primary text-sm font-semibold mb-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            Pour qui
+          </motion.span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+            Conçu pour chaque acteur
+            <br />
+            <span className="text-gradient">de l'immobilier</span>
           </h2>
-          <p className="mt-4 text-muted-foreground text-lg">
-            Une solution adaptée à chaque acteur de l'immobilier.
-          </p>
         </motion.div>
 
-        {/* Buyers highlight */}
+        {/* Buyers highlight — modern card */}
         <motion.div
-          className="gradient-primary rounded-3xl p-8 md:p-12 text-primary-foreground mb-8"
+          className="relative gradient-primary rounded-[2rem] p-8 md:p-14 text-primary-foreground mb-10 overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <div className="max-w-3xl">
+          {/* Decorative circles */}
+          <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-white/5" />
+          <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-white/5" />
+
+          <div className="relative max-w-3xl">
+            <span className="inline-block px-3 py-1 rounded-full bg-white/15 text-xs font-semibold uppercase tracking-wider mb-5">
+              Particuliers
+            </span>
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Acheteurs Particuliers
+              Acheteurs : ne laissez rien au hasard
             </h3>
-            <p className="text-primary-foreground/80 max-w-2xl mb-8 text-lg">
-              Ne faites pas d'erreur coûteuse. Nous décryptons pour vous la santé
-              financière de la copropriété et les travaux à venir.
+            <p className="text-primary-foreground/75 max-w-2xl mb-8 text-lg">
+              Nous décryptons la santé financière de la copropriété et les travaux à venir
+              pour que vous achetiez en toute sérénité.
             </p>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid sm:grid-cols-2 gap-3 mb-8">
               {[
                 "Comprendre les PV d'AG sans effort",
                 "Anticiper les gros travaux à venir",
@@ -78,29 +98,38 @@ const ForWhoSection = () => {
                   transition={{ delay: i * 0.1 }}
                   className="flex items-center gap-3"
                 >
-                  <CheckCircle2 size={18} className="text-primary-foreground/80 shrink-0" />
+                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <CheckCircle2 size={12} className="text-primary-foreground" />
+                  </div>
                   <span className="text-sm font-medium">{item}</span>
                 </motion.div>
               ))}
             </div>
+            <Link
+              to="/signup"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-primary font-semibold text-sm hover:bg-white/90 transition-all"
+            >
+              Essayer maintenant
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </motion.div>
 
         {/* Professional targets */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {professionals.map((item, i) => (
             <motion.div
               key={i}
-              className="p-6 rounded-2xl border border-border bg-card card-hover"
+              className="group p-7 rounded-3xl border border-border bg-card hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
             >
-              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                 <item.icon size={22} className="text-primary" />
               </div>
-              <h4 className="font-bold text-foreground mb-2">{item.title}</h4>
+              <h4 className="font-bold text-foreground text-lg mb-2">{item.title}</h4>
               <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
