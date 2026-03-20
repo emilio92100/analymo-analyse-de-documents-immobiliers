@@ -10,7 +10,6 @@ import {
   TrendingUp,
   AlertTriangle,
   CircleDollarSign,
-  BarChart3,
 } from "lucide-react";
 
 interface HeroSectionProps {
@@ -92,14 +91,44 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             </div>
           </motion.div>
 
-          {/* Right — 3D Floating Dashboard */}
+          {/* Right — 3D Floating iPhone */}
           <div className="hidden lg:flex justify-center relative" style={{ perspective: "1200px" }}>
-            {/* Main dashboard card with continuous 3D rotation */}
+            {/* Floating badge — Sécurisé */}
             <motion.div
-              className="relative w-[400px]"
+              className="absolute -left-6 top-16 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                <ShieldCheck size={16} className="text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground">100% sécurisé</p>
+                <p className="text-[9px] text-muted-foreground">Chiffré & supprimé</p>
+              </div>
+            </motion.div>
+
+            {/* Floating badge — Score */}
+            <motion.div
+              className="absolute -right-6 bottom-32 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
+            >
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <TrendingUp size={16} className="text-emerald-500" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-foreground">Score: 78/100</p>
+                <p className="text-[9px] text-muted-foreground">Bien recommandé</p>
+              </div>
+            </motion.div>
+
+            {/* iPhone with 3D float */}
+            <motion.div
               animate={{
-                rotateY: [2, -2, 2],
-                rotateX: [-3, 3, -3],
+                rotateY: [3, -3, 3],
+                rotateX: [-2, 2, -2],
+                y: [0, -10, 0],
               }}
               transition={{
                 duration: 8,
@@ -108,169 +137,129 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               }}
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Main card */}
-              <motion.div
-                className="relative bg-background/90 backdrop-blur-xl rounded-3xl border border-border/50 shadow-2xl shadow-primary/10 p-6 overflow-hidden"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                {/* Shimmer effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent"
-                  animate={{ x: ["-100%", "200%"] }}
-                  transition={{ duration: 3, repeat: Infinity, repeatDelay: 4 }}
-                />
+              {/* Phone Frame */}
+              <div className="w-[280px] h-[580px] bg-foreground rounded-[3rem] p-[6px] shadow-2xl relative ring-1 ring-white/10">
+                {/* Side buttons */}
+                <div className="absolute -left-[2px] top-24 w-[3px] h-8 bg-foreground rounded-l-sm" />
+                <div className="absolute -left-[2px] top-36 w-[3px] h-12 bg-foreground rounded-l-sm" />
+                <div className="absolute -left-[2px] top-52 w-[3px] h-12 bg-foreground rounded-l-sm" />
+                <div className="absolute -right-[2px] top-32 w-[3px] h-16 bg-foreground rounded-r-sm" />
 
-                {/* Header */}
-                <div className="flex items-center justify-between mb-5 relative">
-                  <div>
-                    <p className="text-xs text-muted-foreground font-medium">Résultat d'analyse</p>
-                    <p className="text-sm font-bold text-foreground">Appartement T3 — Paris 11e</p>
+                <div className="w-full h-full bg-background rounded-[2.6rem] overflow-hidden relative">
+                  {/* Dynamic Island */}
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[90px] h-[28px] bg-foreground rounded-full z-10 flex items-center justify-center gap-2">
+                    <div className="w-[8px] h-[8px] rounded-full bg-foreground ring-1 ring-gray-700" />
                   </div>
-                  <div className="px-3 py-1 bg-emerald-500/15 rounded-full">
-                    <span className="text-[11px] font-bold text-emerald-600">Terminé</span>
-                  </div>
-                </div>
 
-                {/* Score circle */}
-                <div className="flex items-center gap-6 mb-5 relative">
-                  <div className="relative w-[88px] h-[88px] shrink-0">
-                    <svg className="w-full h-full -rotate-90" viewBox="0 0 88 88">
-                      <circle cx="44" cy="44" r="36" fill="none" stroke="hsl(var(--border))" strokeWidth="5" />
-                      <motion.circle
-                        cx="44" cy="44" r="36" fill="none"
-                        stroke="hsl(var(--primary))"
-                        strokeWidth="5"
-                        strokeLinecap="round"
-                        strokeDasharray={226}
-                        initial={{ strokeDashoffset: 226 }}
-                        animate={{ strokeDashoffset: 226 - (226 * 78) / 100 }}
-                        transition={{ duration: 1.8, delay: 0.8, ease: "easeOut" }}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <motion.span
-                        className="text-2xl font-black text-foreground"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1 }}
-                      >
-                        78
-                      </motion.span>
-                      <span className="text-[9px] text-muted-foreground font-medium">/100</span>
+                  {/* Status bar */}
+                  <div className="pt-1 px-6 flex justify-between items-center text-[9px] font-semibold text-foreground/70">
+                    <span>9:41</span>
+                    <div className="flex gap-1 items-center">
+                      <div className="flex gap-[1px]">
+                        {[3, 4, 5, 6].map((h) => (
+                          <div
+                            key={h}
+                            className="w-[3px] rounded-sm bg-foreground/60"
+                            style={{ height: h }}
+                          />
+                        ))}
+                      </div>
+                      <span className="ml-1">5G</span>
+                      <div className="w-5 h-[9px] rounded-[2px] border border-foreground/50 relative ml-1">
+                        <div className="absolute inset-[1px] right-[3px] bg-emerald-500 rounded-sm" />
+                      </div>
                     </div>
                   </div>
 
-                  <div className="flex-1 space-y-2">
-                    {[
-                      { label: "Finances", value: 85, color: "bg-emerald-500" },
-                      { label: "Juridique", value: 72, color: "bg-blue-500" },
-                      { label: "Travaux", value: 60, color: "bg-amber-500" },
-                    ].map((bar, i) => (
-                      <div key={i} className="space-y-0.5">
-                        <div className="flex justify-between text-[10px]">
-                          <span className="text-muted-foreground">{bar.label}</span>
-                          <span className="font-bold text-foreground">{bar.value}%</span>
-                        </div>
-                        <div className="h-1.5 rounded-full bg-muted overflow-hidden">
-                          <motion.div
-                            className={`h-full rounded-full ${bar.color}`}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${bar.value}%` }}
-                            transition={{ duration: 1.2, delay: 1 + i * 0.2, ease: "easeOut" }}
+                  {/* Screen Content */}
+                  <div className="pt-10 px-4 space-y-3">
+                    {/* App header */}
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[11px] font-bold text-foreground tracking-tight">
+                        Résultat d'analyse
+                      </span>
+                      <div className="px-2 py-0.5 bg-emerald-500/15 rounded-full">
+                        <span className="text-[9px] font-semibold text-emerald-600">Terminé</span>
+                      </div>
+                    </div>
+
+                    {/* Score Circle */}
+                    <div className="flex justify-center py-2">
+                      <div className="relative w-24 h-24">
+                        <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96">
+                          <circle cx="48" cy="48" r="40" fill="none" stroke="hsl(var(--border))" strokeWidth="6" />
+                          <motion.circle
+                            cx="48" cy="48" r="40" fill="none"
+                            stroke="hsl(var(--primary))"
+                            strokeWidth="6"
+                            strokeLinecap="round"
+                            strokeDasharray={251}
+                            initial={{ strokeDashoffset: 251 }}
+                            animate={{ strokeDashoffset: 251 - (251 * 78) / 100 }}
+                            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
                           />
+                        </svg>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                          <motion.span
+                            className="text-2xl font-black text-foreground"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                          >
+                            78
+                          </motion.span>
+                          <span className="text-[8px] text-muted-foreground font-medium">/100</span>
                         </div>
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Result cards */}
+                    <div className="space-y-2">
+                      <motion.div
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-emerald-500/8 border border-emerald-500/15"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.2 }}
+                      >
+                        <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
+                        <div>
+                          <p className="text-[10px] font-semibold text-foreground">3 points positifs</p>
+                          <p className="text-[8px] text-muted-foreground">Finances saines, bon entretien</p>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-amber-500/8 border border-amber-500/15"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.4 }}
+                      >
+                        <AlertTriangle size={13} className="text-amber-500 shrink-0" />
+                        <div>
+                          <p className="text-[10px] font-semibold text-foreground">2 points de vigilance</p>
+                          <p className="text-[8px] text-muted-foreground">Travaux toiture prévus 2026</p>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-muted border border-border"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.6 }}
+                      >
+                        <CircleDollarSign size={13} className="text-primary shrink-0" />
+                        <div>
+                          <p className="text-[10px] font-semibold text-foreground">Impact financier</p>
+                          <p className="text-[8px] text-muted-foreground">~12 000 € de charges prévues</p>
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
-                </div>
 
-                {/* Result cards */}
-                <div className="space-y-2 relative">
-                  {[
-                    { icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-500/8 border-emerald-500/15", title: "3 points positifs", sub: "Finances saines, bon entretien" },
-                    { icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/8 border-amber-500/15", title: "2 points de vigilance", sub: "Travaux toiture prévus 2026" },
-                    { icon: CircleDollarSign, color: "text-primary", bg: "bg-muted border-border", title: "Impact financier", sub: "~12 000 € de charges prévues" },
-                  ].map((card, i) => (
-                    <motion.div
-                      key={i}
-                      className={`flex items-center gap-3 p-3 rounded-xl border ${card.bg}`}
-                      initial={{ opacity: 0, x: -15 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 1.4 + i * 0.2 }}
-                    >
-                      <card.icon size={15} className={`${card.color} shrink-0`} />
-                      <div>
-                        <p className="text-[11px] font-semibold text-foreground">{card.title}</p>
-                        <p className="text-[9px] text-muted-foreground">{card.sub}</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {/* Home indicator */}
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-foreground/20" />
                 </div>
-              </motion.div>
-
-              {/* Floating badge — top left */}
-              <motion.div
-                className="absolute -left-12 top-4 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                style={{ transform: "translateZ(40px)" }}
-              >
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <ShieldCheck size={16} className="text-primary" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-foreground">100% sécurisé</p>
-                  <p className="text-[9px] text-muted-foreground">Chiffré & supprimé</p>
-                </div>
-              </motion.div>
-
-              {/* Floating badge — bottom right */}
-              <motion.div
-                className="absolute -right-10 bottom-8 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                style={{ transform: "translateZ(30px)" }}
-              >
-                <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                  <TrendingUp size={16} className="text-emerald-500" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-foreground">Score: 78/100</p>
-                  <p className="text-[9px] text-muted-foreground">Bien recommandé</p>
-                </div>
-              </motion.div>
-
-              {/* Floating mini chart — top right */}
-              <motion.div
-                className="absolute -right-6 -top-4 glass rounded-xl px-3 py-2 z-20 shadow-lg"
-                animate={{ y: [0, -5, 0], rotate: [0, 2, 0] }}
-                transition={{ duration: 6, repeat: Infinity, delay: 0.5 }}
-                style={{ transform: "translateZ(50px)" }}
-              >
-                <div className="flex items-center gap-1.5">
-                  <BarChart3 size={14} className="text-primary" />
-                  <span className="text-[10px] font-bold text-foreground">Analyse IA</span>
-                </div>
-                <div className="flex gap-[3px] mt-1.5">
-                  {[40, 65, 50, 80, 70, 90, 75].map((h, i) => (
-                    <motion.div
-                      key={i}
-                      className="w-[4px] rounded-full bg-primary/60"
-                      initial={{ height: 4 }}
-                      animate={{ height: h / 4 }}
-                      transition={{ delay: 2 + i * 0.1, duration: 0.5 }}
-                    />
-                  ))}
-                </div>
-              </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
