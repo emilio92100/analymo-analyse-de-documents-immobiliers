@@ -19,18 +19,21 @@ const TrustSection = () => {
   const trustItems = [
     {
       title: "Confidentiel",
-      desc: "Documents analysés puis automatiquement supprimés. Aucune donnée revendue.",
+      desc: "Documents analysés puis automatiquement supprimés. Aucune donnée revendue à des tiers.",
       icon: ShieldCheck,
+      gradient: "from-emerald-500/10 to-emerald-600/5",
     },
     {
-      title: "Sécurisé",
-      desc: "Chiffrement de bout en bout et infrastructure de niveau bancaire.",
+      title: "Chiffré",
+      desc: "Chiffrement de bout en bout et infrastructure de niveau bancaire pour vos données.",
       icon: Lock,
+      gradient: "from-blue-500/10 to-blue-600/5",
     },
     {
       title: "Instantané",
-      desc: "Rapport complet en moins de 2 minutes, disponible 24h/24.",
+      desc: "Rapport complet en moins de 2 minutes, disponible 24 heures sur 24, 7 jours sur 7.",
       icon: Zap,
+      gradient: "from-amber-500/10 to-amber-600/5",
     },
   ];
 
@@ -41,7 +44,7 @@ const TrustSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-bg-light relative overflow-hidden">
+    <section className="py-24 bg-bg-light relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[120px]" />
       </div>
@@ -61,44 +64,56 @@ const TrustSection = () => {
           >
             Confiance
           </motion.span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.1]">
-            Sécurité <span className="text-gradient">sans compromis</span>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.05]">
+            Sécurité
+            <br />
+            <span className="text-gradient">sans compromis</span>
           </h2>
-          <p className="mt-6 text-muted-foreground text-lg leading-relaxed">
+          <p className="mt-6 text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
             Vos données sont protégées avec les standards les plus exigeants du marché.
           </p>
         </motion.div>
 
+        {/* Trust cards — premium style */}
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {trustItems.map((item, i) => (
             <motion.div
               key={i}
-              className="group p-8 rounded-3xl bg-card border border-border text-center hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
+              className={`group relative p-10 rounded-3xl bg-gradient-to-b ${item.gradient} border border-border overflow-hidden hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-1 transition-all duration-500`}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.12 }}
             >
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <item.icon size={28} className="text-primary" />
+              {/* Hover glow */}
+              <div className="absolute inset-0 bg-gradient-to-b from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <item.icon size={28} className="text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground text-base leading-relaxed">{item.desc}</p>
               </div>
-              <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{item.desc}</p>
+
+              {/* Bottom accent */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
             </motion.div>
           ))}
         </div>
 
         {/* Stats bar */}
         <motion.div
-          className="gradient-primary rounded-[2rem] p-10 md:p-12 relative overflow-hidden"
+          className="relative overflow-hidden rounded-3xl"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
+          <div className="absolute inset-0 bg-gradient-to-br from-[hsl(200,90%,12%)] via-[hsl(200,80%,16%)] to-[hsl(220,70%,22%)]" />
           <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-white/5" />
           <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full bg-white/5" />
 
-          <div className="grid sm:grid-cols-3 gap-10 text-center text-primary-foreground relative">
+          <div className="relative grid sm:grid-cols-3 gap-10 text-center text-primary-foreground p-12 md:p-16">
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
@@ -107,18 +122,24 @@ const TrustSection = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
               >
-                <stat.icon size={24} className="mx-auto mb-3 opacity-70" />
+                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-4">
+                  <stat.icon size={24} className="opacity-80" />
+                </div>
                 <p className="text-4xl md:text-5xl font-black">
-                  {typeof stat.value === 'number' && stat.value > 100 ? (
+                  {typeof stat.value === "number" && stat.value > 100 ? (
                     <>
                       <AnimatedCounter target={stat.value} />
                       {stat.suffix}
                     </>
                   ) : (
-                    <>{"< "}{stat.value}{stat.suffix}</>
+                    <>
+                      {"< "}
+                      {stat.value}
+                      {stat.suffix}
+                    </>
                   )}
                 </p>
-                <p className="text-sm mt-2 opacity-70">{stat.label}</p>
+                <p className="text-sm mt-3 opacity-60 font-medium">{stat.label}</p>
               </motion.div>
             ))}
           </div>
