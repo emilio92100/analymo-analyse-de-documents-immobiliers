@@ -45,6 +45,7 @@ const ForWhoSection = () => {
           title="Pour"
           highlight="qui ?"
           subtitle="Que vous soyez acheteur particulier ou professionnel, Analymo s'adapte à vos besoins."
+          center
         />
 
         {/* Buyers highlight — modern card */}
