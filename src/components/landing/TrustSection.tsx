@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { ShieldCheck, Lock, Zap, FileText, Clock, Users } from "lucide-react";
 import { useEffect, useRef } from "react";
+import SectionHeader from "./SectionHeader";
 
 const AnimatedCounter = ({ target, suffix = "" }: { target: number; suffix?: string }) => {
   const count = useMotionValue(0);
@@ -50,31 +51,14 @@ const TrustSection = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <motion.div
-          className="text-center max-w-3xl mx-auto mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <motion.span
-            className="inline-block px-5 py-2 rounded-full bg-primary/8 text-primary text-sm font-bold uppercase tracking-widest mb-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            Confiance
-          </motion.span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.05]">
-            Sécurité
-            <br />
-            <span className="text-gradient">sans compromis</span>
-          </h2>
-          <p className="mt-6 text-muted-foreground text-lg leading-relaxed max-w-xl mx-auto">
-            Vos données sont protégées avec les standards les plus exigeants du marché.
-          </p>
-        </motion.div>
+        <SectionHeader
+          title="Sécurité"
+          highlight="sans compromis"
+          subtitle="Vos données sont protégées avec les standards les plus exigeants du marché."
+          center
+        />
 
-        {/* Trust cards — premium style */}
+        {/* Trust cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {trustItems.map((item, i) => (
             <motion.div
@@ -85,9 +69,7 @@ const TrustSection = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.12 }}
             >
-              {/* Hover glow */}
               <div className="absolute inset-0 bg-gradient-to-b from-primary/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
               <div className="relative">
                 <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
                   <item.icon size={28} className="text-primary" />
@@ -95,8 +77,6 @@ const TrustSection = () => {
                 <h3 className="text-2xl font-bold text-foreground mb-3">{item.title}</h3>
                 <p className="text-muted-foreground text-base leading-relaxed">{item.desc}</p>
               </div>
-
-              {/* Bottom accent */}
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
             </motion.div>
           ))}

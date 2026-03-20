@@ -8,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import SectionHeader from "./SectionHeader";
 
 const ForWhoSection = () => {
   const professionals = [
@@ -34,35 +35,17 @@ const ForWhoSection = () => {
   ];
 
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 w-[500px] h-[500px] rounded-full bg-primary/3 blur-[100px] -translate-y-1/2" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <motion.div
-          className="max-w-4xl mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <motion.span
-            className="inline-block px-5 py-2 rounded-full bg-primary/8 text-primary text-sm font-bold uppercase tracking-widest mb-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            Pour qui
-          </motion.span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.05]">
-            Conçu pour chaque
-            <br />
-            acteur <span className="text-gradient">de l'immobilier</span>
-          </h2>
-          <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mt-6 leading-relaxed">
-            Que vous soyez acheteur particulier ou professionnel, Analymo s'adapte à vos besoins.
-          </p>
-        </motion.div>
+        <SectionHeader
+          title="Pour"
+          highlight="qui ?"
+          subtitle="Que vous soyez acheteur particulier ou professionnel, Analymo s'adapte à vos besoins."
+        />
 
         {/* Buyers highlight — modern card */}
         <motion.div
@@ -71,7 +54,6 @@ const ForWhoSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          {/* Decorative circles */}
           <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-white/5" />
           <div className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-white/5" />
 
