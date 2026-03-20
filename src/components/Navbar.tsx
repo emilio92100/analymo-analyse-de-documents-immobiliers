@@ -44,47 +44,48 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
             <Logo />
           </Link>
 
-          {/* Desktop Nav — pill attached to right actions */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40">
-              {navLinks.map((link) => {
-                const isActive = location.pathname === link.path;
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={cn(
-                      "relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                      isActive
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="nav-active"
-                        className="absolute inset-0 rounded-full bg-primary shadow-sm"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
+          {/* Desktop Nav — single pill with everything */}
+          <div className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={cn(
+                    "relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                    isActive
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-active"
+                      className="absolute inset-0 rounded-full bg-primary shadow-sm"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.name}</span>
+                </Link>
+              );
+            })}
+
+            {/* Separator */}
+            <div className="w-px h-5 bg-border/60 mx-1" />
+
             {user ? (
               <>
                 <button
                   onClick={() => navigate("/app/dashboard")}
-                  className="group inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20"
+                  className="relative px-5 py-2 rounded-full text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
                 >
                   Mon espace
-                  <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                 </button>
                 {onLogout && (
                   <button
                     onClick={onLogout}
-                    className="px-4 py-2.5 text-sm font-medium rounded-full text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all"
+                    className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Déconnexion
                   </button>
@@ -94,16 +95,15 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
               <>
                 <Link
                   to="/login"
-                  className="px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Connexion
                 </Link>
                 <Link
                   to="/signup"
-                  className="group inline-flex items-center gap-2 px-6 py-2.5 text-sm font-semibold rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all shadow-md shadow-primary/20"
+                  className="px-5 py-2 rounded-full text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
                 >
                   S'inscrire
-                  <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </>
             )}

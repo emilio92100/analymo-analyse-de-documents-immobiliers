@@ -41,7 +41,7 @@ const ForWhoSection = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-20"
+          className="max-w-4xl mb-20"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -54,11 +54,14 @@ const ForWhoSection = () => {
           >
             Pour qui
           </motion.span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.1]">
-            Conçu pour chaque acteur
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-[1.05]">
+            Conçu pour chaque
             <br />
-            <span className="text-gradient">de l'immobilier</span>
+            acteur <span className="text-gradient">de l'immobilier</span>
           </h2>
+          <p className="text-muted-foreground text-lg sm:text-xl max-w-2xl mt-6 leading-relaxed">
+            Que vous soyez acheteur particulier ou professionnel, Analymo s'adapte à vos besoins.
+          </p>
         </motion.div>
 
         {/* Buyers highlight — modern card */}
