@@ -54,7 +54,85 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               minutes grâce à notre outil d'analyse.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
+            {/* Mobile phone animation — just above CTA */}
+            <motion.div
+              className="flex lg:hidden justify-center mt-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
+              >
+                <div className="w-[130px] h-[250px] bg-foreground rounded-[1.6rem] p-[3px] shadow-xl ring-1 ring-white/10">
+                  <div className="w-full h-full bg-background rounded-[1.4rem] overflow-hidden relative">
+                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-[40px] h-[12px] bg-foreground rounded-full z-10" />
+                    <div className="pt-5 px-2.5 space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[7px] font-bold text-foreground">Scan en cours</span>
+                        <motion.div
+                          className="w-2.5 h-2.5 rounded-full border-[1.5px] border-primary border-t-transparent"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                      </div>
+                      <motion.div className="relative bg-muted rounded-md p-1.5 border border-border overflow-hidden">
+                        <motion.div
+                          className="absolute left-0 right-0 h-[1.5px] bg-primary/60 shadow-[0_0_6px_hsl(var(--primary)/0.4)]"
+                          animate={{ top: ["0%", "100%", "0%"] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                        <div className="space-y-1">
+                          {[3/4, 1, 2/3, 5/6].map((w, i) => (
+                            <div key={i} className="h-1 bg-foreground/10 rounded-full" style={{ width: `${w * 100}%` }} />
+                          ))}
+                        </div>
+                      </motion.div>
+                      <motion.div
+                        className="flex items-center gap-1 p-1 rounded-md bg-emerald-500/10 border border-emerald-500/20"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.5 }}
+                      >
+                        <CheckCircle2 size={8} className="text-emerald-500 shrink-0" />
+                        <span className="text-[6px] font-semibold text-foreground">3 points positifs</span>
+                      </motion.div>
+                      <motion.div
+                        className="flex items-center gap-1 p-1 rounded-md bg-amber-500/10 border border-amber-500/20"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.8 }}
+                      >
+                        <AlertTriangle size={8} className="text-amber-500 shrink-0" />
+                        <span className="text-[6px] font-semibold text-foreground">2 vigilances</span>
+                      </motion.div>
+                      <motion.div
+                        className="flex justify-center pt-0.5"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 2.2 }}
+                      >
+                        <div className="relative w-12 h-12">
+                          <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                            <circle cx="24" cy="24" r="19" fill="none" stroke="hsl(var(--border))" strokeWidth="3" />
+                            <motion.circle cx="24" cy="24" r="19" fill="none" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" strokeDasharray={119} initial={{ strokeDashoffset: 119 }} animate={{ strokeDashoffset: 119 - (119 * 78) / 100 }} transition={{ duration: 1.5, delay: 2.4, ease: "easeOut" }} />
+                          </svg>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <motion.span className="text-xs font-black text-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>78</motion.span>
+                            <span className="text-[5px] text-muted-foreground">/100</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-12 h-0.5 rounded-full bg-foreground/20" />
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <Link
                 to={user ? "/app/new-analysis" : "/signup"}
                 className="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl gradient-primary text-primary-foreground font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-primary/25"
@@ -89,84 +167,6 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                 </motion.div>
               ))}
             </div>
-
-            {/* Mobile phone animation */}
-            <motion.div
-              className="flex lg:hidden justify-center mt-4"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <motion.div
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
-              >
-                <div className="w-[110px] h-[210px] bg-foreground rounded-[1.4rem] p-[3px] shadow-xl ring-1 ring-white/10">
-                  <div className="w-full h-full bg-background rounded-[1.2rem] overflow-hidden relative">
-                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-[36px] h-[10px] bg-foreground rounded-full z-10" />
-                    <div className="pt-5 px-2 space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[6px] font-bold text-foreground">Scan en cours</span>
-                        <motion.div
-                          className="w-2 h-2 rounded-full border-[1.5px] border-primary border-t-transparent"
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        />
-                      </div>
-                      <motion.div className="relative bg-muted rounded p-1.5 border border-border overflow-hidden">
-                        <motion.div
-                          className="absolute left-0 right-0 h-[1.5px] bg-primary/60 shadow-[0_0_6px_hsl(var(--primary)/0.4)]"
-                          animate={{ top: ["0%", "100%", "0%"] }}
-                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                        <div className="space-y-1">
-                          {[3/4, 1, 2/3, 5/6].map((w, i) => (
-                            <div key={i} className="h-1 bg-foreground/10 rounded-full" style={{ width: `${w * 100}%` }} />
-                          ))}
-                        </div>
-                      </motion.div>
-                      <motion.div
-                        className="flex items-center gap-1 p-1 rounded bg-emerald-500/10 border border-emerald-500/20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.5 }}
-                      >
-                        <CheckCircle2 size={7} className="text-emerald-500 shrink-0" />
-                        <span className="text-[5px] font-semibold text-foreground">3 points positifs</span>
-                      </motion.div>
-                      <motion.div
-                        className="flex items-center gap-1 p-1 rounded bg-amber-500/10 border border-amber-500/20"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 1.8 }}
-                      >
-                        <AlertTriangle size={7} className="text-amber-500 shrink-0" />
-                        <span className="text-[5px] font-semibold text-foreground">2 vigilances</span>
-                      </motion.div>
-                      <motion.div
-                        className="flex justify-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 2.2 }}
-                      >
-                        <div className="relative w-10 h-10">
-                          <svg className="w-10 h-10 -rotate-90" viewBox="0 0 40 40">
-                            <circle cx="20" cy="20" r="16" fill="none" stroke="hsl(var(--border))" strokeWidth="3" />
-                            <motion.circle cx="20" cy="20" r="16" fill="none" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" strokeDasharray={100} initial={{ strokeDashoffset: 100 }} animate={{ strokeDashoffset: 100 - (100 * 78) / 100 }} transition={{ duration: 1.5, delay: 2.4, ease: "easeOut" }} />
-                          </svg>
-                          <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <motion.span className="text-[10px] font-black text-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>78</motion.span>
-                            <span className="text-[5px] text-muted-foreground">/100</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    </div>
-                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-0.5 rounded-full bg-foreground/20" />
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
           </motion.div>
 
           {/* Right — 3D Floating iPhone */}
