@@ -8,79 +8,59 @@ import {
   Target,
   Lock,
   Clock,
+  TrendingUp,
+  AlertTriangle,
+  CheckCircle2,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import SectionHeader from "./SectionHeader";
 
 interface WhySectionProps {
   user: any;
 }
 
-const features = [
-  {
-    icon: FileSearch,
-    title: "Détection des risques",
-    desc: "Identification automatique des travaux votés, impayés et procédures en cours dans vos PV d'AG.",
-    stat: "98%",
-    statLabel: "de risques détectés",
-    color: "hsl(var(--primary))",
-    bgColor: "bg-primary/10",
-  },
-  {
-    icon: Clock,
-    title: "Résultats en 2 min",
-    desc: "Notre technologie analyse chaque ligne en quelques secondes. Fini les heures de lecture fastidieuse.",
-    stat: "< 2min",
-    statLabel: "temps d'analyse",
-    color: "hsl(160, 60%, 42%)",
-    bgColor: "bg-emerald-500/10",
-  },
-  {
-    icon: Banknote,
-    title: "Impact financier",
-    desc: "Estimation des charges futures et analyse de la santé financière de la copropriété.",
-    stat: "12k€",
-    statLabel: "économie moyenne",
-    color: "hsl(38, 92%, 50%)",
-    bgColor: "bg-amber-500/10",
-  },
-  {
-    icon: Scale,
-    title: "Conformité juridique",
-    desc: "Vérification des diagnostics obligatoires et détection des clauses abusives.",
-    stat: "100%",
-    statLabel: "conformité vérifiée",
-    color: "hsl(210, 80%, 55%)",
-    bgColor: "bg-blue-500/10",
-  },
-  {
-    icon: Lock,
-    title: "Sécurité totale",
-    desc: "Chiffrement de bout en bout, infrastructure bancaire. Documents supprimés après analyse.",
-    stat: "0",
-    statLabel: "donnée conservée",
-    color: "hsl(270, 60%, 55%)",
-    bgColor: "bg-violet-500/10",
-  },
-  {
-    icon: Target,
-    title: "Score de fiabilité",
-    desc: "Un score clair de 0 à 100 pour évaluer la qualité globale du bien d'un seul coup d'œil.",
-    stat: "78/100",
-    statLabel: "score moyen",
-    color: "hsl(var(--primary))",
-    bgColor: "bg-primary/10",
-  },
-];
-
 const WhySection = ({ user }: WhySectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
+  const analysisValues = [
+    {
+      icon: AlertTriangle,
+      title: "Risques détectés",
+      items: ["Travaux votés non réalisés", "Impayés de copropriétaires", "Procédures judiciaires en cours"],
+      color: "text-red-500",
+      bgColor: "bg-red-500/10",
+      borderColor: "border-red-500/20",
+    },
+    {
+      icon: Banknote,
+      title: "Santé financière",
+      items: ["Budget prévisionnel analysé", "Fonds de travaux évalué", "Charges futures estimées"],
+      color: "text-amber-500",
+      bgColor: "bg-amber-500/10",
+      borderColor: "border-amber-500/20",
+    },
+    {
+      icon: Scale,
+      title: "Conformité juridique",
+      items: ["Diagnostics obligatoires vérifiés", "Clauses abusives identifiées", "Règlement de copropriété"],
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+      borderColor: "border-blue-500/20",
+    },
+    {
+      icon: TrendingUp,
+      title: "Potentiel du bien",
+      items: ["Historique des travaux réalisés", "État général de l'immeuble", "Valorisation estimée"],
+      color: "text-emerald-500",
+      bgColor: "bg-emerald-500/10",
+      borderColor: "border-emerald-500/20",
+    },
+  ];
 
   return (
     <section ref={sectionRef} className="py-24 relative overflow-hidden">
@@ -93,147 +73,112 @@ const WhySection = ({ user }: WhySectionProps) => {
           title="Pourquoi"
           highlight="Analymo ?"
           subtitle="L'achat immobilier est l'investissement d'une vie. Notre IA décrypte vos documents pour que vous achetiez en toute sérénité."
+          center
         />
 
-        {/* Interactive feature showcase */}
-        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 items-start">
-          {/* Left — Feature selector tabs */}
-          <div className="flex flex-col gap-2">
-            {features.map((feature, i) => (
-              <motion.button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                className={`group relative text-left p-5 rounded-2xl transition-all duration-400 ${
-                  activeIndex === i
-                    ? "bg-foreground text-primary-foreground shadow-2xl shadow-foreground/10"
-                    : "bg-transparent hover:bg-muted/50"
-                }`}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-300 ${
-                      activeIndex === i ? "bg-white/15" : feature.bgColor
-                    }`}
-                  >
-                    <feature.icon
-                      size={20}
-                      style={{ color: activeIndex === i ? "white" : feature.color }}
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4
-                      className={`font-bold text-base transition-colors ${
-                        activeIndex === i ? "text-primary-foreground" : "text-foreground"
-                      }`}
-                    >
-                      {feature.title}
-                    </h4>
-                    {activeIndex === i && (
-                      <motion.p
-                        className="text-primary-foreground/60 text-sm mt-1 leading-relaxed"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {feature.desc}
-                      </motion.p>
-                    )}
-                  </div>
-                  <span
-                    className={`text-lg font-black shrink-0 transition-colors ${
-                      activeIndex === i ? "text-primary-foreground/40" : "text-muted-foreground/20"
-                    }`}
-                  >
-                    {feature.stat}
-                  </span>
-                </div>
-
-                {/* Active indicator line */}
-                {activeIndex === i && (
-                  <motion.div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-full bg-primary"
-                    layoutId="activeIndicator"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Right — Active feature showcase */}
+        {/* Central score + analysis showcase */}
+        <div className="relative mb-14">
+          {/* Score hero card */}
           <motion.div
-            className="relative rounded-3xl overflow-hidden min-h-[420px] flex items-center justify-center"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            className="relative overflow-hidden rounded-3xl bg-foreground text-primary-foreground p-8 md:p-12 mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {/* Dynamic background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-foreground via-foreground to-foreground/90" />
             <div className="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/10 blur-[80px]" />
             <div className="absolute -left-10 -bottom-10 w-60 h-60 rounded-full bg-white/5 blur-[60px]" />
 
-            {/* Content */}
-            <motion.div
-              key={activeIndex}
-              className="relative p-10 md:p-14 text-primary-foreground w-full"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div
-                className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mb-8"
-              >
-                {(() => {
-                  const Icon = features[activeIndex].icon;
-                  return <Icon size={30} className="text-primary-foreground" />;
-                })()}
+            <div className="relative flex flex-col md:flex-row items-center gap-10">
+              {/* Score circle */}
+              <div className="shrink-0">
+                <div className="relative w-36 h-36">
+                  <svg className="w-36 h-36 -rotate-90" viewBox="0 0 144 144">
+                    <circle cx="72" cy="72" r="60" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
+                    <motion.circle
+                      cx="72" cy="72" r="60" fill="none"
+                      stroke="hsl(var(--primary))"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      strokeDasharray={377}
+                      initial={{ strokeDashoffset: 377 }}
+                      whileInView={{ strokeDashoffset: 377 - (377 * 78) / 100 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 2, delay: 0.3 }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-black text-primary-foreground">78</span>
+                    <span className="text-[10px] text-primary-foreground/40 uppercase tracking-wider font-bold">/100</span>
+                  </div>
+                </div>
               </div>
 
-              <h3 className="text-3xl md:text-4xl font-black mb-4">
-                {features[activeIndex].title}
-              </h3>
-              <p className="text-primary-foreground/60 text-lg leading-relaxed max-w-md mb-10">
-                {features[activeIndex].desc}
-              </p>
-
-              {/* Big stat */}
-              <div className="flex items-end gap-4">
-                <motion.span
-                  className="text-7xl md:text-8xl font-black text-primary-foreground/15"
-                  initial={{ scale: 0.5, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                >
-                  {features[activeIndex].stat}
-                </motion.span>
-                <span className="text-xs text-primary-foreground/30 uppercase tracking-wider font-medium pb-4">
-                  {features[activeIndex].statLabel}
-                </span>
+              {/* Description */}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl font-black mb-3">
+                  Un score unique pour tout comprendre
+                </h3>
+                <p className="text-primary-foreground/50 text-lg leading-relaxed max-w-lg">
+                  Chaque document est analysé et synthétisé en un score de fiabilité clair.
+                  Risques, finances, juridique — tout est passé au crible en moins de 2 minutes.
+                </p>
+                <div className="flex flex-wrap gap-3 mt-6 justify-center md:justify-start">
+                  {[
+                    { label: "98% de risques détectés", icon: Target },
+                    { label: "< 2 min d'analyse", icon: Clock },
+                    { label: "0 donnée conservée", icon: Lock },
+                  ].map((badge, i) => (
+                    <motion.div
+                      key={i}
+                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/8 text-sm font-medium text-primary-foreground/70"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                    >
+                      <badge.icon size={14} />
+                      {badge.label}
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-
-              {/* Progress dots */}
-              <div className="absolute bottom-6 right-6 flex gap-1.5">
-                {features.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveIndex(i)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? "bg-white w-6" : "bg-white/20 hover:bg-white/40"
-                    }`}
-                  />
-                ))}
-              </div>
-            </motion.div>
+            </div>
           </motion.div>
+
+          {/* Analysis value cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {analysisValues.map((item, i) => (
+              <motion.div
+                key={i}
+                className={`group relative p-6 rounded-2xl border ${item.borderColor} bg-card overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-400`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-b ${item.bgColor} to-transparent opacity-30`} />
+                <div className="relative">
+                  <div className={`w-11 h-11 rounded-xl ${item.bgColor} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <item.icon size={20} className={item.color} />
+                  </div>
+                  <h4 className="font-bold text-foreground text-base mb-3">{item.title}</h4>
+                  <ul className="space-y-2">
+                    {item.items.map((point, j) => (
+                      <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                        <CheckCircle2 size={14} className={`${item.color} shrink-0 mt-0.5`} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* CTA */}
         <motion.div
-          className="mt-16 text-center"
+          className="text-center"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

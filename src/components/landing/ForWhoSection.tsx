@@ -35,7 +35,7 @@ const ForWhoSection = () => {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 w-[500px] h-[500px] rounded-full bg-primary/3 blur-[100px] -translate-y-1/2" />
       </div>
