@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, MailCheck } from "lucide-react";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,6 +17,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +39,9 @@ const AuthPage = ({ type }: AuthPageProps) => {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
+        setSignupSuccess(true);
+        setLoading(false);
+        return;
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -64,6 +68,54 @@ const AuthPage = ({ type }: AuthPageProps) => {
       setError(translateAuthError(err.message || ""));
     }
   };
+
+  // Success screen after signup
+  if (signupSuccess) {
+    return (
+      <div className="min-h-screen bg-bg-light">
+        <Navbar user={null} />
+        <div className="flex items-center justify-center px-4 pt-28 pb-12">
+          <motion.div
+            className="w-full max-w-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="bg-background rounded-3xl border border-border p-8 shadow-sm text-center">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                <MailCheck size={28} className="text-primary" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground">
+                Vérifiez votre boîte mail
+              </h1>
+              <p className="text-muted-foreground mt-3 leading-relaxed">
+                Un email de confirmation a été envoyé à{" "}
+                <span className="font-semibold text-foreground">{email}</span>.
+              </p>
+              <p className="text-muted-foreground mt-2 leading-relaxed">
+                Cliquez sur le lien dans l'email pour activer votre compte. 
+                Pensez à vérifier vos spams si vous ne le trouvez pas.
+              </p>
+              <div className="mt-8 space-y-3">
+                <Link
+                  to="/login"
+                  className="block w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-center"
+                >
+                  J'ai confirmé, me connecter
+                </Link>
+                <button
+                  onClick={() => setSignupSuccess(false)}
+                  className="w-full py-3 rounded-xl border border-border text-muted-foreground font-medium hover:bg-muted transition-all"
+                >
+                  Renvoyer l'email
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-light">
