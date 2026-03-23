@@ -13,7 +13,7 @@ const HowItWorksSection = () => {
     {
       step: "02",
       title: "Analyse intelligente",
-      desc: "Notre IA scanne chaque ligne pour extraire les risques, charges et points d'attention critiques.",
+      desc: "Notre outil scanne chaque ligne pour extraire les risques, charges et points d'attention critiques.",
       icon: Search,
     },
     {
