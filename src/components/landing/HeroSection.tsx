@@ -117,12 +117,12 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                         transition={{ delay: 2.2 }}
                       >
                         <div className="relative w-12 h-12">
-                          <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                            <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
                             <circle cx="24" cy="24" r="19" fill="none" stroke="hsl(var(--border))" strokeWidth="3" />
-                            <motion.circle cx="20" cy="20" r="16" fill="none" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" strokeDasharray={100} initial={{ strokeDashoffset: 100 }} animate={{ strokeDashoffset: 100 - (100 * 7.8) / 10 }} transition={{ duration: 1.5, delay: 2.4, ease: "easeOut" }} />
+                            <motion.circle cx="24" cy="24" r="19" fill="none" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" strokeDasharray={119} initial={{ strokeDashoffset: 119 }} animate={{ strokeDashoffset: 119 - (119 * 7) / 10 }} transition={{ duration: 1.5, delay: 2.4, ease: "easeOut" }} />
                           </svg>
                           <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <motion.span className="text-[9px] font-black text-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>7.8</motion.span>
+                            <motion.span className="text-[9px] font-black text-foreground" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.6 }}>7</motion.span>
                             <span className="text-[5px] text-muted-foreground">/10</span>
                           </div>
                         </div>
