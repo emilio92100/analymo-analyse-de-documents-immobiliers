@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useAuth } from "@/hooks/useAuth";
 import AppSidebar from "@/components/AppSidebar";
 import LandingPage from "@/pages/LandingPage";
 import AuthPage from "@/pages/AuthPage";
@@ -29,40 +29,46 @@ const AppLayout = ({ user, onLogout, children }: { user: any; onLogout: () => vo
   </div>
 );
 
+const ProtectedRoute = ({ user, loading, onLogout, children }: { user: any; loading: boolean; onLogout: () => void; children: React.ReactNode }) => {
+  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
+  if (!user) return <Navigate to="/login" />;
+  return <AppLayout user={user} onLogout={onLogout}>{children}</AppLayout>;
+};
+
+const AppRoutes = () => {
+  const { user, loading, signOut } = useAuth();
+
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage user={user} onLogout={signOut} />} />
+      <Route path="/pricing" element={<PricingPage user={user} onLogout={signOut} />} />
+      <Route path="/example" element={<ExamplePage user={user} onLogout={signOut} />} />
+      <Route path="/contact" element={<ContactPage user={user} onLogout={signOut} />} />
+      <Route path="/login" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="login" />} />
+      <Route path="/signup" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="signup" />} />
+
+      {/* Protected app routes */}
+      <Route path="/app/dashboard" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><DashboardPage user={user} /></ProtectedRoute>} />
+      <Route path="/app/new-analysis" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><NewAnalysisPage user={user} /></ProtectedRoute>} />
+      <Route path="/app/history" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><HistoryPage user={user} /></ProtectedRoute>} />
+      <Route path="/app/report/:id" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><ReportPage /></ProtectedRoute>} />
+      <Route path="/app/comparison" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><ComparisonPage user={user} /></ProtectedRoute>} />
+      <Route path="/app/pricing" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><PricingPage user={user} inApp /></ProtectedRoute>} />
+      <Route path="/app/account" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><AccountPage user={user} /></ProtectedRoute>} />
+      <Route path="/app/support" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><SupportPage /></ProtectedRoute>} />
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
 const App = () => {
-  const [user, setUser] = useState<any>(null);
-
-  const handleAuth = (userData: any) => setUser(userData);
-  const handleLogout = () => setUser(null);
-
-  // Guest user for demo
-  const GUEST_USER = { id: "guest", email: "guest@analymo.fr", credits: 999, isGuest: true };
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<LandingPage user={user} onLogout={handleLogout} />} />
-            <Route path="/pricing" element={<PricingPage user={user} onLogout={handleLogout} />} />
-            <Route path="/example" element={<ExamplePage user={user} onLogout={handleLogout} />} />
-            <Route path="/contact" element={<ContactPage user={user} onLogout={handleLogout} />} />
-            <Route path="/login" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="login" onAuth={handleAuth} />} />
-            <Route path="/signup" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="signup" onAuth={handleAuth} />} />
-
-            {/* App routes with sidebar */}
-            <Route path="/app/dashboard" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><DashboardPage user={user || GUEST_USER} /></AppLayout>} />
-            <Route path="/app/new-analysis" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><NewAnalysisPage user={user || GUEST_USER} /></AppLayout>} />
-            <Route path="/app/history" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><HistoryPage user={user || GUEST_USER} /></AppLayout>} />
-            <Route path="/app/report/:id" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><ReportPage /></AppLayout>} />
-            <Route path="/app/comparison" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><ComparisonPage user={user || GUEST_USER} /></AppLayout>} />
-            <Route path="/app/pricing" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><PricingPage user={user || GUEST_USER} inApp /></AppLayout>} />
-            <Route path="/app/account" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><AccountPage user={user || GUEST_USER} /></AppLayout>} />
-            <Route path="/app/support" element={<AppLayout user={user || GUEST_USER} onLogout={handleLogout}><SupportPage /></AppLayout>} />
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
