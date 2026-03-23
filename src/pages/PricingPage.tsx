@@ -236,8 +236,8 @@ const PricingPage = ({ user, onLogout, inApp = false }: PricingPageProps) => {
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              title: "IA de pointe",
-              desc: "Entraînée sur des milliers de documents juridiques immobiliers français. Elle comprend les subtilités que vous pourriez manquer.",
+              title: "Technologie de pointe",
+              desc: "Entraînée sur des milliers de documents juridiques immobiliers français. Notre outil comprend les subtilités que vous pourriez manquer.",
               icon: Zap,
               stat: "10 000+",
               statLabel: "documents analysés",

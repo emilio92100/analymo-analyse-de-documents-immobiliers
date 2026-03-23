@@ -72,7 +72,7 @@ const WhySection = ({ user }: WhySectionProps) => {
         <SectionHeader
           title="Pourquoi"
           highlight="Analymo ?"
-          subtitle="L'achat immobilier est l'investissement d'une vie. Notre IA décrypte vos documents pour que vous achetiez en toute sérénité."
+          subtitle="L'achat immobilier est l'investissement d'une vie. Notre outil décrypte vos documents pour que vous achetiez en toute sérénité."
           center
         />
 
