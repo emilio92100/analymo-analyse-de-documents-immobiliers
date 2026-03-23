@@ -13,6 +13,8 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface NewAnalysisPageProps {
   user: any;
@@ -30,11 +32,11 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
 
   const steps = [
     "Réception des documents...",
+    "Upload vers le serveur...",
     "Extraction du texte...",
-    "Numérisation des pages (OCR)...",
-    "Analyse croisée des données...",
+    "Analyse IA en cours...",
     "Détection des points de vigilance...",
-    "Génération du rapport d'audit...",
+    "Génération du rapport...",
   ];
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,19 +56,92 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
   };
 
   const startAnalysis = async () => {
-    if (selectedFiles.length === 0) return;
+    if (selectedFiles.length === 0 || !user?.id) return;
     setIsAnalyzing(true);
     setError(null);
+    setStep(0);
+    setProgress(10);
 
-    // Simulate analysis progress
-    for (let i = 0; i < steps.length; i++) {
-      setStep(i);
-      setProgress(Math.round(((i + 1) / steps.length) * 100));
-      await new Promise((r) => setTimeout(r, 800 + Math.random() * 600));
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session?.session?.access_token) throw new Error("Non authentifié");
+
+      let lastAnalysisId: string | null = null;
+
+      for (let fi = 0; fi < selectedFiles.length; fi++) {
+        const file = selectedFiles[fi];
+
+        // Step 1: Upload
+        setStep(1);
+        setProgress(Math.round(((fi * 3 + 1) / (selectedFiles.length * 3 + 1)) * 100));
+        
+        const filePath = `${user.id}/${Date.now()}_${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from("documents")
+          .upload(filePath, file);
+        if (uploadError) throw new Error(`Erreur d'upload: ${uploadError.message}`);
+
+        // Step 2: Create record
+        setStep(2);
+        setProgress(Math.round(((fi * 3 + 2) / (selectedFiles.length * 3 + 1)) * 100));
+
+        const { data: analysis, error: insertError } = await supabase
+          .from("document_analyses")
+          .insert({
+            user_id: user.id,
+            document_name: file.name,
+            file_path: filePath,
+            status: "pending",
+          })
+          .select()
+          .single();
+        if (insertError) throw new Error(`Erreur DB: ${insertError.message}`);
+
+        lastAnalysisId = analysis.id;
+
+        // Step 3: Trigger AI
+        setStep(3);
+        setProgress(Math.round(((fi * 3 + 3) / (selectedFiles.length * 3 + 1)) * 100));
+
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/analyze-document`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.session.access_token}`,
+            },
+            body: JSON.stringify({ analysisId: analysis.id, filePath }),
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 429) {
+            toast.error("Limite de requêtes atteinte, réessayez plus tard.");
+          } else if (response.status === 402) {
+            toast.error("Crédits IA insuffisants.");
+          } else {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || "Erreur d'analyse IA");
+          }
+          setIsAnalyzing(false);
+          return;
+        }
+      }
+
+      // Done
+      setStep(5);
+      setProgress(100);
+      await new Promise((r) => setTimeout(r, 800));
+
+      toast.success("Analyse terminée !");
+      navigate("/app/dashboard");
+    } catch (err: any) {
+      console.error("Analysis error:", err);
+      setError(err.message || "Erreur lors de l'analyse");
+      toast.error(err.message || "Erreur lors de l'analyse");
+      setIsAnalyzing(false);
     }
-
-    // Navigate to mock report
-    navigate("/app/report/1");
   };
 
   if (isAnalyzing) {
@@ -77,7 +152,6 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          {/* Circular Progress */}
           <div className="relative w-40 h-40 mx-auto mb-8">
             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
               <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(var(--border))" strokeWidth="6" />
@@ -101,7 +175,6 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
             {selectedFiles.length} document(s) en cours de traitement
           </p>
 
-          {/* Step indicators */}
           <div className="flex items-center justify-center gap-2 mt-6">
             {steps.map((_, i) => (
               <div
@@ -142,8 +215,8 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center mb-4">
-              <FileText size={28} className="text-blue-500" />
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+              <FileText size={28} className="text-primary" />
             </div>
             <h3 className="text-xl font-bold text-foreground mb-2">Analyse d'un document</h3>
             <p className="text-muted-foreground text-sm">
@@ -164,8 +237,8 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
             <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
               Recommandé
             </div>
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mb-4">
-              <ShieldCheck size={28} className="text-emerald-500" />
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
+              <ShieldCheck size={28} className="text-primary" />
             </div>
             <h3 className="text-xl font-bold text-foreground mb-2">Analyse complète d'un logement</h3>
             <p className="text-muted-foreground text-sm">
@@ -206,11 +279,10 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
         </div>
       )}
 
-      {/* Upload Area */}
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf"
+        accept=".pdf,.txt,.csv,.docx"
         multiple={analysisMode === "full"}
         onChange={handleFileChange}
         className="hidden"
@@ -244,13 +316,10 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
           {analysisMode === "single" ? "Sélectionner le document" : "Ajouter les documents"}
         </h3>
         <p className="text-sm text-muted-foreground mt-1">
-          {analysisMode === "single"
-            ? "Format PDF uniquement (1 document max)"
-            : "Sélectionnez plusieurs PDF pour une analyse croisée"}
+          PDF, TXT, CSV, DOCX • Max 20 Mo
         </p>
       </button>
 
-      {/* File list for full mode */}
       {analysisMode === "full" && selectedFiles.length > 0 && (
         <div className="mt-6 bg-background rounded-2xl border border-border p-6">
           <h3 className="font-bold text-foreground mb-1">Documents dans la file d'audit</h3>
@@ -274,7 +343,6 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
         </div>
       )}
 
-      {/* Summary */}
       <div className="mt-6 bg-background rounded-2xl border border-border p-6">
         <h3 className="font-bold text-foreground mb-3">Résumé de la sélection</h3>
         <div className="flex justify-between text-sm mb-2">
@@ -311,12 +379,11 @@ const NewAnalysisPage = ({ user }: NewAnalysisPageProps) => {
         </p>
       </div>
 
-      {/* Trust badges */}
       <div className="flex flex-wrap gap-3 mt-6 justify-center">
         {[
-          { icon: ShieldCheck, text: "100% Confidentiel", color: "text-emerald-500", bg: "bg-emerald-50" },
-          { icon: Zap, text: "Analyse croisée intelligente", color: "text-amber-500", bg: "bg-amber-50" },
-          { icon: Lock, text: "Paiement sécurisé", color: "text-primary", bg: "bg-primary-light" },
+          { icon: ShieldCheck, text: "100% Confidentiel", color: "text-primary", bg: "bg-primary/10" },
+          { icon: Zap, text: "Analyse croisée intelligente", color: "text-primary", bg: "bg-primary/10" },
+          { icon: Lock, text: "Données sécurisées", color: "text-primary", bg: "bg-primary/10" },
         ].map((item, i) => (
           <div key={i} className={`flex items-center gap-2 px-3 py-2 rounded-xl ${item.bg}`}>
             <item.icon size={14} className={item.color} />
