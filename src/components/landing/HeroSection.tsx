@@ -271,7 +271,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                             strokeLinecap="round"
                             strokeDasharray={207}
                             initial={{ strokeDashoffset: 207 }}
-                            animate={{ strokeDashoffset: 207 - (207 * 7.8) / 10 }}
+                            animate={{ strokeDashoffset: 207 - (207 * 7) / 10 }}
                             transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                           />
                         </svg>
@@ -282,7 +282,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.8 }}
                           >
-                            7.8
+                            7
                           </motion.span>
                           <span className="text-[7px] text-muted-foreground font-medium">/10</span>
                         </div>
