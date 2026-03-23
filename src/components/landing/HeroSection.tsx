@@ -169,11 +169,11 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             </div>
           </motion.div>
 
-          {/* Right — 3D Floating iPhone */}
+          {/* Right — Phone with scan effect */}
           <div className="hidden lg:flex justify-center relative" style={{ perspective: "1200px" }}>
             {/* Floating badge — Sécurisé */}
             <motion.div
-              className="absolute -left-6 top-16 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
+              className="absolute -left-6 top-24 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity }}
             >
@@ -188,7 +188,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
 
             {/* Floating badge — Score */}
             <motion.div
-              className="absolute -right-6 bottom-32 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
+              className="absolute -right-6 bottom-40 glass rounded-2xl px-4 py-3 z-20 flex items-center gap-2.5 shadow-xl"
               animate={{ y: [0, 8, 0] }}
               transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
             >
@@ -201,12 +201,12 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               </div>
             </motion.div>
 
-            {/* iPhone with 3D float */}
+            {/* iPhone with scan animation */}
             <motion.div
               animate={{
-                rotateY: [3, -3, 3],
-                rotateX: [-2, 2, -2],
-                y: [0, -10, 0],
+                rotateY: [2, -2, 2],
+                rotateX: [-1, 1, -1],
+                y: [0, -8, 0],
               }}
               transition={{
                 duration: 8,
@@ -215,127 +215,140 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               }}
               style={{ transformStyle: "preserve-3d" }}
             >
-              {/* Phone Frame */}
-              <div className="w-[280px] h-[580px] bg-foreground rounded-[3rem] p-[6px] shadow-2xl relative ring-1 ring-white/10">
+              {/* Phone Frame — smaller */}
+              <div className="w-[240px] h-[500px] bg-foreground rounded-[2.5rem] p-[5px] shadow-2xl relative ring-1 ring-white/10">
                 {/* Side buttons */}
-                <div className="absolute -left-[2px] top-24 w-[3px] h-8 bg-foreground rounded-l-sm" />
-                <div className="absolute -left-[2px] top-36 w-[3px] h-12 bg-foreground rounded-l-sm" />
-                <div className="absolute -left-[2px] top-52 w-[3px] h-12 bg-foreground rounded-l-sm" />
-                <div className="absolute -right-[2px] top-32 w-[3px] h-16 bg-foreground rounded-r-sm" />
+                <div className="absolute -left-[2px] top-20 w-[3px] h-7 bg-foreground rounded-l-sm" />
+                <div className="absolute -left-[2px] top-30 w-[3px] h-10 bg-foreground rounded-l-sm" />
+                <div className="absolute -left-[2px] top-44 w-[3px] h-10 bg-foreground rounded-l-sm" />
+                <div className="absolute -right-[2px] top-28 w-[3px] h-14 bg-foreground rounded-r-sm" />
 
-                <div className="w-full h-full bg-background rounded-[2.6rem] overflow-hidden relative">
+                <div className="w-full h-full bg-background rounded-[2.2rem] overflow-hidden relative">
                   {/* Dynamic Island */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[90px] h-[28px] bg-foreground rounded-full z-10 flex items-center justify-center gap-2">
-                    <div className="w-[8px] h-[8px] rounded-full bg-foreground ring-1 ring-gray-700" />
+                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-[75px] h-[24px] bg-foreground rounded-full z-10 flex items-center justify-center">
+                    <div className="w-[7px] h-[7px] rounded-full bg-foreground ring-1 ring-gray-700" />
                   </div>
 
                   {/* Status bar */}
-                  <div className="pt-1 px-6 flex justify-between items-center text-[9px] font-semibold text-foreground/70">
+                  <div className="pt-1 px-5 flex justify-between items-center text-[8px] font-semibold text-foreground/70">
                     <span>9:41</span>
                     <div className="flex gap-1 items-center">
                       <div className="flex gap-[1px]">
                         {[3, 4, 5, 6].map((h) => (
-                          <div
-                            key={h}
-                            className="w-[3px] rounded-sm bg-foreground/60"
-                            style={{ height: h }}
-                          />
+                          <div key={h} className="w-[2px] rounded-sm bg-foreground/60" style={{ height: h }} />
                         ))}
                       </div>
-                      <span className="ml-1">5G</span>
-                      <div className="w-5 h-[9px] rounded-[2px] border border-foreground/50 relative ml-1">
-                        <div className="absolute inset-[1px] right-[3px] bg-emerald-500 rounded-sm" />
-                      </div>
+                      <span className="ml-0.5">5G</span>
                     </div>
                   </div>
 
-                  {/* Screen Content */}
-                  <div className="pt-10 px-4 space-y-3">
-                    {/* App header */}
+                  {/* Screen Content — Scan animation */}
+                  <div className="pt-9 px-3 space-y-2">
+                    {/* Header */}
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[11px] font-bold text-foreground tracking-tight">
-                        Résultat d'analyse
-                      </span>
-                      <div className="px-2 py-0.5 bg-emerald-500/15 rounded-full">
-                        <span className="text-[9px] font-semibold text-emerald-600">Terminé</span>
-                      </div>
+                      <motion.span
+                        className="text-[10px] font-bold text-foreground tracking-tight"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        Scan du document
+                      </motion.span>
+                      <motion.div
+                        className="w-3 h-3 rounded-full border-[1.5px] border-primary border-t-transparent"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: 3, ease: "linear" }}
+                      />
                     </div>
 
-                    {/* Score Circle */}
-                    <div className="flex justify-center py-2">
-                      <div className="relative w-24 h-24">
-                        <svg className="w-24 h-24 -rotate-90" viewBox="0 0 96 96">
-                          <circle cx="48" cy="48" r="40" fill="none" stroke="hsl(var(--border))" strokeWidth="6" />
+                    {/* Document being scanned */}
+                    <motion.div className="relative bg-muted rounded-xl p-3 border border-border overflow-hidden min-h-[100px]">
+                      {/* Scan line */}
+                      <motion.div
+                        className="absolute left-0 right-0 h-[2px] bg-primary/70 shadow-[0_0_12px_hsl(var(--primary)/0.5)] z-10"
+                        animate={{ top: ["0%", "100%", "0%"] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                      />
+                      {/* Fake text lines */}
+                      <div className="space-y-1.5">
+                        {[85, 100, 65, 90, 50, 75, 95, 60].map((w, i) => (
+                          <motion.div
+                            key={i}
+                            className="h-1.5 bg-foreground/8 rounded-full"
+                            style={{ width: `${w}%` }}
+                            initial={{ opacity: 0.3 }}
+                            animate={{ opacity: [0.3, 0.8, 0.3] }}
+                            transition={{ duration: 3, repeat: Infinity, delay: i * 0.2 }}
+                          />
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Results appearing one by one */}
+                    <motion.div
+                      className="flex items-center gap-2 p-2 rounded-lg bg-emerald-500/8 border border-emerald-500/15"
+                      initial={{ opacity: 0, x: -15, scale: 0.9 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      transition={{ delay: 1.5, type: "spring", bounce: 0.3 }}
+                    >
+                      <CheckCircle2 size={11} className="text-emerald-500 shrink-0" />
+                      <div>
+                        <p className="text-[9px] font-semibold text-foreground">3 points positifs</p>
+                        <p className="text-[7px] text-muted-foreground">Finances saines</p>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      className="flex items-center gap-2 p-2 rounded-lg bg-amber-500/8 border border-amber-500/15"
+                      initial={{ opacity: 0, x: -15, scale: 0.9 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      transition={{ delay: 2, type: "spring", bounce: 0.3 }}
+                    >
+                      <AlertTriangle size={11} className="text-amber-500 shrink-0" />
+                      <div>
+                        <p className="text-[9px] font-semibold text-foreground">2 vigilances</p>
+                        <p className="text-[7px] text-muted-foreground">Toiture à surveiller</p>
+                      </div>
+                    </motion.div>
+
+                    {/* Score circle appearing */}
+                    <motion.div
+                      className="flex justify-center pt-1"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 2.5, type: "spring", bounce: 0.4 }}
+                    >
+                      <div className="relative w-16 h-16">
+                        <svg className="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                          <circle cx="32" cy="32" r="26" fill="none" stroke="hsl(var(--border))" strokeWidth="4" />
                           <motion.circle
-                            cx="48" cy="48" r="40" fill="none"
+                            cx="32" cy="32" r="26" fill="none"
                             stroke="hsl(var(--primary))"
-                            strokeWidth="6"
+                            strokeWidth="4"
                             strokeLinecap="round"
-                            strokeDasharray={251}
-                            initial={{ strokeDashoffset: 251 }}
-                            animate={{ strokeDashoffset: 251 - (251 * 78) / 100 }}
-                            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+                            strokeDasharray={163}
+                            initial={{ strokeDashoffset: 163 }}
+                            animate={{ strokeDashoffset: 163 - (163 * 78) / 100 }}
+                            transition={{ duration: 1.5, delay: 2.8, ease: "easeOut" }}
                           />
                         </svg>
                         <div className="absolute inset-0 flex flex-col items-center justify-center">
                           <motion.span
-                            className="text-2xl font-black text-foreground"
+                            className="text-lg font-black text-foreground"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
+                            transition={{ delay: 3 }}
                           >
                             78
                           </motion.span>
-                          <span className="text-[8px] text-muted-foreground font-medium">/100</span>
+                          <span className="text-[6px] text-muted-foreground font-medium">/100</span>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Result cards */}
-                    <div className="space-y-2">
-                      <motion.div
-                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-emerald-500/8 border border-emerald-500/15"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.2 }}
-                      >
-                        <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-foreground">3 points positifs</p>
-                          <p className="text-[8px] text-muted-foreground">Finances saines, bon entretien</p>
-                        </div>
-                      </motion.div>
-
-                      <motion.div
-                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-amber-500/8 border border-amber-500/15"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.4 }}
-                      >
-                        <AlertTriangle size={13} className="text-amber-500 shrink-0" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-foreground">2 points de vigilance</p>
-                          <p className="text-[8px] text-muted-foreground">Travaux toiture prévus 2026</p>
-                        </div>
-                      </motion.div>
-
-                      <motion.div
-                        className="flex items-center gap-2.5 p-2.5 rounded-xl bg-muted border border-border"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.6 }}
-                      >
-                        <CircleDollarSign size={13} className="text-primary shrink-0" />
-                        <div>
-                          <p className="text-[10px] font-semibold text-foreground">Impact financier</p>
-                          <p className="text-[8px] text-muted-foreground">~12 000 € de charges prévues</p>
-                        </div>
-                      </motion.div>
-                    </div>
+                    </motion.div>
                   </div>
 
                   {/* Home indicator */}
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 rounded-full bg-foreground/20" />
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 rounded-full bg-foreground/20" />
                 </div>
               </div>
             </motion.div>
