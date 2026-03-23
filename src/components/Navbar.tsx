@@ -23,17 +23,18 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
   }, []);
 
   const navLinks = [
-    { name: "Tarifs", path: "/pricing" },
     { name: "Exemple", path: "/example" },
+    { name: "Tarifs", path: "/pricing" },
     { name: "Contact", path: "/contact" },
   ];
 
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "left-0 right-0 z-50 transition-all duration-300",
+        "fixed md:absolute top-0",
         scrolled
-          ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm"
+          ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm md:bg-transparent md:backdrop-blur-none md:border-b-0 md:shadow-none"
           : "bg-transparent"
       )}
     >
