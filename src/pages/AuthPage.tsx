@@ -61,7 +61,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
         setError(translateAuthError(result.error.message || ""));
       }
     } catch (err: any) {
-      setError(err.message || "Erreur de connexion.");
+      setError(translateAuthError(err.message || ""));
     }
   };
 
