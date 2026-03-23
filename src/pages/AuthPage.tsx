@@ -5,6 +5,7 @@ import { AlertCircle } from "lucide-react";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
+import { translateAuthError } from "@/lib/authErrors";
 import { lovable } from "@/integrations/lovable";
 
 interface AuthPageProps {
@@ -44,7 +45,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
 
       navigate("/app/dashboard");
     } catch (err: any) {
-      setError(err.message || "Une erreur est survenue.");
+      setError(translateAuthError(err.message || ""));
     } finally {
       setLoading(false);
     }
@@ -57,10 +58,10 @@ const AuthPage = ({ type }: AuthPageProps) => {
         redirect_uri: window.location.origin + "/app/dashboard",
       });
       if (result?.error) {
-        setError(result.error.message || "Erreur de connexion.");
+        setError(translateAuthError(result.error.message || ""));
       }
     } catch (err: any) {
-      setError(err.message || "Erreur de connexion.");
+      setError(translateAuthError(err.message || ""));
     }
   };
 
