@@ -104,10 +104,15 @@ const AuthPage = ({ type }: AuthPageProps) => {
                   J'ai confirmé, me connecter
                 </Link>
                 <button
-                  onClick={() => setSignupSuccess(false)}
-                  className="w-full py-3 rounded-xl border border-border text-muted-foreground font-medium hover:bg-muted transition-all"
+                  onClick={async () => {
+                    setLoading(true);
+                    await supabase.auth.resend({ type: 'signup', email });
+                    setLoading(false);
+                  }}
+                  disabled={loading}
+                  className="w-full py-3 rounded-xl border border-border text-muted-foreground font-medium hover:bg-muted transition-all disabled:opacity-50"
                 >
-                  Renvoyer l'email
+                  {loading ? "Envoi en cours..." : "Renvoyer l'email"}
                 </button>
               </div>
             </div>
