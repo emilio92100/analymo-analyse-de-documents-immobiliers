@@ -149,7 +149,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center gap-5 mt-8">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-5 mt-8 mb-12 lg:mb-0">
               {[
                 { icon: ShieldCheck, label: "Documents chiffrés" },
                 { icon: Trash2, label: "Suppression auto" },
