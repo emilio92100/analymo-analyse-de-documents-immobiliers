@@ -101,14 +101,14 @@ const WhySection = ({ user }: WhySectionProps) => {
                       strokeLinecap="round"
                       strokeDasharray={377}
                       initial={{ strokeDashoffset: 377 }}
-                      whileInView={{ strokeDashoffset: 377 - (377 * 78) / 100 }}
+                      whileInView={{ strokeDashoffset: 377 - (377 * 7.8) / 10 }}
                       viewport={{ once: true }}
                       transition={{ duration: 2, delay: 0.3 }}
                     />
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-4xl font-black text-primary-foreground">78</span>
-                    <span className="text-[10px] text-primary-foreground/40 uppercase tracking-wider font-bold">/100</span>
+                    <span className="text-4xl font-black text-primary-foreground">7.8</span>
+                    <span className="text-[10px] text-primary-foreground/40 uppercase tracking-wider font-bold">/10</span>
                   </div>
                 </div>
               </div>
