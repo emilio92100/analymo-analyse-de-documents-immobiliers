@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import logoImg from "@/assets/logo.jpg";
+import logoImg from "@/assets/logo-analymo.png";
 
 interface LogoProps {
   className?: string;
@@ -9,7 +9,7 @@ interface LogoProps {
 }
 
 const Logo = ({ className = "", size = "md", light = false }: LogoProps) => {
-  const heights = { sm: "h-8", md: "h-12", lg: "h-16", xl: "h-20" };
+  const heights = { sm: "h-10", md: "h-14", lg: "h-20", xl: "h-24" };
 
   return (
     <img
@@ -17,7 +17,7 @@ const Logo = ({ className = "", size = "md", light = false }: LogoProps) => {
       alt="Analymo – Analyses intelligentes de documents immobiliers"
       className={cn(
         heights[size],
-        "w-auto object-contain mix-blend-multiply",
+        "w-auto object-contain",
         light && "brightness-0 invert",
         className
       )}
