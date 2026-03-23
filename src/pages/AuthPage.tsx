@@ -5,6 +5,7 @@ import { AlertCircle } from "lucide-react";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
+import { translateAuthError } from "@/lib/authErrors";
 import { lovable } from "@/integrations/lovable";
 
 interface AuthPageProps {
