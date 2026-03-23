@@ -31,7 +31,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="lg:pl-4 xl:pl-8"
+            className="lg:pl-4 xl:pl-8 text-center lg:text-left items-center lg:items-start flex flex-col"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
