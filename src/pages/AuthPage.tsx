@@ -175,6 +175,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
           </p>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };
