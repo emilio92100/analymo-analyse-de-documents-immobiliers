@@ -48,7 +48,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               <span className="text-gradient">immobiliers</span>
             </h1>
 
-            <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
+            <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed mx-auto lg:mx-0">
               Score global, risques cachés, impact financier — tout ce qu'il
               faut savoir avant de signer, expliqué simplement en moins de 2
               minutes grâce à notre outil d'analyse.
