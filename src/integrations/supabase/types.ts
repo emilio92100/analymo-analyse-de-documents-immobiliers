@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      document_analyses: {
+        Row: {
+          created_at: string
+          document_name: string
+          file_path: string
+          full_analysis: Json | null
+          id: string
+          key_points: Json | null
+          score: number | null
+          status: string
+          summary: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_name: string
+          file_path: string
+          full_analysis?: Json | null
+          id?: string
+          key_points?: Json | null
+          score?: number | null
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_name?: string
+          file_path?: string
+          full_analysis?: Json | null
+          id?: string
+          key_points?: Json | null
+          score?: number | null
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
