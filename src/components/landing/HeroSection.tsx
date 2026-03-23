@@ -198,7 +198,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
                 <TrendingUp size={16} className="text-emerald-500" />
               </div>
               <div>
-                <p className="text-xs font-bold text-foreground">Score: 7.8/10</p>
+                <p className="text-xs font-bold text-foreground">Score: 7/10</p>
                 <p className="text-[9px] text-muted-foreground">Bien recommandé</p>
               </div>
             </motion.div>
