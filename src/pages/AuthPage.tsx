@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AlertCircle } from "lucide-react";
 import Logo from "@/components/Logo";
+import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
@@ -64,18 +65,15 @@ const AuthPage = ({ type }: AuthPageProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-bg-light px-4">
+    <div className="min-h-screen bg-bg-light">
+      <Navbar user={null} />
+      <div className="flex items-center justify-center px-4 pt-28 pb-12">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-block">
-            <Logo size="lg" />
-          </Link>
-        </div>
 
         <div className="bg-background rounded-3xl border border-border p-8 shadow-sm">
           <h1 className="text-2xl font-bold text-foreground text-center">
@@ -177,6 +175,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
           </p>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };
