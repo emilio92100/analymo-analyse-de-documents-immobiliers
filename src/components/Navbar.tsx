@@ -23,6 +23,7 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
   }, []);
 
   const navLinks = [
+    { name: "Accueil", path: "/" },
     { name: "Exemple", path: "/example" },
     { name: "Tarifs", path: "/pricing" },
     { name: "Contact", path: "/contact" },
