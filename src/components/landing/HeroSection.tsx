@@ -31,7 +31,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="lg:pl-4 xl:pl-8"
+            className="lg:pl-4 xl:pl-8 text-center lg:text-left items-center lg:items-start flex flex-col"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -43,12 +43,12 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               Analyse immobilière intelligente
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] max-w-xl">
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-black tracking-tight text-foreground leading-[1.1] max-w-xl mx-auto lg:mx-0">
               Analysez vos documents{" "}
               <span className="text-gradient">immobiliers</span>
             </h1>
 
-            <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed">
+            <p className="mt-6 text-lg text-muted-foreground max-w-lg leading-relaxed mx-auto lg:mx-0">
               Score global, risques cachés, impact financier — tout ce qu'il
               faut savoir avant de signer, expliqué simplement en moins de 2
               minutes grâce à notre outil d'analyse.
@@ -149,7 +149,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center gap-5 mt-8">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-5 mt-8 mb-12 lg:mb-0">
               {[
                 { icon: ShieldCheck, label: "Documents chiffrés" },
                 { icon: Trash2, label: "Suppression auto" },
