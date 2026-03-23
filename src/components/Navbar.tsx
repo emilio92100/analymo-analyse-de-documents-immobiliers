@@ -41,7 +41,7 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="relative z-10">
-            <Logo />
+            <Logo size="xl" />
           </Link>
 
           {/* Desktop Nav — single pill with everything */}
