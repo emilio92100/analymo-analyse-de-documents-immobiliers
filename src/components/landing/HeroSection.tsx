@@ -10,6 +10,8 @@ import {
   TrendingUp,
   AlertTriangle,
   CircleDollarSign,
+  FileText,
+  BarChart3,
 } from "lucide-react";
 
 interface HeroSectionProps {
