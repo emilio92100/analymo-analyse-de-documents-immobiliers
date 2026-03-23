@@ -58,7 +58,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
         redirect_uri: window.location.origin + "/app/dashboard",
       });
       if (result?.error) {
-        setError(result.error.message || "Erreur de connexion.");
+        setError(translateAuthError(result.error.message || ""));
       }
     } catch (err: any) {
       setError(err.message || "Erreur de connexion.");
