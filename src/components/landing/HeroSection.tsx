@@ -229,10 +229,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className="w-[230px] h-[480px] bg-foreground rounded-[2.5rem] p-[5px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] relative ring-1 ring-white/10">
-                {/* Side buttons */}
-                <div className="absolute -left-[2px] top-20 w-[3px] h-7 bg-foreground rounded-l-sm" />
-                <div className="absolute -left-[2px] top-32 w-[3px] h-10 bg-foreground rounded-l-sm" />
-                <div className="absolute -left-[2px] top-46 w-[3px] h-10 bg-foreground rounded-l-sm" />
+                {/* Side buttons — right only */}
                 <div className="absolute -right-[2px] top-28 w-[3px] h-14 bg-foreground rounded-r-sm" />
 
                 <div className="w-full h-full bg-background rounded-[2.2rem] overflow-hidden relative">
