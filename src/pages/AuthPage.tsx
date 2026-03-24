@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { AlertCircle, MailCheck } from "lucide-react";
+import { toast } from "sonner";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,6 +18,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
 
@@ -25,8 +27,10 @@ const AuthPage = ({ type }: AuthPageProps) => {
     setError("");
     setLoading(true);
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
-      if (!email || !password) {
+      if (!normalizedEmail || !password) {
         setError("Veuillez remplir tous les champs.");
         setLoading(false);
         return;
@@ -34,16 +38,17 @@ const AuthPage = ({ type }: AuthPageProps) => {
 
       if (type === "signup") {
         const { error } = await supabase.auth.signUp({
-          email,
+          email: normalizedEmail,
           password,
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
+        setEmail(normalizedEmail);
         setSignupSuccess(true);
         setLoading(false);
         return;
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
         if (error) throw error;
       }
 
@@ -53,6 +58,35 @@ const AuthPage = ({ type }: AuthPageProps) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleResendSignupEmail = async () => {
+    if (!email) {
+      setError("Adresse email introuvable. Merci de réessayer l'inscription.");
+      return;
+    }
+
+    setError("");
+    setResending(true);
+
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: email.trim().toLowerCase(),
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
+    });
+
+    setResending(false);
+
+    if (error) {
+      setError(translateAuthError(error.message || ""));
+      return;
+    }
+
+    toast.success("Email de vérification renvoyé.", {
+      description: "Vérifiez aussi vos spams et promotions.",
+    });
   };
 
   const handleOAuth = async (provider: "google" | "apple") => {
@@ -97,22 +131,20 @@ const AuthPage = ({ type }: AuthPageProps) => {
                 Pensez à vérifier vos spams si vous ne le trouvez pas.
               </p>
               <div className="mt-8 space-y-3">
-                <Link
-                  to="/login"
+                <button
+                  type="button"
+                  onClick={() => navigate("/login")}
                   className="block w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-center"
                 >
                   J'ai confirmé, me connecter
-                </Link>
+                </button>
                 <button
-                  onClick={async () => {
-                    setLoading(true);
-                    await supabase.auth.resend({ type: 'signup', email });
-                    setLoading(false);
-                  }}
-                  disabled={loading}
+                  type="button"
+                  onClick={handleResendSignupEmail}
+                  disabled={resending}
                   className="w-full py-3 rounded-xl border border-border text-muted-foreground font-medium hover:bg-muted transition-all disabled:opacity-50"
                 >
-                  {loading ? "Envoi en cours..." : "Renvoyer l'email"}
+                  {resending ? "Envoi en cours..." : "Renvoyer l'email"}
                 </button>
               </div>
             </div>
