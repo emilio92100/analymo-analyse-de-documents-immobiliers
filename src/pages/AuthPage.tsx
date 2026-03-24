@@ -21,6 +21,8 @@ const AuthPage = ({ type }: AuthPageProps) => {
   const [resending, setResending] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
+  const loginRedirectUrl = `${window.location.origin}/login`;
+  const dashboardRedirectUrl = `${window.location.origin}/app/dashboard`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +42,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
         const { error } = await supabase.auth.signUp({
           email: normalizedEmail,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: { emailRedirectTo: loginRedirectUrl },
         });
         if (error) throw error;
         setEmail(normalizedEmail);
@@ -73,7 +75,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
       type: "signup",
       email: email.trim().toLowerCase(),
       options: {
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: loginRedirectUrl,
       },
     });
 
@@ -93,7 +95,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
     setError("");
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin + "/app/dashboard",
+        redirect_uri: dashboardRedirectUrl,
       });
       if (result?.error) {
         setError(translateAuthError(result.error.message || ""));
@@ -133,7 +135,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
               <div className="mt-8 space-y-3">
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => window.location.assign(loginRedirectUrl)}
                   className="block w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-center"
                 >
                   J'ai confirmé, me connecter
