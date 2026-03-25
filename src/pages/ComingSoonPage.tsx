@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ComingSoonPage = () => {
   const [progress, setProgress] = useState(0);
@@ -10,6 +10,7 @@ const ComingSoonPage = () => {
     seconds: 0,
   });
 
+  // Date de début (aujourd'hui) et fin (dans 30 jours)
   const startDate = new Date("2026-03-25T00:00:00");
   const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
@@ -38,119 +39,138 @@ const ComingSoonPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center p-6 overflow-hidden font-sans text-[#1A2B3B]">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/50 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-100/50 rounded-full blur-3xl" />
+    <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-8 overflow-hidden font-sans text-[#0F172A]">
+      {/* Background subtil */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-50 rounded-full blur-[120px] opacity-60" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-100 rounded-full blur-[120px] opacity-60" />
       </div>
 
-      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Left Side: Content */}
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Section Texte */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="space-y-8"
+          className="space-y-10"
         >
-          <div className="space-y-2">
-            <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold tracking-wide">
-              Lancement prévu pour Avril 2026
-            </span>
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">
-              Analyma<span className="text-blue-600">.</span>
+          <div className="space-y-4">
+            <h1 className="text-6xl font-bold tracking-tight text-[#0F172A]">
+              Analymo<span className="text-[#004262]">.</span>
             </h1>
-            <p className="text-xl text-gray-500 max-w-md">
-              L'IA qui déchiffre vos documents immobiliers en un clin d'œil. Ne signez plus jamais dans le noir.
+            <p className="text-2xl text-slate-500 font-light leading-relaxed max-w-lg">
+              L'outil qui simplifie vos analyses de documents immobiliers.
             </p>
           </div>
 
-          {/* Countdown Grid */}
-          <div className="grid grid-cols-4 gap-4 max-w-sm">
+          {/* Compteur stylisé */}
+          <div className="flex gap-6">
             {[
               { label: "Jours", value: timeLeft.days },
-              { label: "Hrs", value: timeLeft.hours },
+              { label: "Heures", value: timeLeft.hours },
               { label: "Min", value: timeLeft.minutes },
-              { label: "Sec", value: timeLeft.seconds },
             ].map((unit) => (
-              <div key={unit.label} className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 text-center">
-                <div className="text-2xl font-bold text-blue-600">{unit.value}</div>
-                <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold">{unit.label}</div>
+              <div key={unit.label} className="flex flex-col">
+                <span className="text-4xl font-semibold text-[#004262]">{unit.value.toString().padStart(2, "0")}</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">{unit.label}</span>
               </div>
             ))}
           </div>
 
-          {/* Progress Bar */}
-          <div className="space-y-3 max-w-md">
-            <div className="flex justify-between text-sm font-medium">
-              <span>Analyse en cours...</span>
-              <span>{Math.round(progress)}%</span>
+          {/* Barre de progression épurée */}
+          <div className="space-y-4 max-w-sm">
+            <div className="flex justify-between items-end">
+              <span className="text-sm font-medium text-slate-400 uppercase tracking-wider">
+                Développement de l'outil
+              </span>
+              <span className="text-lg font-bold text-[#004262]">{Math.round(progress)}%</span>
             </div>
-            <div className="h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-[6px] w-full bg-slate-100 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-blue-600"
+                className="h-full bg-[#004262]"
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ duration: 1 }}
+                transition={{ duration: 1.5, ease: "circOut" }}
               />
             </div>
           </div>
         </motion.div>
 
-        {/* Right Side: Phone Animation */}
+        {/* Section Visuelle : Le Téléphone "Glass" */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          className="relative perspective-1000"
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1 }}
-          className="relative flex justify-center"
         >
-          {/* Mockup iPhone */}
-          <div className="relative w-[280px] h-[580px] bg-[#1A2B3B] rounded-[3rem] border-[8px] border-[#2A3B4B] shadow-2xl overflow-hidden">
-            {/* Dynamic Content inside phone */}
-            <div className="absolute inset-0 bg-white p-6 pt-12">
-              <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-8" />
-
-              <div className="space-y-6">
-                <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ repeat: Infinity, duration: 3 }}
-                  className="h-32 bg-blue-50 rounded-2xl border-2 border-dashed border-blue-200 flex items-center justify-center"
-                >
-                  <span className="text-blue-400 text-sm font-medium italic">Document_Scanner.pdf</span>
-                </motion.div>
-
-                <div className="space-y-3">
-                  {[1, 2, 3].map((i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.5 }}
-                      className="h-12 bg-gray-50 rounded-xl flex items-center px-4"
-                    >
-                      <div className={`w-2 h-2 rounded-full mr-3 ${i === 1 ? "bg-green-400" : "bg-orange-400"}`} />
-                      <div className="h-2 w-full bg-gray-200 rounded" />
-                    </motion.div>
-                  ))}
+          {/* Le "Téléphone" style Glassmorphism */}
+          <div className="relative mx-auto w-[300px] h-[600px] bg-white/40 backdrop-blur-xl border border-white/60 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-4">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-white/80 rounded-b-2xl" />{" "}
+            {/* Island */}
+            <div className="h-full w-full bg-white/50 rounded-[2.4rem] overflow-hidden p-6 flex flex-col justify-center gap-6">
+              {/* Animation de scan */}
+              <div className="relative h-48 w-full bg-white rounded-2xl shadow-inner border border-slate-50 flex flex-col items-center justify-center p-4 overflow-hidden">
+                <div className="text-[#004262] font-semibold text-sm mb-2 uppercase tracking-tighter">
+                  Analyse en cours
                 </div>
-
+                <div className="w-full space-y-2 px-4">
+                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                    <motion.div
+                      animate={{ x: [-150, 300] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+                      className="h-full w-24 bg-gradient-to-r from-transparent via-[#004262] to-transparent"
+                    />
+                  </div>
+                  <div className="h-1.5 w-3/4 bg-slate-100 rounded-full" />
+                </div>
+                {/* Laser line */}
                 <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ repeat: Infinity, duration: 2 }}
-                  className="mt-8 p-4 bg-blue-600 rounded-2xl text-white text-center font-bold text-sm shadow-lg"
-                >
-                  Génération du score : 8.5/10
-                </motion.div>
+                  animate={{ top: ["0%", "100%"] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                  className="absolute left-0 w-full h-[2px] bg-[#004262]/30 shadow-[0_0_10px_#004262]"
+                />
               </div>
-            </div>
 
-            {/* Scanning Laser Effect */}
-            <motion.div
-              animate={{ top: ["0%", "100%", "0%"] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
-              className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent shadow-[0_0_15px_rgba(59,130,246,0.8)] z-20"
-            />
+              {/* Résultats simulés */}
+              <div className="space-y-3">
+                {[1, 2].map((i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.3 }}
+                    className="p-3 bg-white rounded-xl shadow-sm border border-slate-50 flex items-center gap-3"
+                  >
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs ${i === 1 ? "bg-green-50 text-green-600" : "bg-amber-50 text-amber-600"}`}
+                    >
+                      {i === 1 ? "✓" : "!"}
+                    </div>
+                    <div className="h-2 w-24 bg-slate-100 rounded" />
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Le Score Final */}
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ repeat: Infinity, duration: 4 }}
+                className="mt-4 p-6 bg-[#004262] rounded-3xl text-white text-center shadow-xl shadow-[#004262]/20"
+              >
+                <div className="text-[10px] uppercase tracking-[0.2em] opacity-70 mb-1">Score Global</div>
+                <div className="text-4xl font-bold">
+                  8.5<span className="text-lg opacity-50">/10</span>
+                </div>
+              </motion.div>
+            </div>
           </div>
+
+          {/* Déco flottante autour du tel */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-10 -right-10 w-32 h-32 border-2 border-dashed border-slate-200 rounded-full -z-10"
+          />
         </motion.div>
       </div>
     </div>
