@@ -1,266 +1,754 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
-const ComingSoonPage = () => {
-  const totalDays = 30;
-  const startDate = new Date("2026-03-25T00:00:00");
-  const endDate = new Date(startDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const LAUNCH_DAYS = 30;
+const START_DATE = new Date("2025-03-25");
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+function getDaysElapsed() {
+  const now = new Date();
+  const diff = Math.floor((now.getTime() - START_DATE.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.min(Math.max(diff, 0), LAUNCH_DAYS);
+}
 
-  const [progress, setProgress] = useState(0);
+// ─── 3D PHONE ────────────────────────────────────────────────────────────────
+function PhoneModel() {
+  const [rotation, setRotation] = useState({ x: -6, y: 10 });
+  const animRef = useRef<number>(0);
 
   useEffect(() => {
-    const update = () => {
-      const now = new Date().getTime();
-      const distance = endDate.getTime() - now;
-      const elapsed = now - startDate.getTime();
-      const total = endDate.getTime() - startDate.getTime();
-
-      let progressValue = (elapsed / total) * 100;
-      if (progressValue < 0) progressValue = 0;
-      if (progressValue > 100) progressValue = 100;
-      setProgress(progressValue);
-
-      if (distance <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
-      }
-
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((distance / 1000 / 60) % 60),
-        seconds: Math.floor((distance / 1000) % 60),
-      });
+    let running = true;
+    function animate(t: number) {
+      if (!running) return;
+      const x = -6 + Math.sin(t / 3000) * 6;
+      const y = 10 + Math.cos(t / 4000) * 10;
+      setRotation({ x, y });
+      animRef.current = requestAnimationFrame(animate);
+    }
+    animRef.current = requestAnimationFrame(animate);
+    return () => {
+      running = false;
+      cancelAnimationFrame(animRef.current);
     };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, [endDate, startDate]);
+  }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f5f9fc] text-slate-900">
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-80px] h-[320px] w-[320px] rounded-full bg-cyan-100/60 blur-3xl" />
-        <div className="absolute right-[-140px] top-[10%] h-[360px] w-[360px] rounded-full bg-sky-100/60 blur-3xl" />
-        <div className="absolute bottom-[-120px] left-[20%] h-[280px] w-[280px] rounded-full bg-blue-100/50 blur-3xl" />
-      </div>
-
-      <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-8 md:px-10 lg:px-16">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-          {/* LEFT */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65 }}
-            className="max-w-xl"
+    <div
+      style={{
+        width: 240,
+        height: 480,
+        perspective: 1000,
+        filter: "drop-shadow(0 32px 64px rgba(30,58,95,0.22)) drop-shadow(0 8px 24px rgba(30,58,95,0.12))",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          transformStyle: "preserve-3d",
+          transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+          transition: "transform 0.12s linear",
+          position: "relative",
+        }}
+      >
+        {/* Phone body */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            borderRadius: 40,
+            background: "#1a2a3a",
+            border: "2px solid rgba(255,255,255,0.1)",
+            overflow: "hidden",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+          }}
+        >
+          {/* Screen */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 6,
+              borderRadius: 34,
+              background: "#f5f6f7",
+              overflow: "hidden",
+            }}
           >
-            <motion.img
-              src="/logo.png"
-              alt="Analymo"
-              className="h-24 w-auto md:h-28 lg:h-32 drop-shadow-[0_20px_40px_rgba(15,23,42,0.08)]"
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            {/* Scan line */}
+            <div className="scanline-light" />
+
+            {/* Status bar */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px 16px 4px",
+                fontSize: 9,
+                color: "#1a2a3a",
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 600,
+              }}
+            >
+              <span>9:41</span>
+              <span style={{ fontSize: 11 }}>5G ▪</span>
+            </div>
+
+            {/* Notch */}
+            <div
+              style={{
+                position: "absolute",
+                top: 6,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 72,
+                height: 16,
+                borderRadius: 20,
+                background: "#1a2a3a",
+                zIndex: 10,
+              }}
             />
 
-            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/85 px-4 py-2 text-sm text-slate-600 shadow-sm backdrop-blur">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              Lancement premium en préparation
-            </div>
-
-            <h1 className="mt-8 text-4xl font-black leading-[0.98] tracking-tight text-slate-950 md:text-6xl">
-              L’analyse
-              <br />
-              immobilière
-              <br />
-              nouvelle génération
-            </h1>
-
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600 md:text-xl">
-              Analymo vous aide à lire, comprendre et anticiper les points clés de vos documents immobiliers avec une
-              expérience plus claire, plus moderne et plus rassurante.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <div className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
-                Lecture simplifiée
-              </div>
-              <div className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
-                Points de vigilance
-              </div>
-              <div className="rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm">
-                Vision plus claire
-              </div>
-            </div>
-
-            <div className="mt-10 max-w-xl">
-              <div className="mb-3 flex items-center justify-between text-sm text-slate-600">
-                <span>Progression du lancement</span>
-                <span className="font-semibold text-slate-900">{Math.round(progress)}%</span>
-              </div>
-
-              <div className="relative h-4 overflow-hidden rounded-full bg-slate-200/90 shadow-inner">
-                <motion.div
-                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#0f3d5a] via-[#155e75] to-[#22d3ee]"
-                  animate={{ width: `${progress}%` }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                />
-                <motion.div
-                  className="absolute inset-y-0 w-24 bg-white/40 blur-md"
-                  animate={{ x: ["-20%", "140%"] }}
-                  transition={{ duration: 2.6, repeat: Infinity, ease: "linear" }}
-                />
-              </div>
-
-              <p className="mt-3 text-sm text-slate-500">Une expérience premium est en cours de finalisation.</p>
-            </div>
-
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {[
-                { label: "Jours", value: timeLeft.days },
-                { label: "Heures", value: timeLeft.hours },
-                { label: "Minutes", value: timeLeft.minutes },
-                { label: "Secondes", value: timeLeft.seconds },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-2xl border border-white/80 bg-white/85 p-4 text-center shadow-sm backdrop-blur"
+            {/* App content */}
+            <div style={{ padding: "28px 14px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 11, color: "#1a2a3a" }}>
+                  Résultat d'analyse
+                </span>
+                <span
+                  style={{
+                    background: "#e8f5e9",
+                    color: "#2e7d32",
+                    fontSize: 8,
+                    fontWeight: 700,
+                    padding: "3px 8px",
+                    borderRadius: 99,
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
                 >
-                  <p className="text-2xl font-black text-slate-950 md:text-3xl">
-                    {String(item.value).padStart(2, "0")}
-                  </p>
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
+                  Terminé
+                </span>
+              </div>
+
+              {/* Score circle */}
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", paddingTop: 4 }}>
+                <div style={{ position: "relative", width: 64, height: 64 }}>
+                  <svg viewBox="0 0 64 64" style={{ width: 64, height: 64, transform: "rotate(-90deg)" }}>
+                    <circle cx="32" cy="32" r="26" fill="none" stroke="#e8edf2" strokeWidth="5" />
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="26"
+                      fill="none"
+                      stroke="#1e3a5f"
+                      strokeWidth="5"
+                      strokeDasharray={`${(7 / 10) * 163} 163`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'DM Sans', sans-serif",
+                        fontWeight: 800,
+                        fontSize: 18,
+                        color: "#1a2a3a",
+                        lineHeight: 1,
+                      }}
+                    >
+                      7
+                    </span>
+                    <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 8, color: "#8a9ab0" }}>/10</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Chart bars */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 4, height: 48, padding: "0 4px" }}>
+                {[40, 60, 80, 55, 90, 70, 65, 85].map((h, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      flex: 1,
+                      height: `${h}%`,
+                      borderRadius: "3px 3px 0 0",
+                      background: i === 4 ? "#1e3a5f" : "#c5d4e8",
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Items */}
+              {[
+                {
+                  icon: "✓",
+                  color: "#2e7d32",
+                  bg: "#e8f5e9",
+                  label: "3 points positifs",
+                  sub: "Finances saines, entretien ok",
+                },
+                { icon: "⚠", color: "#e65100", bg: "#fff3e0", label: "2 vigilances", sub: "Toiture prévue 2026" },
+                { icon: "€", color: "#1e3a5f", bg: "#e8edf5", label: "Impact financier", sub: "−12 000 € de charges" },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    padding: "6px 8px",
+                    borderRadius: 8,
+                    background: "#fff",
+                    border: "1px solid #eaecef",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
+                      background: item.bg,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 10,
+                      color: item.color,
+                      fontWeight: 700,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {item.icon}
+                  </div>
+                  <div>
+                    <div
+                      style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 9, color: "#1a2a3a" }}
+                    >
+                      {item.label}
+                    </div>
+                    <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 8, color: "#8a9ab0" }}>{item.sub}</div>
+                  </div>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* RIGHT */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.15 }}
-            className="relative flex items-center justify-center"
-          >
-            <div className="absolute h-[440px] w-[440px] rounded-full bg-cyan-100/50 blur-3xl" />
-
-            {/* Floating card left */}
-            <motion.div
-              className="absolute left-0 top-16 hidden rounded-2xl border border-white/80 bg-white/90 px-4 py-3 shadow-xl backdrop-blur md:block"
-              animate={{ y: [0, -8, 0], rotate: [0, -1, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Détection</p>
-              <p className="mt-1 text-sm font-semibold text-slate-900">PV d’AG reconnu</p>
-            </motion.div>
-
-            {/* Floating card right */}
-            <motion.div
-              className="absolute bottom-20 right-0 hidden rounded-2xl border border-white/80 bg-white/90 px-4 py-3 shadow-xl backdrop-blur md:block"
-              animate={{ y: [0, 8, 0], rotate: [0, 1, 0] }}
-              transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Synthèse</p>
-              <p className="mt-1 text-sm font-semibold text-slate-900">Points clés extraits</p>
-            </motion.div>
-
-            {/* Phone 3D-ish */}
-            <motion.div
-              animate={{
-                rotateY: [0, 8, 0, -8, 0],
-                rotateX: [0, 2, 0, -2, 0],
-                y: [0, -10, 0],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              style={{ transformStyle: "preserve-3d" }}
-              className="relative [perspective:1200px]"
-            >
-              <div className="relative h-[560px] w-[280px] rounded-[42px] border border-white/80 bg-slate-950 p-3 shadow-[0_35px_90px_rgba(15,23,42,0.22)] md:h-[610px] md:w-[300px]">
-                <div className="absolute left-1/2 top-3 h-6 w-28 -translate-x-1/2 rounded-full border border-slate-800 bg-slate-900" />
-
-                <div className="relative h-full w-full overflow-hidden rounded-[34px] bg-gradient-to-br from-white via-slate-50 to-sky-50">
-                  <div className="absolute inset-0">
-                    <div className="absolute left-6 top-10 h-24 w-24 rounded-full bg-cyan-100/60 blur-2xl" />
-                    <div className="absolute bottom-8 right-6 h-24 w-24 rounded-full bg-sky-100/60 blur-2xl" />
-                  </div>
-
-                  <div className="relative z-10 flex h-full flex-col px-5 py-6">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">Analyse</p>
-                        <p className="mt-1 text-lg font-bold text-slate-950">Résultat intelligent</p>
-                      </div>
-                      <div className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-                        Actif
-                      </div>
-                    </div>
-
-                    <div className="mt-8 flex items-center justify-center">
-                      <div className="relative flex h-32 w-32 items-center justify-center">
-                        <div className="absolute inset-0 rounded-full border-[10px] border-slate-200" />
-                        <div className="absolute inset-0 rounded-full border-[10px] border-transparent border-t-[#0f3d5a] border-r-[#0f3d5a]" />
-                        <span className="text-4xl font-black text-slate-950">7</span>
-                      </div>
-                    </div>
-
-                    <p className="mt-4 text-center text-sm font-semibold text-slate-900">Vue d’ensemble du document</p>
-                    <p className="mt-1 text-center text-xs text-slate-500">
-                      Lecture plus claire, plus fluide, plus rassurante
-                    </p>
-
-                    <div className="mt-8 space-y-3">
-                      <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3">
-                        <p className="text-sm font-semibold text-emerald-800">3 points positifs</p>
-                        <p className="mt-1 text-xs text-emerald-700/80">Informations principales bien identifiées</p>
-                      </div>
-
-                      <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3">
-                        <p className="text-sm font-semibold text-amber-800">2 vigilances</p>
-                        <p className="mt-1 text-xs text-amber-700/80">Éléments à clarifier avant décision</p>
-                      </div>
-
-                      <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-                        <p className="text-sm font-semibold text-slate-800">Synthèse premium</p>
-                        <p className="mt-1 text-xs text-slate-500">Disponible très prochainement</p>
-                      </div>
-                    </div>
-
-                    <div className="mt-auto pt-6">
-                      <div className="h-2 w-full rounded-full bg-slate-100" />
-                    </div>
-                  </div>
-
-                  {/* Scan effect */}
-                  <motion.div
-                    className="pointer-events-none absolute left-0 right-0 h-24 bg-gradient-to-b from-transparent via-cyan-400/15 to-transparent"
-                    animate={{ y: [80, 470, 80] }}
-                    transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                  <motion.div
-                    className="pointer-events-none absolute left-5 right-5 h-[2px] rounded-full bg-cyan-400 shadow-[0_0_18px_rgba(34,211,238,0.8)]"
-                    animate={{ y: [100, 490, 100] }}
-                    transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          {/* Side shine */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "35%",
+              height: "100%",
+              background: "linear-gradient(90deg, rgba(255,255,255,0.06) 0%, transparent 100%)",
+              borderRadius: "40px 0 0 40px",
+              pointerEvents: "none",
+            }}
+          />
         </div>
+
+        {/* 3D right edge */}
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            right: -7,
+            width: 7,
+            height: "calc(100% - 20px)",
+            background: "linear-gradient(180deg, #2a3d52, #141f2b)",
+            borderRadius: "0 6px 6px 0",
+          }}
+        />
+        {/* 3D bottom edge */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: -7,
+            left: 10,
+            width: "calc(100% - 20px)",
+            height: 7,
+            background: "linear-gradient(180deg, #243040, #131d28)",
+            borderRadius: "0 0 6px 6px",
+          }}
+        />
       </div>
     </div>
   );
-};
+}
 
-export default ComingSoonPage;
+// ─── PROGRESS BAR ────────────────────────────────────────────────────────────
+function ProgressBar({ days, total }: { days: number; total: number }) {
+  const pct = Math.round((days / total) * 100);
+  return (
+    <div style={{ width: "100%" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
+        <span
+          style={{
+            fontSize: 12,
+            fontFamily: "'DM Sans', sans-serif",
+            fontWeight: 500,
+            color: "#6b7f96",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+          }}
+        >
+          Progression du lancement
+        </span>
+        <span style={{ fontSize: 22, fontWeight: 800, color: "#1e3a5f", fontFamily: "'DM Sans', sans-serif" }}>
+          {pct}%
+        </span>
+      </div>
+      <div style={{ height: 8, borderRadius: 99, background: "#e2e8f0", position: "relative" }}>
+        <div
+          style={{
+            height: "100%",
+            width: `${pct}%`,
+            borderRadius: 99,
+            background: "linear-gradient(90deg, #1e3a5f, #2d6a9f)",
+            boxShadow: "0 2px 12px rgba(30,58,95,0.3)",
+            transition: "width 1.5s cubic-bezier(.4,0,.2,1)",
+            position: "relative",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              right: -6,
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: 14,
+              height: 14,
+              borderRadius: "50%",
+              background: "#1e3a5f",
+              border: "3px solid #fff",
+              boxShadow: "0 2px 8px rgba(30,58,95,0.4)",
+            }}
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
+        <span style={{ fontSize: 11, color: "#8a9ab0", fontFamily: "'DM Sans', sans-serif" }}>Jour {days}</span>
+        <span style={{ fontSize: 11, color: "#8a9ab0", fontFamily: "'DM Sans', sans-serif" }}>
+          Jour {total} — Lancement 🚀
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN ────────────────────────────────────────────────────────────────────
+export default function ComingSoon() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const daysElapsed = getDaysElapsed();
+
+  useEffect(() => {
+    setTimeout(() => setMounted(true), 80);
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+          background: #f2f4f6;
+          min-height: 100vh;
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        .scanline-light {
+          position: absolute;
+          top: -100%;
+          left: 0;
+          width: 100%;
+          height: 35%;
+          background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(30,58,95,0.03) 40%,
+            rgba(30,58,95,0.07) 50%,
+            rgba(30,58,95,0.03) 60%,
+            transparent 100%
+          );
+          animation: scan 3.5s ease-in-out infinite;
+          pointer-events: none;
+          z-index: 5;
+        }
+
+        @keyframes scan {
+          0%   { top: -35%; }
+          100% { top: 110%; }
+        }
+
+        .fade-up {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.8s cubic-bezier(.4,0,.2,1), transform 0.8s cubic-bezier(.4,0,.2,1);
+        }
+        .fade-up.in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 14px 6px 10px;
+          border-radius: 99px;
+          border: 1.5px solid #c8d8e8;
+          background: #fff;
+          color: #1e3a5f;
+          font-size: 12px;
+          font-weight: 500;
+        }
+
+        .badge-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #1e3a5f;
+          animation: pulse-dot 2s ease-in-out infinite;
+          flex-shrink: 0;
+        }
+
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50%       { opacity: 0.4; transform: scale(0.65); }
+        }
+
+        .email-input {
+          flex: 1;
+          min-width: 0;
+          background: #fff;
+          border: 1.5px solid #d4dde8;
+          border-radius: 12px;
+          padding: 13px 16px;
+          color: #1a2a3a;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 14px;
+          outline: none;
+          transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .email-input::placeholder { color: #9aacbe; }
+        .email-input:focus {
+          border-color: #1e3a5f;
+          box-shadow: 0 0 0 3px rgba(30,58,95,0.08);
+        }
+
+        .cta-btn {
+          padding: 13px 22px;
+          border-radius: 12px;
+          background: #1e3a5f;
+          border: none;
+          color: #fff;
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 700;
+          font-size: 14px;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+          box-shadow: 0 4px 20px rgba(30,58,95,0.25);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .cta-btn:hover {
+          background: #163050;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 28px rgba(30,58,95,0.3);
+        }
+        .cta-btn:active { transform: translateY(0); }
+
+        .trust-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 12px;
+          color: #6b7f96;
+        }
+
+        .float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-12px); }
+        }
+
+        .stat-bubble {
+          position: absolute;
+          padding: 10px 14px;
+          border-radius: 14px;
+          background: #fff;
+          box-shadow: 0 8px 32px rgba(30,58,95,0.12), 0 2px 8px rgba(30,58,95,0.06);
+          border: 1px solid rgba(30,58,95,0.07);
+        }
+
+        .nav-bar {
+          position: fixed;
+          top: 0; left: 0; right: 0;
+          height: 64px;
+          background: rgba(242,244,246,0.9);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(30,58,95,0.07);
+          display: flex;
+          align-items: center;
+          padding: 0 40px;
+          z-index: 100;
+        }
+      `}</style>
+
+      {/* NAV */}
+      <nav className="nav-bar">
+        <img src="/logo.png" alt="Analymo" style={{ height: 34, objectFit: "contain" }} />
+        <span
+          style={{
+            fontSize: 11,
+            color: "#8a9ab0",
+            marginLeft: "auto",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+          }}
+        >
+          Bientôt disponible
+        </span>
+      </nav>
+
+      {/* MAIN */}
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "100px 32px 60px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 72,
+            width: "100%",
+            maxWidth: 1080,
+          }}
+        >
+          {/* ── LEFT ── */}
+          <div
+            style={{
+              flex: "1 1 380px",
+              minWidth: 300,
+              maxWidth: 500,
+              display: "flex",
+              flexDirection: "column",
+              gap: 28,
+            }}
+          >
+            <div className={`fade-up ${mounted ? "in" : ""}`} style={{ transitionDelay: "0ms" }}>
+              <div className="badge">
+                <div className="badge-dot" />
+                Analyse immobilière intelligente
+              </div>
+            </div>
+
+            <div className={`fade-up ${mounted ? "in" : ""}`} style={{ transitionDelay: "80ms" }}>
+              <h1
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 800,
+                  fontSize: "clamp(36px, 5vw, 58px)",
+                  lineHeight: 1.08,
+                  color: "#1a2a3a",
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                Analysez vos
+                <br />
+                <span style={{ color: "#1e3a5f" }}>documents</span>
+                <br />
+                <span style={{ color: "#1e3a5f" }}>immobiliers</span>
+              </h1>
+              <p style={{ marginTop: 16, color: "#5a7085", fontSize: 15, lineHeight: 1.7, maxWidth: 420 }}>
+                Score global, risques cachés, impact financier — tout ce qu'il faut savoir avant de signer, expliqué
+                simplement en moins de 2 minutes.
+              </p>
+            </div>
+
+            <div className={`fade-up ${mounted ? "in" : ""}`} style={{ transitionDelay: "160ms" }}>
+              {submitted ? (
+                <div
+                  style={{
+                    padding: "14px 18px",
+                    borderRadius: 12,
+                    background: "#e8f5e9",
+                    border: "1.5px solid #a5d6a7",
+                    color: "#2e7d32",
+                    fontSize: 14,
+                    fontWeight: 500,
+                  }}
+                >
+                  ✓ Vous êtes inscrit — on vous prévient en premier lors du lancement !
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                  <input
+                    className="email-input"
+                    type="email"
+                    placeholder="votre@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && email) setSubmitted(true);
+                    }}
+                  />
+                  <button className="cta-btn" onClick={() => email && setSubmitted(true)}>
+                    <span>🛡</span> Être notifié
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Progress card */}
+            <div className={`fade-up ${mounted ? "in" : ""}`} style={{ transitionDelay: "240ms" }}>
+              <div
+                style={{
+                  padding: "20px 24px",
+                  borderRadius: 16,
+                  background: "#fff",
+                  border: "1px solid #e0e8f0",
+                  boxShadow: "0 2px 16px rgba(30,58,95,0.06)",
+                }}
+              >
+                <ProgressBar days={daysElapsed} total={LAUNCH_DAYS} />
+              </div>
+            </div>
+
+            {/* Trust */}
+            <div
+              className={`fade-up ${mounted ? "in" : ""}`}
+              style={{ display: "flex", gap: 20, flexWrap: "wrap", transitionDelay: "320ms" }}
+            >
+              {[
+                ["🛡", "Documents chiffrés"],
+                ["🗑", "Suppression auto"],
+                ["📋", "Sans engagement"],
+              ].map(([icon, label]) => (
+                <div key={label} className="trust-item">
+                  <span>{icon}</span> {label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT: 3D PHONE ── */}
+          <div
+            className={`fade-up ${mounted ? "in" : ""}`}
+            style={{
+              transitionDelay: "200ms",
+              flex: "0 0 auto",
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                width: 300,
+                height: 300,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(30,58,95,0.07) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+
+            <div className="float">
+              <PhoneModel />
+            </div>
+
+            {/* Bubble: 100% sécurisé */}
+            <div
+              className="stat-bubble"
+              style={{ top: "10%", left: "-70px", animation: "float 5.5s ease-in-out infinite 0.8s" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: "#e8edf5",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 16,
+                  }}
+                >
+                  🛡
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: "#1a2a3a" }}>100% sécurisé</div>
+                  <div style={{ fontSize: 11, color: "#8a9ab0" }}>Chiffré & supprimé</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bubble: Score */}
+            <div
+              className="stat-bubble"
+              style={{ bottom: "20%", right: "-60px", animation: "float 7s ease-in-out infinite 0.3s" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: "#e8f5e9",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 16,
+                  }}
+                >
+                  📈
+                </div>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: "#1a2a3a" }}>Score: 7/10</div>
+                  <div style={{ fontSize: 11, color: "#2e7d32" }}>Bien recommandé</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bubble: PV scanné */}
+            <div
+              className="stat-bubble"
+              style={{ bottom: "4%", left: "-50px", animation: "float 6s ease-in-out infinite 1.4s" }}
+            >
+              <span style={{ fontSize: 12, color: "#1a2a3a", fontWeight: 500 }}>📄 PV scanné ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* FOOTER */}
+      <div style={{ textAlign: "center", paddingBottom: 28, fontSize: 12, color: "#9aacbe" }}>
+        © 2025 Analymo · Analyses intelligentes de documents immobiliers
+      </div>
+    </>
+  );
+}
