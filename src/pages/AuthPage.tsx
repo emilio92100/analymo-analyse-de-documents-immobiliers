@@ -42,7 +42,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
         const { error } = await supabase.auth.signUp({
           email: normalizedEmail,
           password,
-          options: { emailRedirectTo: loginRedirectUrl },
+          options: { emailRedirectTo: confirmEmailUrl },
         });
         if (error) throw error;
         setEmail(normalizedEmail);
