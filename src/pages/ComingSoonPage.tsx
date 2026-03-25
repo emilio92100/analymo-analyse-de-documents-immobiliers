@@ -7,8 +7,8 @@ export default function ComingSoonPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 87) return 87;
-        return prev + Math.random() * 2.2;
+        if (prev >= 86) return 86;
+        return prev + Math.random() * 1.8;
       });
     }, 1200);
 
@@ -16,54 +16,51 @@ export default function ComingSoonPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f7f9fc] text-slate-800">
-      {/* Fond doux */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(147,197,253,0.18),_transparent_30%),radial-gradient(circle_at_right,_rgba(191,219,254,0.22),_transparent_28%),linear-gradient(180deg,_#f8fbff_0%,_#f3f7fc_100%)]" />
+    <div className="relative min-h-screen overflow-hidden bg-[#f6f8fc] text-slate-800">
+      {/* fond doux */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.30),_transparent_28%),radial-gradient(circle_at_right,_rgba(226,232,240,0.55),_transparent_30%),linear-gradient(180deg,_#fbfcfe_0%,_#f4f7fb_100%)]" />
 
-      {/* halos doux */}
-      <div className="absolute left-[-80px] top-[120px] h-[280px] w-[280px] rounded-full bg-sky-200/30 blur-3xl" />
-      <div className="absolute right-[-40px] top-[220px] h-[320px] w-[320px] rounded-full bg-blue-100/40 blur-3xl" />
-      <div className="absolute bottom-[-80px] left-1/3 h-[220px] w-[220px] rounded-full bg-cyan-100/30 blur-3xl" />
+      <div className="absolute left-[-80px] top-[120px] h-[260px] w-[260px] rounded-full bg-sky-100/60 blur-3xl" />
+      <div className="absolute right-[-50px] top-[220px] h-[300px] w-[300px] rounded-full bg-blue-100/60 blur-3xl" />
+      <div className="absolute bottom-[-70px] left-1/3 h-[240px] w-[240px] rounded-full bg-slate-100 blur-3xl" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 md:px-10">
-        {/* Logo centré */}
+        {/* logo */}
         <div className="flex justify-center">
           <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </div>
 
-        {/* Badge top */}
+        {/* badge */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="mt-8 flex justify-center"
         >
-          <div className="inline-flex items-center gap-3 rounded-full border border-sky-200 bg-white/90 px-6 py-3 shadow-[0_8px_30px_rgba(148,163,184,0.12)] backdrop-blur">
+          <div className="inline-flex items-center gap-3 rounded-full border border-sky-200 bg-white/90 px-6 py-3 shadow-[0_10px_30px_rgba(148,163,184,0.10)]">
             <span className="h-3 w-3 rounded-full bg-slate-700" />
             <span className="text-[18px] font-semibold text-slate-700">Bientôt disponible</span>
           </div>
         </motion.div>
 
-        {/* sous titre */}
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="mt-8 text-center text-[18px] uppercase tracking-[0.18em] text-slate-400"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mt-8 text-center text-[16px] uppercase tracking-[0.18em] text-slate-400 md:text-[18px]"
         >
           Analyses intelligentes de documents immobiliers
         </motion.p>
 
-        {/* Bloc principal */}
-        <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-14 py-10 lg:grid-cols-[1.02fr_0.98fr]">
-          {/* Colonne gauche */}
+        <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-14 py-10 lg:grid-cols-[1.05fr_0.95fr]">
+          {/* gauche */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: -22 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85 }}
+            transition={{ duration: 0.8 }}
             className="max-w-2xl"
           >
-            <h1 className="max-w-xl text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-slate-800 md:text-7xl">
+            <h1 className="max-w-xl text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-slate-800 md:text-7xl">
               Analysez vos
               <br />
               documents
@@ -76,31 +73,25 @@ export default function ComingSoonPage() {
               minutes.
             </p>
 
-            {/* compte à rebours */}
+            {/* countdown */}
             <div className="mt-10 flex flex-wrap gap-4">
               {[
                 { value: "30", label: "JOURS" },
                 { value: "23", label: "HEURES" },
                 { value: "59", label: "MINUTES" },
               ].map((item) => (
-                <motion.div
+                <div
                   key={item.label}
-                  whileHover={{ y: -3 }}
-                  className="flex h-[118px] w-[118px] flex-col items-center justify-center rounded-[24px] border border-slate-200/80 bg-white/90 shadow-[0_10px_30px_rgba(148,163,184,0.12)]"
+                  className="flex h-[118px] w-[118px] flex-col items-center justify-center rounded-[24px] border border-slate-200/80 bg-white/90 shadow-[0_10px_30px_rgba(148,163,184,0.10)]"
                 >
                   <div className="text-5xl font-bold tracking-[-0.04em] text-[#23406c]">{item.value}</div>
                   <div className="mt-2 text-[15px] font-medium tracking-[0.12em] text-slate-400">{item.label}</div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
-            {/* Progress card */}
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mt-10 rounded-[32px] border border-slate-200/70 bg-white/85 p-7 shadow-[0_20px_50px_rgba(148,163,184,0.14)] backdrop-blur"
-            >
+            {/* progression */}
+            <div className="mt-10 rounded-[32px] border border-slate-200/70 bg-white/90 p-7 shadow-[0_20px_50px_rgba(148,163,184,0.12)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-[15px] font-semibold uppercase tracking-[0.16em] text-slate-400">
@@ -126,7 +117,7 @@ export default function ComingSoonPage() {
                   />
 
                   <motion.div
-                    className="absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border-[5px] border-white bg-[#264a7f] shadow-[0_6px_18px_rgba(37,99,235,0.28)]"
+                    className="absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border-[5px] border-white bg-[#264a7f] shadow-[0_6px_18px_rgba(37,99,235,0.22)]"
                     animate={{ left: `calc(${progress}% - 14px)` }}
                     transition={{ duration: 0.8, ease: "easeInOut" }}
                   />
@@ -139,9 +130,8 @@ export default function ComingSoonPage() {
                   <div className="text-right">Lancement</div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* bas infos */}
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-[17px] text-slate-500">
               <div>Documents chiffrés</div>
               <div>Suppression auto</div>
@@ -149,146 +139,159 @@ export default function ComingSoonPage() {
             </div>
           </motion.div>
 
-          {/* Colonne droite */}
+          {/* droite */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
+            initial={{ opacity: 0, x: 22 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.85 }}
+            transition={{ duration: 0.8 }}
             className="flex justify-center"
           >
-            <div className="relative">
-              {/* halo derrière téléphone */}
-              <div className="absolute left-1/2 top-1/2 h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-200/40 blur-3xl" />
-
-              {/* téléphone */}
+            <div className="flex w-full max-w-[420px] flex-col items-center">
+              {/* téléphone revu */}
               <motion.div
-                animate={{
-                  y: [0, -8, 0],
-                  rotate: [0, 1, 0, -1, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="relative z-10"
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
               >
-                <div className="relative h-[650px] w-[315px] rounded-[44px] border-[10px] border-[#26364d] bg-[#26364d] shadow-[0_40px_80px_rgba(15,23,42,0.20)]">
-                  <div className="absolute left-1/2 top-[12px] h-[26px] w-[115px] -translate-x-1/2 rounded-full bg-[#26364d]" />
-                  <div className="h-full w-full rounded-[34px] bg-[#f8fafc] p-5">
-                    <div className="flex items-center justify-between pt-3 text-[14px] font-semibold text-slate-700">
+                {/* halo */}
+                <div className="absolute left-1/2 top-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-200/60 blur-3xl" />
+                <div className="absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/40 blur-2xl" />
+
+                <div className="relative z-10 h-[540px] w-[260px] rounded-[42px] border-[8px] border-[#24364b] bg-[#24364b] p-[8px] shadow-[0_28px_60px_rgba(15,23,42,0.16)]">
+                  <div className="absolute left-1/2 top-[10px] h-[24px] w-[108px] -translate-x-1/2 rounded-full bg-[#24364b]" />
+
+                  <div className="relative h-full w-full overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,_#fbfcff_0%,_#f4f7fb_100%)] p-4">
+                    {/* reflet */}
+                    <div className="absolute inset-y-0 left-[-30%] w-[40%] rotate-[18deg] bg-white/35 blur-xl" />
+
+                    {/* scan line */}
+                    <motion.div
+                      animate={{ y: ["-10%", "110%"] }}
+                      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-3 right-3 h-16 rounded-full bg-gradient-to-b from-transparent via-sky-100/70 to-transparent blur-md"
+                    />
+
+                    <div className="relative z-10 flex items-center justify-between pt-2 text-[13px] font-semibold text-slate-700">
                       <span>9:41</span>
                       <span>5G ••</span>
                     </div>
 
-                    <div className="mt-8">
-                      <div className="text-[18px] font-bold text-slate-800">Mon analyse</div>
-                      <div className="mt-1 text-[15px] leading-6 text-slate-400">
-                        PV d&apos;assemblée - Appartement
+                    <div className="relative z-10 mt-6">
+                      <div className="text-[18px] font-bold text-slate-800">Analyse en cours</div>
+                      <div className="mt-1 text-[14px] leading-6 text-slate-400">
+                        Dossier immobilier
                         <br />
-                        Paris 8e
+                        Vérification automatique
                       </div>
                     </div>
 
-                    {/* carte score */}
-                    <div className="mt-8 rounded-[28px] bg-[#1f4375] p-5 text-white shadow-[0_12px_30px_rgba(37,99,235,0.18)]">
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-20 w-20 items-center justify-center rounded-full border-[6px] border-[#79d4bb]">
-                          <div className="text-center">
-                            <div className="text-4xl font-bold leading-none">7</div>
-                            <div className="mt-1 text-xs text-blue-100">/10</div>
+                    {/* anneau central animé */}
+                    <div className="relative z-10 mt-8 flex justify-center">
+                      <div className="relative flex h-[170px] w-[170px] items-center justify-center rounded-full">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                          className="absolute inset-0 rounded-full border-[10px] border-slate-200 border-t-[#264a7f] border-r-[#79d4bb]"
+                        />
+                        <motion.div
+                          animate={{ rotate: -360 }}
+                          transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+                          className="absolute inset-[14px] rounded-full border-[8px] border-transparent border-l-[#f59e0b] border-b-[#ef4444]"
+                        />
+                        <div className="relative z-10 rounded-full bg-white px-8 py-6 text-center shadow-[0_12px_30px_rgba(148,163,184,0.18)]">
+                          <div className="text-4xl font-bold tracking-[-0.04em] text-[#23406c]">7/10</div>
+                          <div className="mt-2 text-[13px] font-medium text-slate-400">Score analysé</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* barres couleur */}
+                    <div className="relative z-10 mt-8 space-y-4">
+                      {[
+                        {
+                          label: "Points favorables",
+                          value: "74%",
+                          width: "74%",
+                          color: "bg-[#79d4bb]",
+                        },
+                        {
+                          label: "Vigilances",
+                          value: "46%",
+                          width: "46%",
+                          color: "bg-[#f59e0b]",
+                        },
+                        {
+                          label: "Risques à vérifier",
+                          value: "28%",
+                          width: "28%",
+                          color: "bg-[#ef4444]",
+                        },
+                      ].map((item) => (
+                        <div key={item.label}>
+                          <div className="mb-2 flex items-center justify-between text-[13px]">
+                            <span className="text-slate-500">{item.label}</span>
+                            <span className="font-semibold text-slate-700">{item.value}</span>
+                          </div>
+                          <div className="h-2.5 rounded-full bg-slate-200/80">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: item.width }}
+                              transition={{ duration: 1.2, delay: 0.2 }}
+                              className={`h-2.5 rounded-full ${item.color}`}
+                            />
                           </div>
                         </div>
-
-                        <div>
-                          <div className="text-[17px] font-semibold">Score global</div>
-                          <div className="mt-1 text-[15px] text-blue-100">Bien recommandé</div>
-                          <div className="mt-4 flex gap-2">
-                            <div className="h-2 w-8 rounded-full bg-[#79d4bb]" />
-                            <div className="h-2 w-8 rounded-full bg-[#79d4bb]" />
-                            <div className="h-2 w-8 rounded-full bg-[#79d4bb]" />
-                            <div className="h-2 w-8 rounded-full bg-[#79d4bb]" />
-                            <div className="h-2 w-8 rounded-full bg-[#79d4bb]/35" />
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
 
-                    {/* mini chart */}
-                    <div className="mt-5 rounded-[24px] bg-[#f4f6fa] p-4">
-                      <div className="text-[16px] font-semibold text-slate-700">Analyse des charges</div>
-                      <div className="mt-5 flex h-20 items-end gap-3">
-                        <div className="h-10 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-8 w-5 rounded-t-md bg-slate-200" />
-                        <div className="h-15 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-11 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-14 w-5 rounded-t-md bg-[#72a7ea]" />
-                        <div className="h-9 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-12 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-15 w-5 rounded-t-md bg-slate-200" />
-                        <div className="h-8 w-5 rounded-t-md bg-slate-300" />
-                        <div className="h-14 w-5 rounded-t-md bg-[#23406c]" />
+                    {/* footer phone */}
+                    <div className="relative z-10 mt-8 grid grid-cols-3 gap-3">
+                      <div className="rounded-2xl bg-white/90 p-3 text-center shadow-sm">
+                        <div className="text-[11px] text-slate-400">PDF</div>
+                        <div className="mt-1 text-[13px] font-semibold text-slate-700">Scan</div>
                       </div>
-                    </div>
-
-                    {/* cartes bas */}
-                    <div className="mt-5 grid gap-3">
-                      <div className="rounded-[20px] bg-[#f4f6fa] p-4">
-                        <div className="text-[16px] font-semibold text-slate-700">3 points positifs</div>
-                        <div className="mt-1 text-[14px] text-slate-400">Finances saines, copropriété suivie</div>
+                      <div className="rounded-2xl bg-white/90 p-3 text-center shadow-sm">
+                        <div className="text-[11px] text-slate-400">IA</div>
+                        <div className="mt-1 text-[13px] font-semibold text-slate-700">Analyse</div>
                       </div>
-
-                      <div className="rounded-[20px] bg-[#f4f6fa] p-4">
-                        <div className="text-[16px] font-semibold text-slate-700">Alerte modérée</div>
-                        <div className="mt-1 text-[14px] text-slate-400">
-                          Quelques éléments à vérifier avant signature
-                        </div>
+                      <div className="rounded-2xl bg-white/90 p-3 text-center shadow-sm">
+                        <div className="text-[11px] text-slate-400">Rapport</div>
+                        <div className="mt-1 text-[13px] font-semibold text-slate-700">Prêt</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </motion.div>
 
-              {/* bulles flottantes */}
-              <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute right-[-55px] top-[85px] rounded-[24px] border border-slate-200 bg-white/95 px-5 py-4 shadow-[0_20px_40px_rgba(148,163,184,0.18)]"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-slate-100 text-xl">
-                    🛡️
-                  </div>
-                  <div>
-                    <div className="text-[18px] font-semibold text-slate-800">100% sécurisé</div>
-                    <div className="text-[15px] text-slate-400">Chiffré & supprimé</div>
-                  </div>
-                </div>
-              </motion.div>
+              {/* cartes sous téléphone */}
+              <div className="mt-8 grid w-full gap-4 sm:grid-cols-3">
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="rounded-[24px] border border-slate-200 bg-white/95 p-4 shadow-[0_16px_35px_rgba(148,163,184,0.12)]"
+                >
+                  <div className="text-[13px] text-slate-400">Sécurité</div>
+                  <div className="mt-2 text-[17px] font-semibold text-slate-800">100% sécurisé</div>
+                  <div className="mt-1 text-[14px] text-slate-500">Chiffré et supprimé</div>
+                </motion.div>
 
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute right-[-70px] top-[380px] rounded-[24px] border border-slate-200 bg-white/95 px-5 py-4 shadow-[0_20px_40px_rgba(148,163,184,0.18)]"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-[18px] bg-green-50 text-xl">
-                    📈
-                  </div>
-                  <div>
-                    <div className="text-[18px] font-semibold text-slate-800">Score: 7/10</div>
-                    <div className="text-[15px] text-green-600">Bien recommandé</div>
-                  </div>
-                </div>
-              </motion.div>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="rounded-[24px] border border-slate-200 bg-white/95 p-4 shadow-[0_16px_35px_rgba(148,163,184,0.12)]"
+                >
+                  <div className="text-[13px] text-slate-400">Rapport</div>
+                  <div className="mt-2 text-[17px] font-semibold text-slate-800">Lecture rapide</div>
+                  <div className="mt-1 text-[14px] text-slate-500">Clair, visuel, synthétique</div>
+                </motion.div>
 
-              <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute left-[-35px] bottom-[65px] rounded-[24px] border border-slate-200 bg-white/95 px-5 py-4 shadow-[0_20px_40px_rgba(148,163,184,0.18)]"
-              >
-                <div className="text-[18px] font-semibold text-slate-800">PV scanné ✓</div>
-              </motion.div>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="rounded-[24px] border border-slate-200 bg-white/95 p-4 shadow-[0_16px_35px_rgba(148,163,184,0.12)]"
+                >
+                  <div className="text-[13px] text-slate-400">Résultat</div>
+                  <div className="mt-2 text-[17px] font-semibold text-slate-800">Score global</div>
+                  <div className="mt-1 text-[14px] text-slate-500">Vert, orange, rouge</div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
