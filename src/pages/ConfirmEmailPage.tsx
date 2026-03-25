@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
@@ -12,43 +12,86 @@ const ConfirmEmailPage = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<Status>("verifying");
   const [errorMsg, setErrorMsg] = useState("");
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const verify = async () => {
       const tokenHash = searchParams.get("token_hash");
       const type = searchParams.get("type") as any;
 
-      if (!tokenHash || !type) {
-        setStatus("error");
-        setErrorMsg("Lien de confirmation invalide ou expiré.");
+      // Strategy 1: Check if Supabase already consumed the token via redirect
+      // (GET /verify consumes it and creates a session before redirecting here)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        setStatus("success");
+        setTimeout(() => navigate("/app/dashboard"), 3000);
         return;
       }
 
-      try {
-        const { error } = await supabase.auth.verifyOtp({
-          token_hash: tokenHash,
-          type: type || "signup",
-        });
-
-        if (error) {
-          setStatus("error");
-          setErrorMsg(error.message === "Token has expired or is invalid"
-            ? "Ce lien a expiré. Veuillez demander un nouveau lien de confirmation."
-            : "Une erreur est survenue lors de la vérification. Veuillez réessayer."
-          );
-          return;
+      // Strategy 2: Listen for auth state change (token exchange in progress)
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          if (session?.user && status !== "success") {
+            setStatus("success");
+            setTimeout(() => navigate("/app/dashboard"), 3000);
+          }
         }
+      );
 
-        setStatus("success");
+      // Strategy 3: Try verifyOtp if we have a token_hash (direct link to our page)
+      if (tokenHash && type) {
+        try {
+          const { error } = await supabase.auth.verifyOtp({
+            token_hash: tokenHash,
+            type: type || "signup",
+          });
 
-        // Auto-redirect after 3 seconds
-        setTimeout(() => {
-          navigate("/app/dashboard");
+          if (error) {
+            // If token already used but session exists now, it's a success
+            const { data: { session: freshSession } } = await supabase.auth.getSession();
+            if (freshSession?.user) {
+              setStatus("success");
+              setTimeout(() => navigate("/app/dashboard"), 3000);
+              subscription.unsubscribe();
+              return;
+            }
+
+            setStatus("error");
+            setErrorMsg(
+              error.message.includes("expired") || error.message.includes("not found")
+                ? "Ce lien a expiré ou a déjà été utilisé. Veuillez vous connecter ou demander un nouveau lien."
+                : "Une erreur est survenue lors de la vérification. Veuillez réessayer."
+            );
+            subscription.unsubscribe();
+            return;
+          }
+
+          setStatus("success");
+          setTimeout(() => navigate("/app/dashboard"), 3000);
+        } catch {
+          setStatus("error");
+          setErrorMsg("Une erreur inattendue est survenue.");
+        }
+      } else {
+        // No token_hash — wait a few seconds for auth state change from redirect
+        setTimeout(async () => {
+          const { data: { session: delayedSession } } = await supabase.auth.getSession();
+          if (delayedSession?.user) {
+            setStatus("success");
+            setTimeout(() => navigate("/app/dashboard"), 3000);
+          } else {
+            setStatus("error");
+            setErrorMsg("Lien de confirmation invalide ou expiré.");
+          }
+          subscription.unsubscribe();
         }, 3000);
-      } catch {
-        setStatus("error");
-        setErrorMsg("Une erreur inattendue est survenue.");
+        return;
       }
+
+      subscription.unsubscribe();
     };
 
     verify();
@@ -139,16 +182,16 @@ const ConfirmEmailPage = () => {
               </p>
               <div className="space-y-3">
                 <button
-                  onClick={() => navigate("/signup")}
+                  onClick={() => window.location.assign(`${window.location.origin}/login`)}
                   className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all"
                 >
-                  Réessayer l'inscription
+                  Me connecter
                 </button>
                 <button
-                  onClick={() => navigate("/login")}
+                  onClick={() => window.location.assign(`${window.location.origin}/signup`)}
                   className="w-full py-3 rounded-xl border border-border text-muted-foreground font-medium hover:bg-muted transition-all"
                 >
-                  Me connecter
+                  Réessayer l'inscription
                 </button>
               </div>
             </motion.div>
