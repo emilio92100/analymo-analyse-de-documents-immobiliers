@@ -1,251 +1,225 @@
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 
-export default function ComingSoonPage() {
-  const totalDays = 30;
-  const currentDay = 0;
-  const daysLeft = totalDays - currentDay;
-  const progress = Math.round((currentDay / totalDays) * 100);
+export default function LaunchPage() {
+  const launchDate = new Date("2026-04-25T10:00:00");
+  const startDate = new Date("2026-03-26T10:00:00");
+
+  const { progress, daysLeft, hoursLeft } = useMemo(() => {
+    const now = new Date();
+
+    const total = launchDate.getTime() - startDate.getTime();
+    const elapsed = Math.min(Math.max(now.getTime() - startDate.getTime(), 0), total);
+
+    const percent = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+
+    const remainingMs = Math.max(launchDate.getTime() - now.getTime(), 0);
+    const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    return {
+      progress: percent,
+      daysLeft: days,
+      hoursLeft: hours,
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f7f9fc] text-slate-800">
-      {/* Fond doux */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.28),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(226,232,240,0.65),_transparent_28%),linear-gradient(180deg,_#fbfcfe_0%,_#f5f8fc_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.28),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(226,232,240,0.8),_transparent_28%),linear-gradient(180deg,_#fbfcfe_0%,_#f4f8fc_100%)]" />
 
-      <div className="absolute -left-20 top-24 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl" />
-      <div className="absolute right-0 top-40 h-80 w-80 rounded-full bg-blue-100/60 blur-3xl" />
-      <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-slate-100 blur-3xl" />
+      <motion.div
+        animate={{ y: [0, -15, 0], x: [0, 10, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl"
+      />
+      <motion.div
+        animate={{ y: [0, 20, 0], x: [0, -10, 0] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute right-0 top-32 h-80 w-80 rounded-full bg-blue-100/60 blur-3xl"
+      />
+      <motion.div
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-slate-100 blur-3xl"
+      />
 
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-8 md:px-10">
-        {/* Logo */}
-        <div className="flex justify-center">
-          <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
-        </div>
-
-        {/* Badge */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-8 md:px-10">
         <motion.div
-          initial={{ opacity: 0, y: -8 }}
+          initial={{ opacity: 0, y: -18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mt-8 flex justify-center"
+          transition={{ duration: 0.7 }}
+          className="flex justify-center"
         >
-          <div className="inline-flex items-center gap-3 rounded-full border border-sky-200 bg-white/90 px-5 py-3 shadow-[0_10px_30px_rgba(148,163,184,0.10)] backdrop-blur">
-            <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-            <span className="text-base font-semibold text-slate-700 md:text-lg">Lancement en préparation</span>
-          </div>
+          <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </motion.div>
 
-        {/* Sous-titre */}
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-8 text-center text-[15px] uppercase tracking-[0.20em] text-slate-400 md:text-[17px]"
-        >
-          Analyses intelligentes de documents immobiliers
-        </motion.p>
-
-        <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-16 py-10 lg:grid-cols-[1.05fr_0.95fr]">
-          {/* Colonne gauche */}
+        <div className="grid flex-1 items-center gap-14 py-10 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
+            initial={{ opacity: 0, x: -25 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="max-w-2xl"
           >
-            <h1 className="max-w-xl text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-slate-800 md:text-7xl">
-              Comprenez vos
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05 }}
+              className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm"
+            >
+              Lancement en préparation
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="mt-8 text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-slate-800 md:text-7xl"
+            >
+              Analymo arrive
               <br />
-              documents
-              <br />
-              avant de signer
-            </h1>
+              bientôt
+            </motion.h1>
 
-            <p className="mt-10 max-w-xl text-xl leading-10 text-slate-500 md:text-[20px]">
-              Analymo vous aide à repérer les points importants, les risques potentiels et les éléments financiers
-              essentiels d’un dossier immobilier en quelques instants.
-            </p>
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="mt-8 max-w-xl text-lg leading-8 text-slate-500 md:text-xl"
+            >
+              Notre outil d’analyse de documents immobiliers se prépare. Une expérience plus fluide, plus claire et plus
+              moderne arrive bientôt.
+            </motion.p>
 
-            {/* Trois bénéfices */}
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_12px_30px_rgba(148,163,184,0.10)]">
-                <div className="text-sm text-slate-400">Lecture</div>
-                <div className="mt-2 text-lg font-semibold text-slate-800">Plus claire</div>
-                <div className="mt-2 text-sm leading-6 text-slate-500">
-                  Une synthèse simple et visuelle des documents.
-                </div>
-              </div>
-
-              <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_12px_30px_rgba(148,163,184,0.10)]">
-                <div className="text-sm text-slate-400">Analyse</div>
-                <div className="mt-2 text-lg font-semibold text-slate-800">Plus rapide</div>
-                <div className="mt-2 text-sm leading-6 text-slate-500">Les points clés ressortent immédiatement.</div>
-              </div>
-
-              <div className="rounded-[24px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_12px_30px_rgba(148,163,184,0.10)]">
-                <div className="text-sm text-slate-400">Décision</div>
-                <div className="mt-2 text-lg font-semibold text-slate-800">Plus sereine</div>
-                <div className="mt-2 text-sm leading-6 text-slate-500">
-                  Vous avancez avec une meilleure compréhension du bien.
-                </div>
-              </div>
-            </div>
-
-            {/* Barre de progression cohérente */}
-            <div className="mt-10 rounded-[32px] border border-slate-200/70 bg-white/90 p-7 shadow-[0_20px_50px_rgba(148,163,184,0.12)] backdrop-blur">
-              <div className="flex items-start justify-between gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.2 }}
+              className="mt-10 rounded-[30px] border border-slate-200/80 bg-white/90 p-6 shadow-[0_20px_50px_rgba(148,163,184,0.12)] backdrop-blur"
+            >
+              <div className="flex items-center justify-between gap-4">
                 <div>
-                  <div className="text-[15px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                    Progression du lancement
+                  <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
+                    Progression réelle
                   </div>
-                  <div className="mt-3 text-[20px] text-slate-500">
-                    Jour <span className="font-semibold text-[#23406c]">{currentDay}</span> / {totalDays}
+                  <div className="mt-2 text-lg text-slate-500">
+                    Mise en ligne dans <span className="font-semibold text-[#23406c]">{daysLeft} j</span> et{" "}
+                    <span className="font-semibold text-[#23406c]">{hoursLeft} h</span>
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <div className="text-5xl font-bold tracking-[-0.04em] text-[#23406c] md:text-6xl">{progress}%</div>
-                  <div className="mt-1 text-[15px] text-slate-400">J-{daysLeft}</div>
-                </div>
+                <motion.div
+                  key={progress}
+                  initial={{ scale: 0.92, opacity: 0.7 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-right"
+                >
+                  <div className="text-5xl font-bold tracking-[-0.04em] text-[#23406c]">{progress}%</div>
+                </motion.div>
               </div>
 
-              <div className="mt-8">
-                <div className="relative h-4 rounded-full bg-slate-200/80">
+              <div className="mt-6">
+                <div className="relative h-3.5 overflow-hidden rounded-full bg-slate-200/80">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    transition={{ duration: 1 }}
-                    className="absolute left-0 top-0 h-4 rounded-full bg-gradient-to-r from-[#264a7f] via-[#5f8ed9] to-[#9fd5c0]"
+                    transition={{ duration: 1.1, ease: "easeInOut" }}
+                    className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#9ed4c0]"
                   />
 
                   <motion.div
-                    initial={{ left: 0 }}
-                    animate={{ left: `calc(${progress}% - 14px)` }}
-                    transition={{ duration: 1 }}
-                    className="absolute top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border-[5px] border-white bg-[#264a7f] shadow-[0_6px_18px_rgba(37,99,235,0.20)]"
+                    animate={{ x: ["-100%", "350%"] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-0 h-full w-24 bg-white/30 blur-md"
                   />
-                </div>
-
-                <div className="mt-5 grid grid-cols-4 text-sm text-slate-400">
-                  <div>Début</div>
-                  <div className="text-center">Milieu</div>
-                  <div className="text-center">Finalisation</div>
-                  <div className="text-right">Ouverture</div>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 text-[16px] text-slate-500">
-              <div>Documents chiffrés</div>
-              <div>Suppression automatique</div>
-              <div>Sans engagement</div>
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Colonne droite */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
+            initial={{ opacity: 0, x: 25 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.85 }}
             className="flex justify-center"
           >
-            <div className="relative w-full max-w-[500px]">
-              {/* halo */}
-              <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-200/60 blur-3xl" />
-
-              {/* Bloc principal visuel */}
+            <div className="relative flex flex-col items-center">
               <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative rounded-[36px] border border-slate-200/80 bg-white/90 p-6 shadow-[0_30px_70px_rgba(148,163,184,0.16)] backdrop-blur"
+                animate={{ y: [0, -8, 0], rotate: [0, 1.2, 0, -1.2, 0] }}
+                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
               >
-                {/* En-tête */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-slate-400">Document analysé</div>
-                    <div className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-slate-800">
-                      Rapport intelligent
-                    </div>
-                  </div>
+                <div className="absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/70 blur-3xl" />
 
-                  <div className="rounded-2xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600">Aperçu</div>
-                </div>
+                <div className="relative h-[460px] w-[220px] rounded-[36px] border-[7px] border-[#26374f] bg-[#26374f] p-[7px] shadow-[0_30px_60px_rgba(15,23,42,0.16)]">
+                  <div className="absolute left-1/2 top-[10px] h-[22px] w-[96px] -translate-x-1/2 rounded-full bg-[#26374f]" />
 
-                {/* Carte document */}
-                <div className="mt-6 rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,_#ffffff_0%,_#f8fbff_100%)] p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="text-lg font-semibold text-slate-800">PV d’assemblée générale</div>
-                      <div className="mt-1 text-sm text-slate-400">Détection automatique des points clés</div>
+                  <div className="relative h-full w-full overflow-hidden rounded-[28px] bg-[linear-gradient(180deg,_#fcfdff_0%,_#f2f6fb_100%)] p-4">
+                    <motion.div
+                      animate={{ y: ["-20%", "115%"] }}
+                      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-2 right-2 h-16 rounded-full bg-gradient-to-b from-transparent via-sky-100/80 to-transparent blur-md"
+                    />
+
+                    <div className="relative z-10 flex items-center justify-between text-[12px] font-semibold text-slate-700">
+                      <span>9:41</span>
+                      <span>5G</span>
                     </div>
 
-                    <div className="rounded-xl bg-sky-50 px-3 py-2 text-sm font-medium text-sky-700">
-                      Analyse active
+                    <div className="relative z-10 mt-5">
+                      <div className="text-[15px] font-semibold text-slate-800">Analyse du document</div>
+                      <div className="mt-1 text-[12px] text-slate-400">Lecture intelligente en cours</div>
                     </div>
-                  </div>
 
-                  {/* lignes analysées */}
-                  <div className="mt-6 space-y-4">
-                    {[
-                      { label: "Éléments importants détectés", width: "78%" },
-                      { label: "Informations financières extraites", width: "62%" },
-                      { label: "Points de vigilance identifiés", width: "48%" },
-                    ].map((item, index) => (
-                      <div key={index}>
-                        <div className="mb-2 flex items-center justify-between text-sm">
-                          <span className="text-slate-500">{item.label}</span>
-                          <span className="font-medium text-slate-700">{item.width}</span>
-                        </div>
-                        <div className="h-2.5 rounded-full bg-slate-200/70">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: item.width }}
-                            transition={{ duration: 1.1, delay: 0.2 + index * 0.15 }}
-                            className="h-2.5 rounded-full bg-[#23406c]"
-                          />
-                        </div>
+                    <motion.div
+                      animate={{ opacity: [0.8, 1, 0.8] }}
+                      transition={{ duration: 2.2, repeat: Infinity }}
+                      className="relative z-10 mt-6 rounded-[24px] border border-slate-200 bg-white/90 p-4 shadow-sm"
+                    >
+                      <div className="space-y-3">
+                        <div className="h-2.5 w-[82%] rounded-full bg-slate-200" />
+                        <div className="h-2.5 w-[65%] rounded-full bg-slate-200" />
+                        <div className="h-2.5 w-[90%] rounded-full bg-slate-200" />
+                        <div className="h-2.5 w-[58%] rounded-full bg-slate-200" />
                       </div>
-                    ))}
+                    </motion.div>
+
+                    <div className="relative z-10 mt-5 space-y-3">
+                      {["Détection du document", "Extraction des données", "Préparation du rapport"].map(
+                        (item, index) => (
+                          <motion.div
+                            key={item}
+                            initial={{ opacity: 0.6, x: 0 }}
+                            animate={{ opacity: [0.6, 1, 0.6], x: [0, 4, 0] }}
+                            transition={{
+                              duration: 2.2,
+                              repeat: Infinity,
+                              delay: index * 0.35,
+                            }}
+                            className="flex items-center gap-3 rounded-2xl bg-white/85 px-3 py-3 shadow-sm"
+                          >
+                            <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
+                            <span className="text-[12px] font-medium text-slate-600">{item}</span>
+                          </motion.div>
+                        ),
+                      )}
+                    </div>
                   </div>
                 </div>
+              </motion.div>
 
-                {/* mini cartes */}
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <motion.div
-                    whileHover={{ y: -2 }}
-                    className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_12px_24px_rgba(148,163,184,0.10)]"
-                  >
-                    <div className="text-sm text-slate-400">Ce que vous verrez</div>
-                    <div className="mt-2 text-lg font-semibold text-slate-800">Synthèse lisible</div>
-                    <div className="mt-2 text-sm leading-6 text-slate-500">
-                      Une lecture rapide des éléments utiles avant votre décision.
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    whileHover={{ y: -2 }}
-                    className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_12px_24px_rgba(148,163,184,0.10)]"
-                  >
-                    <div className="text-sm text-slate-400">Notre promesse</div>
-                    <div className="mt-2 text-lg font-semibold text-slate-800">Un outil rassurant</div>
-                    <div className="mt-2 text-sm leading-6 text-slate-500">
-                      Moderne, simple et pensé pour mieux comprendre un dossier.
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* ligne bas */}
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <div className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-600">Lecture guidée</div>
-                  <div className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-600">Points clés</div>
-                  <div className="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-600">Vue synthétique</div>
-                </div>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.25 }}
+                className="mt-8 rounded-[24px] border border-slate-200 bg-white/90 px-5 py-4 text-center shadow-[0_16px_35px_rgba(148,163,184,0.12)]"
+              >
+                <div className="text-sm text-slate-400">Expérience en préparation</div>
+                <div className="mt-1 text-lg font-semibold text-slate-800">Moderne, claire et rassurante</div>
               </motion.div>
             </div>
           </motion.div>
-        </div>
-
-        <div className="pb-4 text-center text-[15px] text-slate-400">
-          © 2025 Analymo · Analyses intelligentes de documents immobiliers
         </div>
       </div>
     </div>
