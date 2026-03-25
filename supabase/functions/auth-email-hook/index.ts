@@ -217,12 +217,22 @@ async function handleWebhook(req: Request): Promise<Response> {
     )
   }
 
+  // Build custom confirmation URL pointing to our branded page
+  const siteUrl = `https://${ROOT_DOMAIN}`
+  let confirmationUrl = payload.data.url
+
+  // For signup/invite/recovery/magiclink, redirect to our custom confirm page
+  if (payload.data.token_hash && ['signup', 'invite', 'recovery', 'magiclink', 'email_change'].includes(emailType)) {
+    const redirectUrl = payload.data.redirect_to || siteUrl
+    confirmationUrl = `${redirectUrl}?token_hash=${payload.data.token_hash}&type=${emailType}`
+  }
+
   // Build template props from payload.data (HookData structure)
   const templateProps = {
     siteName: SITE_NAME,
-    siteUrl: `https://${ROOT_DOMAIN}`,
+    siteUrl,
     recipient: payload.data.email,
-    confirmationUrl: payload.data.url,
+    confirmationUrl,
     token: payload.data.token,
     email: payload.data.email,
     newEmail: payload.data.new_email,
