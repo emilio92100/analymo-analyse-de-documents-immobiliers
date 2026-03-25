@@ -135,7 +135,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
               <div className="mt-8 space-y-3">
                 <button
                   type="button"
-                  onClick={() => window.location.assign(loginRedirectUrl)}
+                  onClick={() => navigate("/login")}
                   className="block w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-center"
                 >
                   J'ai confirmé, me connecter

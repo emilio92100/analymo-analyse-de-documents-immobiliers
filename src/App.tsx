@@ -47,6 +47,7 @@ const AppRoutes = () => {
       <Route path="/contact" element={<ContactPage user={user} onLogout={signOut} />} />
       <Route path="/login" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="login" />} />
       <Route path="/signup" element={user ? <Navigate to="/app/dashboard" /> : <AuthPage type="signup" />} />
+      <Route path="/confirm-email" element={<ConfirmEmailPage />} />
 
       {/* Protected app routes */}
       <Route path="/app/dashboard" element={<ProtectedRoute user={user} loading={loading} onLogout={signOut}><DashboardPage user={user} /></ProtectedRoute>} />
