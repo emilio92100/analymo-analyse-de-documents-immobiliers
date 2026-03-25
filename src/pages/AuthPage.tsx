@@ -75,7 +75,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
       type: "signup",
       email: email.trim().toLowerCase(),
       options: {
-        emailRedirectTo: loginRedirectUrl,
+        emailRedirectTo: confirmEmailUrl,
       },
     });
 
