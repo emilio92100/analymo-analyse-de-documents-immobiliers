@@ -40,7 +40,7 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between h-28 pb-2">
+        <div className="flex items-end justify-between h-40 pb-2">
           {/* Logo */}
           <Link to="/" className="relative z-10 self-end">
             <Logo size="xl" />
