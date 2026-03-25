@@ -65,7 +65,7 @@ const ComingSoonPage = () => {
           <motion.img
             src="/logo.png"
             alt="Analymo"
-            className="h-20 w-auto md:h-24"
+            className="h-28 w-auto md:h-34"
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           />
