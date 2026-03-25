@@ -21,7 +21,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
   const [resending, setResending] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
-  const loginRedirectUrl = `${window.location.origin}/login`;
+  const confirmEmailUrl = `${window.location.origin}/confirm-email`;
   const dashboardRedirectUrl = `${window.location.origin}/app/dashboard`;
 
   const handleSubmit = async (e: React.FormEvent) => {
