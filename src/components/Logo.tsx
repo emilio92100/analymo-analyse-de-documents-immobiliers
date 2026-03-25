@@ -9,7 +9,7 @@ interface LogoProps {
 }
 
 const Logo = ({ className = "", size = "md", light = false }: LogoProps) => {
-  const heights = { sm: "h-14", md: "h-20", lg: "h-24", xl: "h-36" };
+  const heights = { sm: "h-14", md: "h-20", lg: "h-24", xl: "h-48" };
 
   return (
     <img
