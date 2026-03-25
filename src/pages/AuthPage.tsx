@@ -21,7 +21,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
   const [resending, setResending] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
   const navigate = useNavigate();
-  const loginRedirectUrl = `${window.location.origin}/login`;
+  const confirmEmailUrl = `${window.location.origin}/confirm-email`;
   const dashboardRedirectUrl = `${window.location.origin}/app/dashboard`;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,7 +42,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
         const { error } = await supabase.auth.signUp({
           email: normalizedEmail,
           password,
-          options: { emailRedirectTo: loginRedirectUrl },
+          options: { emailRedirectTo: confirmEmailUrl },
         });
         if (error) throw error;
         setEmail(normalizedEmail);
@@ -75,7 +75,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
       type: "signup",
       email: email.trim().toLowerCase(),
       options: {
-        emailRedirectTo: loginRedirectUrl,
+        emailRedirectTo: confirmEmailUrl,
       },
     });
 
@@ -135,7 +135,7 @@ const AuthPage = ({ type }: AuthPageProps) => {
               <div className="mt-8 space-y-3">
                 <button
                   type="button"
-                  onClick={() => window.location.assign(loginRedirectUrl)}
+                  onClick={() => navigate("/login")}
                   className="block w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-all text-center"
                 >
                   J'ai confirmé, me connecter
