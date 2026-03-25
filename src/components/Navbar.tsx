@@ -40,14 +40,14 @@ const Navbar = ({ user, onLogout }: NavbarProps) => {
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between h-40 pb-2">
+        <div className="flex items-center justify-between pt-6 pb-4">
           {/* Logo */}
-          <Link to="/" className="relative z-10 self-end">
+          <Link to="/" className="relative z-10 flex-shrink-0">
             <Logo size="xl" />
           </Link>
 
           {/* Desktop Nav — single pill with everything */}
-          <div className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40">
+          <div className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full bg-muted/60 backdrop-blur-sm border border-border/40 self-end mb-2">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               return (
