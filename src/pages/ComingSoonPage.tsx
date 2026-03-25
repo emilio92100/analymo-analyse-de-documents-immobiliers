@@ -43,7 +43,7 @@ const ComingSoonPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#eef4f8] to-[#f8fbfd] px-6">
       <div className="max-w-3xl w-full text-center">
         {/* Logo */}
-        <img src="/logo.png" alt="Analymo" className="mx-auto h-24 mb-8" />
+        <img src="/logo.png" alt="Analymo" className="mx-auto h-40 md:h-48 mb-8" />
 
         {/* Badge */}
         <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm text-gray-600 mb-6 shadow-sm">
