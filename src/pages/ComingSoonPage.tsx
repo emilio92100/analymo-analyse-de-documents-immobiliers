@@ -57,7 +57,7 @@ const ComingSoonPage = () => {
         <motion.img
           src="/logo.png"
           alt="Analymo"
-          className="mx-auto h-32 md:h-44 w-auto"
+          className="mx-auto h-40 md:h-56 lg:h-72 w-auto"
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: [0, -4, 0] }}
           transition={{
