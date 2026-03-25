@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import logo from "../assets/logo.png";
 
 const ComingSoonPage = () => {
-  const totalDays = 30;
-  const startDate = new Date("2026-03-25T00:00:00");
-  const endDate = new Date(startDate.getTime() + totalDays * 24 * 60 * 60 * 1000);
-
+  const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -13,202 +11,189 @@ const ComingSoonPage = () => {
     seconds: 0,
   });
 
-  const [progress, setProgress] = useState(0);
+  // Logique du compte à rebours (30 jours)
+  const startDate = new Date("2026-03-25T00:00:00");
+  const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
   useEffect(() => {
-    const update = () => {
+    const timer = setInterval(() => {
       const now = new Date().getTime();
       const distance = endDate.getTime() - now;
-      const elapsed = now - startDate.getTime();
       const total = endDate.getTime() - startDate.getTime();
+      const elapsed = now - startDate.getTime();
 
       let progressValue = (elapsed / total) * 100;
-      if (progressValue < 0) progressValue = 0;
-      if (progressValue > 100) progressValue = 100;
-      setProgress(progressValue);
+      setProgress(Math.min(Math.max(progressValue, 0), 100));
 
-      if (distance <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        return;
+      if (distance < 0) {
+        clearInterval(timer);
+      } else {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+        });
       }
-
-      setTimeLeft({
-        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((distance / 1000 / 60) % 60),
-        seconds: Math.floor((distance / 1000) % 60),
-      });
-    };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, [endDate, startDate]);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f7fafc] px-6 py-12 text-slate-900">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[-120px] top-[-80px] h-[320px] w-[320px] rounded-full bg-sky-100/50 blur-3xl" />
-        <div className="absolute right-[-100px] top-[10%] h-[300px] w-[300px] rounded-full bg-cyan-100/40 blur-3xl" />
-        <div className="absolute bottom-[-140px] left-[20%] h-[300px] w-[300px] rounded-full bg-blue-100/40 blur-3xl" />
+    <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-8 overflow-hidden font-sans text-[#0F172A] relative">
+      {/* LOGO ANALYMO */}
+      <div className="absolute top-10 left-10">
+        <img src={logo} alt="Analymo" className="h-10 w-auto" />
       </div>
 
-      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-6xl items-center justify-center">
-        <div className="w-full text-center">
-          <motion.img
-            src="/logo.png"
-            alt="Analymo"
-            className="mx-auto h-28 md:h-36 w-auto drop-shadow-[0_20px_40px_rgba(15,23,42,0.08)]"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: [0, -6, 0] }}
-            transition={{
-              opacity: { duration: 0.6 },
-              y: { duration: 3.2, repeat: Infinity, ease: "easeInOut" },
-            }}
-          />
+      {/* BACKGROUND DECOR */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-50 rounded-full blur-[120px] opacity-60" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-slate-100 rounded-full blur-[120px] opacity-60" />
+      </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="mt-8 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-4 py-2 text-sm text-slate-600 shadow-sm backdrop-blur"
-          >
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-            Lancement premium en préparation
-          </motion.div>
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mt-12">
+        {/* SECTION GAUCHE : TEXTE & COMPTEUR */}
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-10"
+        >
+          <div className="space-y-4">
+            <h1 className="text-6xl font-bold tracking-tight text-[#0F172A]">
+              Analymo<span className="text-[#004262]">.</span>
+            </h1>
+            <p className="text-2xl text-slate-500 font-light leading-relaxed max-w-lg">
+              L'outil intelligent qui simplifie vos analyses de documents immobiliers.
+            </p>
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.18, duration: 0.55 }}
-            className="mx-auto mt-8 max-w-4xl text-4xl font-black leading-[1.02] tracking-tight text-slate-950 md:text-6xl"
-          >
-            L’analyse immobilière
-            <br />
-            nouvelle génération arrive bientôt
-          </motion.h1>
+          {/* COMPTEUR */}
+          <div className="flex gap-8">
+            {[
+              { label: "Jours", value: timeLeft.days },
+              { label: "Heures", value: timeLeft.hours },
+              { label: "Min", value: timeLeft.minutes },
+            ].map((unit) => (
+              <div key={unit.label} className="flex flex-col">
+                <span className="text-5xl font-semibold text-[#004262] tabular-nums">
+                  {unit.value.toString().padStart(2, "0")}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-2">
+                  {unit.label}
+                </span>
+              </div>
+            ))}
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.26, duration: 0.55 }}
-            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 md:text-xl"
-          >
-            Une expérience plus claire, plus élégante et plus rassurante pour comprendre rapidement vos documents
-            immobiliers avant de signer.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6 }}
-            className="mx-auto mt-14 max-w-4xl"
-          >
-            <div className="relative mx-auto flex max-w-3xl items-center justify-center">
+          {/* BARRE DE PROGRESSION */}
+          <div className="space-y-4 max-w-sm">
+            <div className="flex justify-between items-end">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Finalisation de l'outil
+              </span>
+              <span className="text-lg font-bold text-[#004262]">{Math.round(progress)}%</span>
+            </div>
+            <div className="h-[6px] w-full bg-slate-100 rounded-full overflow-hidden">
               <motion.div
-                animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="relative w-full max-w-[340px]"
+                className="h-full bg-[#004262]"
+                initial={{ width: 0 }}
+                animate={{ width: `${progress}%` }}
+                transition={{ duration: 1.5, ease: "circOut" }}
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* SECTION DROITE : LE TÉLÉPHONE FONCTIONNEL */}
+        <motion.div
+          className="relative perspective-2000"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <div className="relative mx-auto w-[310px] h-[630px] bg-white/30 backdrop-blur-2xl border border-white/60 rounded-[3.8rem] shadow-[0_50px_100px_rgba(0,0,0,0.08)] p-2">
+            {/* Dynamic Island */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#0F172A] rounded-full z-40" />
+
+            <div className="h-full w-full bg-white/90 rounded-[3.1rem] overflow-hidden p-6 flex flex-col items-center relative">
+              {/* Animation 1: Le Document */}
+              <motion.div
+                className="w-full mt-10 mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-4 shadow-inner"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
               >
-                <div className="rounded-[42px] border border-slate-200 bg-slate-950 p-3 shadow-[0_30px_80px_rgba(15,23,42,0.18)]">
-                  <div className="relative overflow-hidden rounded-[34px] bg-gradient-to-br from-white via-slate-50 to-sky-50 px-6 pb-8 pt-8">
-                    <div className="absolute left-1/2 top-3 h-6 w-28 -translate-x-1/2 rounded-full bg-slate-900" />
+                <div className="w-10 h-10 rounded-xl bg-blue-100/50 flex items-center justify-center text-[#004262]">
+                  📄
+                </div>
+                <div className="space-y-2">
+                  <div className="h-2 w-24 bg-slate-200 rounded" />
+                  <div className="h-1.5 w-16 bg-slate-100 rounded" />
+                </div>
+              </motion.div>
 
-                    <div className="mt-8">
-                      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-8 border-slate-200 border-t-[#0f3d5a] text-2xl font-black text-slate-900">
-                        7
-                      </div>
+              {/* Animation 2: Le Scan Laser */}
+              <div className="relative h-44 w-full bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center justify-center overflow-hidden shadow-inner">
+                <div className="text-[10px] text-[#004262] font-bold uppercase tracking-widest mb-4">
+                  Analyse en cours
+                </div>
+                <div className="w-full space-y-2 px-8 opacity-40">
+                  <div className="h-1 w-full bg-[#004262]/20 rounded-full" />
+                  <div className="h-1 w-3/4 bg-[#004262]/20 rounded-full" />
+                  <div className="h-1 w-full bg-[#004262]/20 rounded-full" />
+                </div>
+                <motion.div
+                  className="absolute left-0 w-full h-[2px] bg-[#004262] shadow-[0_0_15px_#004262] z-30"
+                  animate={{ top: ["0%", "100%", "0%"] }}
+                  transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                />
+              </div>
 
-                      <p className="text-sm font-semibold text-slate-900">Résultat d’analyse</p>
-                      <p className="mt-1 text-xs text-slate-500">Lecture simplifiée en préparation</p>
-
-                      <div className="mt-6 space-y-3">
-                        <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-left">
-                          <p className="text-sm font-semibold text-emerald-800">3 points positifs</p>
-                          <p className="mt-1 text-xs text-emerald-700/80">Présentation claire et lisible</p>
-                        </div>
-
-                        <div className="rounded-2xl border border-amber-100 bg-amber-50 px-4 py-3 text-left">
-                          <p className="text-sm font-semibold text-amber-800">2 vigilances</p>
-                          <p className="mt-1 text-xs text-amber-700/80">Détection plus fine en cours</p>
-                        </div>
-
-                        <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left shadow-sm">
-                          <p className="text-sm font-semibold text-slate-800">Synthèse intelligente</p>
-                          <p className="mt-1 text-xs text-slate-500">Bientôt disponible</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <motion.div
-                      className="pointer-events-none absolute left-4 right-4 h-[2px] rounded-full bg-cyan-400 shadow-[0_0_18px_rgba(34,211,238,0.7)]"
-                      animate={{ y: [90, 420, 90] }}
-                      transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                    />
-
-                    <motion.div
-                      className="pointer-events-none absolute left-0 right-0 h-24 bg-gradient-to-b from-transparent via-cyan-300/20 to-transparent"
-                      animate={{ y: [70, 400, 70] }}
-                      transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
-                    />
+              {/* Animation 3: Résultats & Score */}
+              <motion.div
+                className="mt-8 w-full space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5 }}
+              >
+                <div className="flex gap-2">
+                  <div className="h-8 w-full bg-green-50 rounded-lg border border-green-100 flex items-center justify-center text-[10px] text-green-600 font-bold">
+                    ✓ POINTS POSITIFS
+                  </div>
+                  <div className="h-8 w-full bg-amber-50 rounded-lg border border-amber-100 flex items-center justify-center text-[10px] text-amber-600 font-bold">
+                    ! VIGILANCES
                   </div>
                 </div>
 
-                <div className="absolute -left-20 top-20 hidden rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-left shadow-xl backdrop-blur md:block">
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Détection</p>
-                  <p className="mt-1 text-sm font-semibold text-slate-900">Analyse en cours</p>
-                </div>
-
-                <div className="absolute -right-20 bottom-20 hidden rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-left shadow-xl backdrop-blur md:block">
-                  <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Synthèse</p>
-                  <p className="mt-1 text-sm font-semibold text-slate-900">Sortie prochaine</p>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.42, duration: 0.55 }}
-            className="mx-auto mt-14 max-w-3xl"
-          >
-            <div className="mb-3 flex items-center justify-between text-sm text-slate-600">
-              <span>Progression du lancement</span>
-              <span className="font-semibold text-slate-900">{Math.round(progress)}%</span>
-            </div>
-
-            <div className="relative h-4 overflow-hidden rounded-full bg-slate-200/80 shadow-inner">
-              <motion.div
-                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#0f3d5a] via-[#155e75] to-[#22d3ee]"
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              />
-              <motion.div
-                className="absolute inset-y-0 w-24 bg-white/35 blur-md"
-                animate={{ x: ["-20%", "140%"] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {[
-                { label: "Jours", value: timeLeft.days },
-                { label: "Heures", value: timeLeft.hours },
-                { label: "Minutes", value: timeLeft.minutes },
-                { label: "Secondes", value: timeLeft.seconds },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-2xl border border-white/80 bg-white/85 p-5 shadow-sm backdrop-blur"
+                <motion.div
+                  className="w-full p-6 mt-4 bg-[#004262] rounded-3xl text-white text-center shadow-2xl shadow-[#004262]/30"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 2.2, type: "spring" }}
                 >
-                  <p className="text-3xl font-black text-slate-950">{String(item.value).padStart(2, "0")}</p>
-                  <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
-                </div>
-              ))}
+                  <div className="text-[9px] uppercase tracking-[0.2em] opacity-60 mb-1 font-bold">
+                    Score Recommandé
+                  </div>
+                  <div className="text-5xl font-bold">
+                    7.4<span className="text-xl opacity-40">/10</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Barre de navigation fictive */}
+              <div className="absolute bottom-6 w-32 h-1 bg-slate-100 rounded-full" />
             </div>
-          </motion.div>
-        </div>
+          </div>
+
+          {/* Déco flottante */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-10 -right-10 w-32 h-32 border border-dashed border-slate-200 rounded-full -z-10"
+          />
+        </motion.div>
       </div>
     </div>
   );
