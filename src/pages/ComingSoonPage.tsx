@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 const ComingSoonPage = () => {
   const [progress, setProgress] = useState(0);
   const [timeLeft, setTimeLeft] = useState({ days: 30, hours: 0, minutes: 0, seconds: 0 });
-
+  
   // Effet 3D Mouse Tracking
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -44,149 +44,163 @@ const ComingSoonPage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden font-sans text-[#0F172A] relative">
-      {/* LOGO AGRANDI & ISOLÉ */}
-      <div className="absolute top-10 left-10 z-50">
-        <img src="/logo.png" alt="Analymo" className="h-24 md:h-28 w-auto" />
+      
+      {/* LOGO AU MILIEU & GRAND */}
+      <motion.div 
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 text-center"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 1, ease: "backOut" }}
+      >
+        <img src="/logo.png" alt="Analymo" className="h-28 md:h-36 w-auto" />
+      </motion.div>
+
+      {/* BACKGROUND ELEMENTS SUBTILS */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-blue-50/50 rounded-full blur-[120px] opacity-40" />
+        <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-slate-100 rounded-full blur-[120px] opacity-40" />
       </div>
 
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* TEXTE DE GAUCHE AVEC PLUS D'ESPACE */}
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
+      <div className="max-w-7xl w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 relative z-10">
+        
+        {/* SECTION TEXTE & COMPTEUR (Gauchie) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -40 }} 
           animate={{ opacity: 1, x: 0 }}
-          className="space-y-16 mt-16 lg:mt-0" // mt-16 pour l'espace sous le logo
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="space-y-12 w-full lg:w-1/2"
         >
-          <div className="space-y-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full shadow-sm">
-              <span className="w-2 h-2 bg-[#004262] rounded-full animate-pulse" />
-              <span className="text-xs font-bold text-[#004262] uppercase tracking-wider">Outil d'analyse expert</span>
-            </div>
-
-            <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-none text-[#0F172A]">
-              Analysez vos <br />
-              <span className="text-[#004262]">
-                documents <br /> immobiliers
-              </span>
+          <div className="space-y-6">
+            <h2 className="text-[#004262] font-bold tracking-[0.2em] text-sm uppercase">Bientôt disponible</h2>
+            <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
+              Analymo, votre <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#004262] to-blue-500">œil expert.</span>
             </h1>
-
             <p className="text-xl text-slate-500 font-light leading-relaxed max-w-lg">
-              Score global, risques cachés, impact financier — tout ce qu'il faut savoir avant de signer, grâce à notre
-              outil d'analyse.
+              Analymo déchiffre vos documents immobiliers complexes pour une analyse claire, rapide et sans risque.
             </p>
           </div>
 
           {/* COMPTEUR 30 JOURS */}
           <div className="flex gap-10">
             {[
-              { label: "Jours", value: timeLeft.days },
-              { label: "Heures", value: timeLeft.hours },
-              { label: "Min", value: timeLeft.minutes },
+              { label: 'Jours', value: timeLeft.days },
+              { label: 'Heures', value: timeLeft.hours },
+              { label: 'Minutes', value: timeLeft.minutes },
             ].map((unit) => (
               <div key={unit.label} className="flex flex-col">
-                <span className="text-5xl font-bold text-[#004262] tabular-nums tracking-tighter">
-                  {unit.value.toString().padStart(2, "0")}
+                <span className="text-5xl font-medium text-[#004262] tabular-nums tracking-tighter">
+                  {unit.value.toString().padStart(2, '0')}
                 </span>
-                <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-1.5">
-                  {unit.label}
-                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-3">{unit.label}</span>
               </div>
             ))}
           </div>
 
-          {/* NOUVELLE BARRE DE PROGRESSION ULTRA-MODERNE */}
-          <div className="space-y-5 max-w-sm">
-            <div className="flex justify-between items-end text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-              <span>Finalisation de l'outil expert</span>
-              <span className="text-[#004262] text-sm font-semibold">{Math.round(progress)}%</span>
+          {/* BARRE DE PROGRESSION MISE EN AVANT */}
+          <div className="space-y-4 max-w-md">
+            <div className="flex justify-between items-end">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Optimisation de l'outil</span>
+              <span className="text-sm font-bold text-[#004262] bg-blue-50 px-2 py-0.5 rounded">{Math.round(progress)}%</span>
             </div>
-
-            {/* Conteneur de la barre style "Linear/Apple" */}
-            <div className="h-[6px] w-full bg-slate-100 rounded-full overflow-hidden relative shadow-inner">
-              {/* Le remplissage de la barre */}
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#004262] to-blue-500 rounded-full"
+            <div className="h-[4px] w-full bg-slate-100 rounded-full overflow-hidden">
+              <motion.div 
+                className="h-full bg-[#004262]"
+                initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
-              />
-
-              {/* Lueur lumineuse flottante qui glisse sur la barre */}
-              <motion.div
-                animate={{ x: [`-100%`, `200%`] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                className="absolute top-0 bottom-0 w-1/3 bg-white/40 blur-sm rounded-full"
+                transition={{ duration: 2, ease: "circOut" }}
               />
             </div>
           </div>
         </motion.div>
 
-        {/* TÉLÉPHONE 3D */}
-        <div
-          className="relative flex justify-center perspective-1000 lg:mt-16" // mt pour l'espace aussi à droite
+        {/* SECTION VISUELLE : TÉLÉPHONE 3D & ANIMATION UNIQUE (Droitie) */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="relative flex justify-center perspective-1000 lg:w-1/2" 
           onMouseMove={handleMouseMove}
-          onMouseLeave={() => {
-            x.set(0);
-            y.set(0);
-          }}
+          onMouseLeave={() => { x.set(0); y.set(0); }}
         >
-          <motion.div
+          {/* Main Device Frame (3D Effect) */}
+          <motion.div 
             style={{ rotateX, rotateY }}
-            className="relative w-[310px] h-[630px] bg-[#0F172A] rounded-[3.5rem] p-[10px] shadow-[0_50px_100px_rgba(0,66,98,0.15)] group origin-center"
+            className="relative w-[320px] h-[650px] bg-white rounded-[3.8rem] border border-white/60 shadow-[0_50px_100px_rgba(0,0,0,0.08)] backdrop-blur-3xl overflow-hidden group origin-center"
           >
-            <div className="h-full w-full bg-white rounded-[2.9rem] overflow-hidden flex flex-col relative shadow-inner p-6 pt-12 space-y-6">
-              <div className="flex justify-between items-center">
-                <span className="text-[10px] font-bold text-slate-400 uppercase">Résultat d'analyse</span>
-                <span className="px-2 py-1 bg-green-50 text-green-600 text-[8px] font-bold rounded-full">Prêt</span>
-              </div>
-
-              {/* Score */}
-              <div className="relative w-32 h-32 mx-auto flex items-center justify-center">
-                <svg className="w-full h-full rotate-[-90deg]">
-                  <circle cx="64" cy="64" r="58" stroke="#F1F5F9" strokeWidth="8" fill="transparent" />
-                  <motion.circle
-                    cx="64"
-                    cy="64"
-                    r="58"
-                    stroke="#004262"
-                    strokeWidth="8"
-                    fill="transparent"
-                    strokeDasharray="364"
-                    initial={{ strokeDashoffset: 364 }}
-                    animate={{ strokeDashoffset: 364 - 364 * 0.74 }}
-                    transition={{ delay: 1, duration: 1.5 }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-3xl font-black text-[#0F172A]">7.4</span>
-                  <span className="text-[10px] text-slate-400">/10</span>
+            
+            {/* Status Bar / Dynamic Island */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#0F172A] rounded-full z-40" />
+            
+            {/* Screen Content (Glassmorphism inside) */}
+            <div className="h-full w-full bg-white/95 rounded-[3.1rem] overflow-hidden p-6 flex flex-col items-center justify-center relative shadow-inner">
+              
+              {/* Internal Logo (Faded) */}
+              <img src="/logo.png" alt="Analymo" className="h-8 w-auto mb-12 opacity-30 grayscale" />
+              
+              {/* Document Scanning Animation */}
+              <div className="relative h-44 w-full bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center justify-center overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-500">
+                
+                {/* Status text */}
+                <motion.div 
+                  className="text-xs text-[#004262] font-bold uppercase tracking-widest mb-4 z-10"
+                  animate={{ opacity: [1, 0.5, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                >
+                  Analyse...
+                </motion.div>
+                
+                {/* Simulated scan lines */}
+                <div className="w-full space-y-2.5 px-6 z-10 opacity-30">
+                   {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-1.5 w-full bg-slate-200 rounded-full" />
+                   ))}
                 </div>
+
+                {/* LASER DE SCAN BLEU FIN ET PRÉCIS */}
+                <motion.div 
+                  className="absolute left-0 w-full h-[2px] bg-[#004262] shadow-[0_0_20px_2px_#004262] z-30"
+                  animate={{ top: ['0%', '100%', '0%'] }}
+                  transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
+                />
               </div>
 
-              <div className="space-y-3">
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center gap-3">
-                    <div
-                      className={`w-5 h-5 ${i === 0 ? "bg-green-500" : "bg-amber-500"} rounded-full flex items-center justify-center text-white text-[10px]`}
-                    >
-                      {i === 0 ? "✓" : "!"}
-                    </div>
-                    <div className={`h-2 ${i === 0 ? "w-24" : "w-20"} bg-slate-200 rounded`} />
-                  </div>
-                ))}
-              </div>
+              {/* Résultats simulés (Cards) */}
+              <motion.div 
+                className="mt-8 w-full space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+              >
+                <div className="flex gap-3">
+                  <div className="h-10 w-full bg-green-50 rounded-lg border border-green-100 flex items-center justify-center text-[11px] text-green-600 font-bold shadow-sm">✓ PRÉCIS</div>
+                  <div className="h-10 w-full bg-amber-50 rounded-lg border border-amber-100 flex items-center justify-center text-[11px] text-amber-600 font-bold shadow-sm">! VIGILANT</div>
+                </div>
 
-              {/* Laser de scan */}
-              <motion.div
-                animate={{ top: ["10%", "90%", "10%"] }}
-                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                className="absolute left-0 right-0 h-[2px] bg-[#004262] shadow-[0_0_15px_#004262] z-10"
-              />
+                {/* Carte de score finale (Surgit à la fin) */}
+                <motion.div 
+                  className="w-full p-8 mt-6 bg-[#004262] rounded-3xl text-white text-center shadow-2xl shadow-[#004262]/30 relative overflow-hidden"
+                  initial={{ scale: 0.8, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ delay: 1.8, duration: 1, type: "spring", bounce: 0.4 }}
+                  whileHover={{ y: -5 }} // Interactif au survol
+                >
+                  <div className="text-[10px] uppercase tracking-[0.25em] opacity-60 mb-2 font-bold">Score d'Analyse</div>
+                  <div className="text-6xl font-extrabold tracking-tighter tabular-nums">7.4<span className="text-xl opacity-40 font-medium">/10</span></div>
+                  <div className="absolute top-[-20px] right-[-20px] w-20 h-20 bg-white/10 rounded-full blur-2xl" />
+                </motion.div>
+              </motion.div>
+              
             </div>
-          </motion.div>
-        </div>
-      </div>
+          </div>
+          
+          {/* Floating Decor */}
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-10 -right-10 w-32 h-32 border border-dashed border-slate-200 rounded-full -z-10"
+          />
+        </motion.div>
 
-      <div className="absolute bottom-10 text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">
-        Analymo — Outil de précision immobilière
       </div>
     </div>
   );
