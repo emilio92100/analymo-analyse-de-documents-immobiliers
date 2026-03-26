@@ -94,17 +94,7 @@ export default function LaunchPage() {
             transition={{ duration: 0.65, delay: 0.05 }}
             className="inline-flex items-center rounded-full border border-[#cfe0f7] bg-white/95 px-5 py-2.5 text-sm font-semibold text-[#274b80] shadow-sm"
           >
-            Ouverture le 25 avril 2026
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08 }}
-            className="mt-6 rounded-[24px] border border-slate-200/80 bg-white/90 px-6 py-5 shadow-[0_14px_35px_rgba(148,163,184,0.10)]"
-          >
-            <div className="text-sm uppercase tracking-[0.18em] text-slate-400">Date de lancement</div>
-            <div className="mt-2 text-2xl font-bold tracking-[-0.03em] text-[#274b80] sm:text-3xl">25 avril 2026</div>
+            Ouverture le 25 Avril 2026
           </motion.div>
 
           <motion.h1
