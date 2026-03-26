@@ -58,8 +58,9 @@ export default function LaunchPage() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f6f9fd] text-slate-800">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.34),_transparent_28%),radial-gradient(circle_at_right,_rgba(219,234,254,0.45),_transparent_26%),linear-gradient(180deg,_#fbfdff_0%,_#f3f8fc_100%)]" />
+    <div className="relative min-h-screen overflow-hidden bg-[#f5f9fd] text-slate-800">
+      {/* Fond premium doux */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.35),_transparent_28%),radial-gradient(circle_at_right,_rgba(219,234,254,0.40),_transparent_26%),linear-gradient(180deg,_#fbfdff_0%,_#f4f8fc_100%)]" />
 
       <motion.div
         animate={{ x: [0, 18, 0], y: [0, -10, 0] }}
@@ -67,7 +68,7 @@ export default function LaunchPage() {
         className="absolute -left-16 top-16 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl"
       />
       <motion.div
-        animate={{ x: [0, -16, 0], y: [0, 12, 0] }}
+        animate={{ x: [0, -18, 0], y: [0, 12, 0] }}
         transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
         className="absolute right-0 top-28 h-80 w-80 rounded-full bg-blue-100/60 blur-3xl"
       />
@@ -78,6 +79,7 @@ export default function LaunchPage() {
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-8 sm:px-6 md:px-8 lg:px-10">
+        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -87,43 +89,58 @@ export default function LaunchPage() {
           <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </motion.div>
 
+        {/* Hero */}
         <div className="mx-auto mt-8 flex w-full max-w-5xl flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.05 }}
-            className="inline-flex items-center rounded-full border border-[#cfe0f7] bg-white/95 px-5 py-2.5 text-sm font-semibold text-[#274b80] shadow-sm"
+            className="inline-flex items-center rounded-full border border-[#d7e3f5] bg-white/95 px-5 py-2.5 text-sm font-semibold text-[#274b80] shadow-sm"
           >
-            Ouverture le 25 Avril 2026
+            Lancement le 25 Avril 2026
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12 }}
-            className="mt-8 max-w-3xl text-3xl font-bold leading-[1] tracking-[-0.04em] text-[#274b80] sm:text-4xl md:text-5xl"
+            className="mt-8 max-w-4xl text-3xl font-bold leading-[0.97] tracking-[-0.04em] text-[#234674] sm:text-4xl md:text-5xl lg:text-6xl"
           >
             Sécurisez votre achat immobilier
+            <br />
+            <span className="text-[#4f7fc4]">avant de signer</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.16 }}
-            className="mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base md:text-lg"
+            transition={{ duration: 0.7, delay: 0.18 }}
+            className="mt-6 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base md:text-lg"
           >
-            Une lecture plus claire des documents, des risques et des éléments financiers avant de signer.
+            Une lecture claire des documents, des risques, des travaux à venir et de la santé financière de l’immeuble
+            pour prendre votre décision avec plus de sérénité.
           </motion.p>
         </div>
 
-        <div className="mx-auto mt-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,430px)] lg:gap-14">
+        {/* Zone principale */}
+        <div className="mx-auto mt-12 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1.12fr)_minmax(320px,430px)] lg:gap-16">
+          {/* Bloc progression */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="order-2 rounded-[34px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_25px_60px_rgba(148,163,184,0.14)] backdrop-blur sm:p-7 lg:order-1"
+            transition={{ duration: 0.8, delay: 0.24 }}
+            className="order-2 rounded-[34px] border border-white/70 bg-white/90 p-5 shadow-[0_24px_60px_rgba(148,163,184,0.14)] backdrop-blur sm:p-7 lg:order-1"
           >
             <div className="flex flex-col gap-8">
+              {/* Date focus */}
+              <div className="rounded-[26px] border border-slate-200/80 bg-[#fbfdff] px-6 py-6 text-center shadow-sm">
+                <div className="text-xs uppercase tracking-[0.2em] text-slate-400">Date d’ouverture</div>
+                <div className="mt-3 text-3xl font-bold tracking-[-0.03em] text-[#274b80] sm:text-4xl">
+                  25 Avril 2026
+                </div>
+              </div>
+
+              {/* Countdown */}
               <div className="grid grid-cols-4 gap-2 sm:gap-4">
                 {countdown.map((item) => (
                   <motion.div
@@ -149,16 +166,19 @@ export default function LaunchPage() {
                 ))}
               </div>
 
+              {/* Texte progression */}
               <div className="text-center lg:text-left">
                 <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
                   Progression du lancement
                 </div>
                 <div className="mt-3 text-base leading-7 text-slate-500 sm:text-lg">
-                  Le déploiement a commencé il y a <span className="block sm:inline">30 jours</span> et progresse
-                  jusqu’au <span className="block sm:inline font-semibold text-[#274b80]">25 Avril 2026</span>.
+                  Le déploiement a commencé il y a{" "}
+                  <span className="block font-medium text-slate-600 sm:inline">30 jours</span> et progresse jusqu’au{" "}
+                  <span className="block font-semibold text-[#274b80] sm:inline">25 Avril 2026</span>.
                 </div>
               </div>
 
+              {/* Barre premium */}
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm text-slate-400">Avancement global</span>
@@ -177,7 +197,7 @@ export default function LaunchPage() {
                   <motion.div
                     animate={{ width: `${progress}%` }}
                     transition={{ duration: 1, ease: "easeInOut" }}
-                    className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#98d5c3]"
+                    className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#9ad8c6]"
                   />
 
                   <motion.div
@@ -197,7 +217,8 @@ export default function LaunchPage() {
                   />
                 </div>
 
-                <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
+                {/* Paliers */}
+                <div className="mt-7 grid grid-cols-3 gap-3 sm:grid-cols-6">
                   {steps.map((step, index) => {
                     const active = progress >= step.threshold;
                     const current = currentStep === index + 1;
@@ -233,6 +254,7 @@ export default function LaunchPage() {
             </div>
           </motion.div>
 
+          {/* Téléphone complètement revu */}
           <div className="order-1 flex justify-center lg:order-2">
             <div className="relative flex w-full items-center justify-center">
               <motion.div
@@ -244,9 +266,9 @@ export default function LaunchPage() {
               <motion.div
                 animate={{
                   y: [0, -8, 0],
-                  rotateY: [0, 9, 0, -9, 0],
+                  rotateY: [0, 8, 0, -8, 0],
                   rotateX: [0, 3, 0, -3, 0],
-                  rotateZ: [0, 0.7, 0, -0.7, 0],
+                  rotateZ: [0, 0.6, 0, -0.6, 0],
                 }}
                 transition={{
                   duration: 9,
@@ -262,7 +284,7 @@ export default function LaunchPage() {
                   className="absolute left-1/2 top-[103%] h-10 w-44 -translate-x-1/2 rounded-full bg-slate-400 blur-2xl"
                 />
 
-                <div className="relative h-[500px] w-[245px] rounded-[44px] border border-white/80 bg-[linear-gradient(180deg,_#edf3fa_0%,_#d8e4f1_100%)] p-[5px] shadow-[0_32px_70px_rgba(15,23,42,0.16)]">
+                <div className="relative h-[510px] w-[248px] rounded-[44px] border border-white/80 bg-[linear-gradient(180deg,_#edf3fa_0%,_#d9e5f2_100%)] p-[5px] shadow-[0_32px_70px_rgba(15,23,42,0.16)]">
                   <div className="absolute -left-[2px] top-[112px] h-14 w-[3px] rounded-full bg-[#c8d4e3]" />
                   <div className="absolute -right-[2px] top-[126px] h-20 w-[3px] rounded-full bg-[#c8d4e3]" />
                   <div className="absolute left-1/2 top-[10px] h-[18px] w-[88px] -translate-x-1/2 rounded-full bg-[#d4ddea]" />
@@ -282,10 +304,11 @@ export default function LaunchPage() {
                     </div>
 
                     <div className="relative z-20 mt-5 text-center">
-                      <div className="text-[15px] font-semibold text-slate-800">Aperçu du rapport</div>
-                      <div className="mt-1 text-[12px] text-slate-400">Lecture claire du dossier</div>
+                      <div className="text-[15px] font-semibold text-slate-800">Prévisualisation du rapport</div>
+                      <div className="mt-1 text-[12px] text-slate-400">Une lecture rapide et rassurante</div>
                     </div>
 
+                    {/* Carte principale */}
                     <motion.div
                       animate={{ y: [0, -4, 0] }}
                       transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
@@ -301,7 +324,7 @@ export default function LaunchPage() {
                           <motion.div
                             animate={{ rotate: -360 }}
                             transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-[8px] rounded-full border-[5px] border-transparent border-l-[#98d5c3] border-b-[#274b80]"
+                            className="absolute inset-[8px] rounded-full border-[5px] border-transparent border-l-[#9ad8c6] border-b-[#274b80]"
                           />
                           <div className="relative z-10 text-center">
                             <div className="text-[22px] font-bold leading-none text-[#274b80]">8.2</div>
@@ -314,52 +337,66 @@ export default function LaunchPage() {
                         <div className="min-w-0 flex-1">
                           <div className="text-[14px] font-semibold text-slate-800">Bien recommandé</div>
                           <div className="mt-1 text-[11px] leading-5 text-slate-400">
-                            Vue synthétique des points clés avant signature.
+                            Les points clés ressortent immédiatement.
                           </div>
                         </div>
                       </div>
 
                       <div className="mt-4 grid gap-3">
                         <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
-                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Santé financière</div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] uppercase tracking-[0.08em] text-slate-400">
+                              Santé financière
+                            </span>
+                            <span className="text-[11px] font-semibold text-[#274b80]">Bonne</span>
+                          </div>
                           <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                             <motion.div
                               animate={{ width: ["0%", "82%"] }}
-                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.6 }}
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.8 }}
                               className="h-2.5 rounded-full bg-[#274b80]"
                             />
                           </div>
                         </div>
 
                         <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
-                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Travaux à venir</div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] uppercase tracking-[0.08em] text-slate-400">
+                              Travaux à venir
+                            </span>
+                            <span className="text-[11px] font-semibold text-[#74a2e8]">À surveiller</span>
+                          </div>
                           <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                             <motion.div
                               animate={{ width: ["0%", "58%"] }}
-                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.8 }}
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 1 }}
                               className="h-2.5 rounded-full bg-[#74a2e8]"
                             />
                           </div>
                         </div>
 
                         <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
-                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Diagnostics</div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Diagnostics</span>
+                            <span className="text-[11px] font-semibold text-[#4f8f7d]">Vérifiés</span>
+                          </div>
                           <div className="mt-2 h-2.5 rounded-full bg-slate-200">
                             <motion.div
                               animate={{ width: ["0%", "76%"] }}
-                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 1 }}
-                              className="h-2.5 rounded-full bg-[#98d5c3]"
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 1.2 }}
+                              className="h-2.5 rounded-full bg-[#9ad8c6]"
                             />
                           </div>
                         </div>
                       </div>
                     </motion.div>
 
+                    {/* Lignes d'aperçu */}
                     <div className="relative z-20 mt-4 space-y-3">
                       {[
-                        "Santé financière analysée",
-                        "Travaux détectés dans les PV",
-                        "Documents vérifiés automatiquement",
+                        "Synthèse des risques détectés",
+                        "Lecture des documents simplifiée",
+                        "Vue rapide avant décision",
                       ].map((item, index) => (
                         <motion.div
                           key={item}
