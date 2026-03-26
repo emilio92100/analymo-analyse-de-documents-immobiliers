@@ -154,7 +154,8 @@ export default function LaunchPage() {
                   Progression du lancement
                 </div>
                 <div className="mt-3 text-base leading-7 text-slate-500 sm:text-lg">
-                  Le déploiement a commencé il y a 30 jours et progresse jusqu’au 25 avril 2026.
+                  Le déploiement a commencé il y a <span className="block sm:inline">30 jours</span> et progresse
+                  jusqu’au <span className="block sm:inline font-semibold text-[#274b80]">25 Avril 2026</span>.
                 </div>
               </div>
 
