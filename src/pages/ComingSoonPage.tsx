@@ -112,7 +112,6 @@ export default function LaunchPage() {
         </div>
 
         <div className="mx-auto grid w-full max-w-6xl items-start gap-12 py-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,420px)] lg:gap-16">
-          {/* Bloc progression plus large */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -120,7 +119,6 @@ export default function LaunchPage() {
             className="order-2 rounded-[30px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_20px_50px_rgba(148,163,184,0.12)] backdrop-blur sm:p-6 lg:order-1"
           >
             <div className="flex flex-col gap-8">
-              {/* compte à rebours */}
               <div className="grid grid-cols-4 gap-3 sm:gap-4">
                 {[
                   { value: daysLeft, label: "Jours" },
@@ -131,7 +129,11 @@ export default function LaunchPage() {
                   <motion.div
                     key={item.label}
                     animate={{ y: [0, -2, 0] }}
-                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    transition={{
+                      duration: 2.4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
                     className="rounded-[22px] border border-slate-200 bg-[#fbfdff] px-3 py-4 text-center shadow-sm"
                   >
                     <div className="text-2xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-3xl">
@@ -144,7 +146,6 @@ export default function LaunchPage() {
                 ))}
               </div>
 
-              {/* texte progression */}
               <div className="text-center lg:text-left">
                 <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
                   Progression du lancement
@@ -154,7 +155,6 @@ export default function LaunchPage() {
                 </div>
               </div>
 
-              {/* barre progressive vivante */}
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm text-slate-400">Avancement global</span>
@@ -178,7 +178,11 @@ export default function LaunchPage() {
 
                   <motion.div
                     animate={{ x: ["-120%", "450%"] }}
-                    transition={{ duration: 2.6, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 2.6,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                     className="absolute top-0 h-full w-28 rounded-full bg-white/35 blur-md"
                   />
 
@@ -190,7 +194,6 @@ export default function LaunchPage() {
                 </div>
               </div>
 
-              {/* paliers lisibles */}
               <div className="grid grid-cols-5 gap-3 sm:gap-4">
                 {steps.map((step, index) => {
                   const active = progress >= step.threshold;
@@ -224,76 +227,98 @@ export default function LaunchPage() {
             </div>
           </motion.div>
 
-          {/* Téléphone plus bas + nouvelle animation */}
-          <div className="order-1 flex justify-center lg:order-2 lg:pt-28">
+          <div className="order-1 flex justify-center lg:order-2 lg:pt-32">
             <div className="relative flex w-full max-w-[300px] items-center justify-center sm:max-w-[320px] md:max-w-[340px]">
               <motion.div
-                animate={{ y: [0, -10, 0], rotate: [0, 0.8, 0, -0.8, 0] }}
+                animate={{ y: [0, -8, 0], rotate: [0, 0.6, 0, -0.6, 0] }}
                 transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 className="relative"
               >
-                <div className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/70 blur-3xl sm:h-[280px] sm:w-[280px]" />
+                <div className="absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/80 blur-3xl sm:h-[300px] sm:w-[300px]" />
 
-                <div className="relative h-[420px] w-[205px] rounded-[34px] border-[7px] border-[#26374f] bg-[#26374f] p-[7px] shadow-[0_30px_60px_rgba(15,23,42,0.14)] sm:h-[450px] sm:w-[220px] md:h-[480px] md:w-[230px]">
-                  <div className="absolute left-1/2 top-[10px] h-[20px] w-[88px] -translate-x-1/2 rounded-full bg-[#26374f]" />
+                <div className="relative h-[430px] w-[210px] rounded-[38px] border border-white/70 bg-[linear-gradient(180deg,_#e9eff7_0%,_#dbe5f1_100%)] p-[5px] shadow-[0_30px_60px_rgba(15,23,42,0.12)] sm:h-[460px] sm:w-[225px] md:h-[490px] md:w-[235px]">
+                  <div className="absolute left-1/2 top-[10px] h-[18px] w-[84px] -translate-x-1/2 rounded-full bg-[#d1dbe8]" />
 
-                  <div className="relative h-full w-full overflow-hidden rounded-[26px] bg-[linear-gradient(180deg,_#fcfdff_0%,_#f2f6fb_100%)] p-4">
-                    {/* document qui monte */}
-                    <motion.div
-                      animate={{ y: [80, 10, 80] }}
-                      transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-1/2 top-[115px] z-0 h-[170px] w-[120px] -translate-x-1/2 rounded-[18px] border border-slate-200 bg-white shadow-[0_10px_30px_rgba(148,163,184,0.16)]"
-                    >
-                      <div className="p-4">
-                        <div className="h-2.5 w-[70%] rounded-full bg-slate-200" />
-                        <div className="mt-3 h-2.5 w-[88%] rounded-full bg-slate-200" />
-                        <div className="mt-3 h-2.5 w-[62%] rounded-full bg-slate-200" />
-                        <div className="mt-3 h-2.5 w-[80%] rounded-full bg-slate-200" />
-                        <div className="mt-3 h-2.5 w-[55%] rounded-full bg-slate-200" />
-                      </div>
-                    </motion.div>
+                  <div className="relative h-full w-full overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,_#ffffff_0%,_#f4f8fd_100%)] px-4 pb-4 pt-5">
+                    <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-sky-50/80 to-transparent" />
 
-                    {/* cadre d'analyse */}
-                    <motion.div
-                      animate={{ opacity: [0.55, 1, 0.55], scale: [1, 1.02, 1] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-1/2 top-[150px] z-10 h-[110px] w-[145px] -translate-x-1/2 rounded-[22px] border-2 border-[#5d8fdb] bg-sky-50/30"
-                    />
-
-                    {/* ligne scanner horizontale */}
-                    <motion.div
-                      animate={{ y: [145, 240, 145] }}
-                      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-1/2 z-20 h-[3px] w-[150px] -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-[#5d8fdb] to-transparent shadow-[0_0_16px_rgba(93,143,219,0.55)]"
-                    />
-
-                    <div className="relative z-30 flex items-center justify-between text-[12px] font-semibold text-slate-700">
+                    <div className="relative z-20 flex items-center justify-between text-[12px] font-semibold text-slate-600">
                       <span>9:41</span>
                       <span>5G</span>
                     </div>
 
-                    <div className="relative z-30 mt-5 text-center">
+                    <div className="relative z-20 mt-5 text-center">
                       <div className="text-[15px] font-semibold text-slate-800">Analyse en cours</div>
                       <div className="mt-1 text-[12px] text-slate-400">Lecture intelligente du dossier</div>
                     </div>
 
-                    <div className="relative z-30 mt-[250px] space-y-3">
+                    <div className="relative mt-7 flex justify-center">
+                      <motion.div
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{
+                          duration: 3.2,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                        className="relative z-10 h-[170px] w-[128px] rounded-[20px] border border-slate-200 bg-white shadow-[0_14px_30px_rgba(148,163,184,0.16)]"
+                      >
+                        <div className="p-4">
+                          <div className="h-2.5 w-[68%] rounded-full bg-slate-200" />
+                          <div className="mt-3 h-2.5 w-[88%] rounded-full bg-slate-200" />
+                          <div className="mt-3 h-2.5 w-[60%] rounded-full bg-slate-200" />
+                          <div className="mt-3 h-2.5 w-[82%] rounded-full bg-slate-200" />
+                          <div className="mt-3 h-2.5 w-[56%] rounded-full bg-slate-200" />
+                        </div>
+
+                        <motion.div
+                          animate={{ opacity: [0.45, 0.9, 0.45] }}
+                          transition={{
+                            duration: 2.2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                          className="absolute left-1/2 top-1/2 h-[104px] w-[92px] -translate-x-1/2 -translate-y-1/2 rounded-[16px] border-2 border-[#6b95db] bg-sky-50/20"
+                        />
+
+                        <motion.div
+                          animate={{ y: [32, 112, 32] }}
+                          transition={{
+                            duration: 2.6,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                          className="absolute left-1/2 h-[3px] w-[98px] -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-[#6b95db] to-transparent shadow-[0_0_14px_rgba(107,149,219,0.45)]"
+                        />
+                      </motion.div>
+                    </div>
+
+                    <div className="relative z-20 mt-7 space-y-3">
                       {["Document identifié", "Données extraites", "Rapport en préparation"].map((item, index) => (
                         <motion.div
                           key={item}
-                          animate={{ opacity: [0.6, 1, 0.6], x: [0, 3, 0] }}
+                          animate={{ opacity: [0.7, 1, 0.7] }}
                           transition={{
                             duration: 2,
                             repeat: Infinity,
-                            delay: index * 0.3,
+                            delay: index * 0.35,
                           }}
-                          className="flex items-center gap-3 rounded-2xl bg-white/90 px-3 py-3 shadow-sm"
+                          className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white/90 px-3 py-3 shadow-[0_8px_18px_rgba(148,163,184,0.10)]"
                         >
                           <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
                           <span className="text-[12px] font-medium text-slate-600">{item}</span>
                         </motion.div>
                       ))}
                     </div>
+
+                    <motion.div
+                      animate={{ x: [-40, 120, -40] }}
+                      transition={{
+                        duration: 5.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="absolute top-0 h-full w-10 rotate-[8deg] bg-white/20 blur-md"
+                    />
                   </div>
                 </div>
               </motion.div>
