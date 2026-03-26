@@ -86,7 +86,7 @@ export default function LaunchPage() {
           transition={{ duration: 0.7 }}
           className="flex justify-center"
         >
-          <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
+          <img src="/logo.png" alt="Analymo" className="h-22 w-auto md:h-26" />
         </motion.div>
 
         {/* Hero */}
