@@ -1,228 +1,410 @@
-import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useTransform, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
 
-const ComingSoonPage = () => {
-  const [progress, setProgress] = useState(0);
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+export default function LaunchPage() {
+  // Début il y a 30 jours
+  const startDate = new Date("2026-02-24T00:00:00").getTime();
+  const launchDate = new Date("2026-04-25T00:00:00").getTime();
 
-  // Dates pour la progression continue
-  const startDate = new Date("2026-02-26T00:00:00"); // Il y a 27 jours (par rapport au 25 Mars)
-  const endDate = new Date("2026-04-25T00:00:00");   // Date cible
-
-  // Tracking 3D pour le téléphone
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-10, 10]);
-  const phoneRef = useRef<HTMLDivElement>(null);
+  const [now, setNow] = useState(Date.now());
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const totalDuration = endDate.getTime() - startDate.getTime();
-      const elapsed = now - startDate.getTime();
-      const distance = endDate.getTime() - now;
-
-      setProgress(Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100));
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-        });
-      }
-    }, 50);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!phoneRef.current) return;
-    const rect = phoneRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseXPos = e.clientX - rect.left;
-    const mouseYPos = e.clientY - rect.top;
-    mouseX.set(mouseXPos / width - 0.5); // Normalise entre -0.5 et 0.5
-    y.set(mouseYPos / height - 0.5);
-  };
+  const { progress, daysLeft, hoursLeft, minutesLeft, secondsLeft, currentStep } = useMemo(() => {
+    const total = launchDate - startDate;
+    const elapsed = Math.min(Math.max(now - startDate, 0), total);
+    const percent = total > 0 ? (elapsed / total) * 100 : 0;
+
+    const remaining = Math.max(launchDate - now, 0);
+
+    const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remaining / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((remaining / (1000 * 60)) % 60);
+    const seconds = Math.floor((remaining / 1000) % 60);
+
+    let step = 1;
+    if (percent >= 25) step = 2;
+    if (percent >= 50) step = 3;
+    if (percent >= 75) step = 4;
+    if (percent >= 100) step = 5;
+
+    return {
+      progress: Math.max(0, Math.min(100, percent)),
+      daysLeft: days,
+      hoursLeft: hours,
+      minutesLeft: minutes,
+      secondsLeft: seconds,
+      currentStep: step,
+    };
+  }, [now]);
+
+  const steps = [
+    { label: "Structure", threshold: 0 },
+    { label: "Design", threshold: 25 },
+    { label: "Tests", threshold: 50 },
+    { label: "Finalisation", threshold: 75 },
+    { label: "Ouverture", threshold: 100 },
+  ];
+
+  const countdown = [
+    { value: daysLeft, mobile: "J", desktop: "Jours" },
+    { value: hoursLeft, mobile: "H", desktop: "Heures" },
+    { value: minutesLeft, mobile: "Min", desktop: "Minutes" },
+    { value: secondsLeft, mobile: "Sec", desktop: "Secondes" },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center p-6 md:p-12 overflow-hidden font-sans text-[#0F172A] relative">
-      
-      {/* 1. LOGO DEPUIS PUBLIC (Haut à gauche) */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute top-10 left-10 z-50"
-      >
-        <img src="/logo.png" alt="Analymo" className="h-10 md:h-12 w-auto object-contain" />
-      </motion.div>
+    <div className="relative min-h-screen overflow-hidden bg-[#f6f9fd] text-slate-800">
+      {/* Fond */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.34),_transparent_28%),radial-gradient(circle_at_right,_rgba(219,234,254,0.45),_transparent_26%),linear-gradient(180deg,_#fbfdff_0%,_#f3f8fc_100%)]" />
 
-      {/* BACKGROUND ELEMENTS SUBTILS */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-blue-50 rounded-full blur-[120px] opacity-60" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-slate-100 rounded-full blur-[120px] opacity-60" />
-      </div>
+      <motion.div
+        animate={{ x: [0, 18, 0], y: [0, -10, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -left-16 top-16 h-72 w-72 rounded-full bg-sky-100/70 blur-3xl"
+      />
+      <motion.div
+        animate={{ x: [0, -16, 0], y: [0, 12, 0] }}
+        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute right-0 top-28 h-80 w-80 rounded-full bg-blue-100/60 blur-3xl"
+      />
+      <motion.div
+        animate={{ y: [0, -14, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-cyan-50 blur-3xl"
+      />
 
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mt-20 lg:mt-0">
-        
-        {/* SECTION TEXTE & PROGRESSION (GAUCHE) */}
-        <motion.div 
-          initial={{ opacity: 0, x: -40 }} 
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-12 w-full text-center" // Centré par défaut pour mobile
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-8 sm:px-6 md:px-8 lg:px-10">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="flex justify-center"
         >
-          <div className="space-y-6">
-            <h2 className="text-[#004262] font-bold tracking-[0.2em] text-xs uppercase">Phase finale de test</h2>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-none text-[#0F172A]">
-              Analysez vos <br /> 
-              <span className="text-[#004262]">documents <br /> immobiliers</span>
-            </h1>
-            <p className="text-lg md:text-xl text-slate-500 font-light leading-relaxed max-w-lg mx-auto">
-              Score global, risques cachés, impact financier — tout ce qu'il faut savoir avant de signer, expliqué simplement.
-            </p>
-          </div>
-
-          {/* BARRE DE PROGRESSION À PALIERS */}
-          <div className="space-y-5 max-w-sm mx-auto">
-            <div className="flex justify-between items-end text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
-              <span>Déploiement de l'outil</span>
-              <span className="text-[#004262] text-sm font-semibold">{Math.round(progress)}%</span>
-            </div>
-            
-            {/* Conteneur de la barre style "Glassmorphism" */}
-            <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden relative shadow-inner p-0.5">
-              
-              {/* Le remplissage de la barre */}
-              <motion.div 
-                className="h-full bg-gradient-to-r from-[#004262] to-blue-500 rounded-full"
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.1, ease: "linear" }}
-              />
-              
-              {/* Lueur lumineuse flottante */}
-              <motion.div 
-                animate={{ x: [`-100%`, `200%`] }}
-                transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                className="absolute top-0 bottom-0 w-1/2 bg-white/40 blur-sm rounded-full"
-              />
-              
-              {/* Paliers visuels */}
-              {[25, 50, 75].map((step) => (
-                <div 
-                  key={step}
-                  className={`absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-colors duration-500 ${progress > step ? 'bg-white' : 'bg-slate-300'}`}
-                  style={{ left: `${step}%` }}
-                />
-              ))}
-            </div>
-          </div>
-          
-          {/* COMPTEUR 30 JOURS (Sous la barre sur mobile) */}
-          <div className="flex gap-6 justify-center">
-            {[
-              { label: 'Jours', value: timeLeft.days },
-              { label: 'Heures', value: timeLeft.hours },
-              { label: 'Minutes', value: timeLeft.minutes },
-            ].map((unit) => (
-              <div key={unit.label} className="flex flex-col">
-                <span className="text-4xl font-semibold text-[#004262] tabular-nums tracking-tighter">
-                  {unit.value.toString().padStart(2, '0')}
-                </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold mt-1">{unit.label}</span>
-              </div>
-            ))}
-          </div>
+          <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </motion.div>
 
-        {/* SECTION VISUELLE : TÉLÉPHONE 3D ANIMÉ AU CENTRE (DROITE) */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "circOut" }}
-          className="relative flex justify-center perspective-1000 lg:w-full lg:order-last" // lg:order-last pour le mettre à droite sur ordi
-          ref={phoneRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => { mouseX.set(0); mouseY.set(0); }}
-        >
-          {/* Main Device Frame (3D Effect, réduit sur mobile) */}
-          <motion.div 
-            style={{ rotateX, rotateY }}
-            className="relative w-[280px] h-[580px] md:w-[310px] md:h-[630px] bg-white rounded-[3.5rem] p-3 shadow-[0_50px_100px_rgba(0,0,0,0.06)] border border-white/60 group origin-center"
+        {/* Hero */}
+        <div className="mx-auto mt-8 flex w-full max-w-5xl flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.05 }}
+            className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm"
           >
-            {/* Dynamic Island minimaliste */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#0F172A] rounded-full z-40 shadow-inner" />
-            
-            {/* Écran interne */}
-            <div className="h-full w-full bg-white/95 rounded-[2.8rem] overflow-hidden p-6 flex flex-col items-center relative shadow-inner">
-              
-              {/* Mini Logo délavé pour l'ambiance */}
-              <img src="/logo.png" alt="Analymo" className="h-6 w-auto mt-10 mb-8 opacity-40 grayscale" />
-              
-              {/* Zone de scan laser dynamique */}
-              <div className="relative h-44 w-full bg-slate-50 rounded-3xl border border-slate-100 flex flex-col items-center justify-center overflow-hidden shadow-inner p-4 group">
-                <div className="text-[10px] text-[#004262] font-bold uppercase tracking-widest mb-4 z-10">Analyse expert</div>
-                
-                {/* Lignes simulées */}
-                <div className="w-full space-y-2 px-8 z-10 opacity-30 group-hover:opacity-50 transition-opacity">
-                   <div className="h-1.5 w-full bg-slate-100 rounded-full" />
-                   <div className="h-1.5 w-3/4 bg-slate-100 rounded-full" />
-                   <div className="h-1.5 w-full bg-slate-100 rounded-full" />
-                </div>
+            Ouverture prévue le 25 avril 2026
+          </motion.div>
 
-                {/* LASER DE SCAN BLEU (Ultra-fin et précis) */}
-                <motion.div 
-                  className="absolute left-0 w-full h-[2px] bg-[#004262] shadow-[0_0_15px_#004262] z-30"
-                  animate={{ top: ['0%', '100%', '0%'] }}
-                  transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
-                />
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mt-7 max-w-4xl text-4xl font-bold leading-[0.96] tracking-[-0.04em] text-[#274b80] sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            Sécurisez votre
+            <br />
+            achat immobilier
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="mt-7 max-w-3xl text-base leading-8 text-slate-500 sm:text-lg md:text-xl"
+          >
+            Analysez les documents de façon claire, détectez la santé financière de l’immeuble, les diagnostics, les
+            travaux à venir dans les PV, et avancez avec une vision plus sûre avant de signer.
+          </motion.p>
+        </div>
+
+        {/* Layout */}
+        <div className="mx-auto mt-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,430px)] lg:gap-14">
+          {/* Progression */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="order-2 rounded-[34px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_25px_60px_rgba(148,163,184,0.14)] backdrop-blur sm:p-7 lg:order-1"
+          >
+            <div className="flex flex-col gap-8">
+              <div className="grid grid-cols-4 gap-2 sm:gap-4">
+                {countdown.map((item) => (
+                  <motion.div
+                    key={item.desktop}
+                    animate={{ y: [0, -2, 0] }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="min-w-0 rounded-[22px] border border-slate-200 bg-[#fcfdff] px-2 py-4 text-center shadow-sm sm:px-3"
+                  >
+                    <div className="text-xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-3xl">
+                      {String(item.value).padStart(2, "0")}
+                    </div>
+                    <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400 sm:hidden">
+                      {item.mobile}
+                    </div>
+                    <div className="mt-1 hidden text-xs font-medium uppercase tracking-[0.14em] text-slate-400 sm:block">
+                      {item.desktop}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
-              {/* Résultats simulés (Cards) */}
-              <motion.div 
-                className="mt-8 w-full space-y-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-              >
-                <div className="flex gap-2">
-                  <div className="h-8 w-full bg-green-50 rounded-lg border border-green-100 flex items-center justify-center text-[10px] text-green-600 font-bold">✓ POINTS CLÉS</div>
-                  <div className="h-8 w-full bg-amber-50 rounded-lg border border-amber-100 flex items-center justify-center text-[10px] text-amber-600 font-bold">! VIGILANCES</div>
+              <div className="text-center lg:text-left">
+                <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
+                  Progression du lancement
+                </div>
+                <div className="mt-3 text-base leading-7 text-slate-500 sm:text-lg">
+                  Le déploiement a commencé il y a 30 jours et progresse en continu jusqu’au 25 avril 2026.
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-sm text-slate-400">Avancement global</span>
+                  <motion.span
+                    key={Math.floor(progress)}
+                    initial={{ scale: 0.94, opacity: 0.7 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-3xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-4xl"
+                  >
+                    {Math.floor(progress)}%
+                  </motion.span>
                 </div>
 
-                {/* Score final flottant */}
-                <motion.div 
-                  className="w-full p-6 mt-6 bg-[#004262] rounded-3xl text-white text-center shadow-3xl shadow-[#004262]/30 relative overflow-hidden"
-                  initial={{ scale: 0.8, opacity: 0, y: 20 }}
-                  animate={{ scale: 1, opacity: 1, y: 0 }}
-                  transition={{ delay: 1.8, duration: 1, type: "spring", bounce: 0.4 }}
-                  whileHover={{ y: -5 }} // Interactif
-                >
-                  <div className="text-[10px] uppercase tracking-[0.25em] opacity-60 mb-2 font-bold">Score d'Analyse</div>
-                  <div className="text-6xl font-extrabold tracking-tighter tabular-nums">7.4<span className="text-xl opacity-40 font-medium">/10</span></div>
-                  <div className="absolute top-[-20px] right-[-20px] w-20 h-20 bg-white/10 rounded-full blur-2xl" />
-                </motion.div>
+                <div className="relative h-5 overflow-hidden rounded-full bg-slate-200/80">
+                  <motion.div
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                    className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#98d5c3]"
+                  />
+
+                  <motion.div
+                    animate={{ x: ["-120%", "420%"] }}
+                    transition={{
+                      duration: 2.8,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="absolute top-0 h-full w-28 rounded-full bg-white/35 blur-md"
+                  />
+
+                  <motion.div
+                    animate={{ left: `calc(${progress}% - 18px)` }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                    className="absolute top-1/2 h-9 w-9 -translate-y-1/2 rounded-full border-4 border-white bg-[#274b80] shadow-[0_8px_22px_rgba(39,75,128,0.22)]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-5 gap-2 sm:gap-4">
+                {steps.map((step, index) => {
+                  const active = progress >= step.threshold;
+                  const current = currentStep === index + 1;
+
+                  return (
+                    <div key={step.label} className="flex min-w-0 flex-col items-center">
+                      <motion.div
+                        animate={current ? { scale: [1, 1.08, 1] } : {}}
+                        transition={{ duration: 1.8, repeat: Infinity }}
+                        className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold sm:h-10 sm:w-10 sm:text-sm ${
+                          active
+                            ? "border-[#274b80] bg-[#274b80] text-white"
+                            : "border-slate-300 bg-white text-slate-400"
+                        }`}
+                      >
+                        {index + 1}
+                      </motion.div>
+
+                      <div
+                        className={`mt-2 break-words text-center text-[10px] font-medium leading-4 sm:mt-3 sm:text-sm ${
+                          active ? "text-slate-700" : "text-slate-400"
+                        }`}
+                      >
+                        {step.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Téléphone entièrement refait */}
+          <div className="order-1 flex justify-center lg:order-2">
+            <div className="relative flex w-full items-center justify-center">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1], opacity: [0.72, 1, 0.72] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute h-[290px] w-[290px] rounded-full bg-sky-100/80 blur-3xl sm:h-[340px] sm:w-[340px]"
+              />
+
+              <motion.div
+                animate={{
+                  y: [0, -8, 0],
+                  rotateY: [0, 9, 0, -9, 0],
+                  rotateX: [0, 3, 0, -3, 0],
+                  rotateZ: [0, 0.7, 0, -0.7, 0],
+                }}
+                transition={{
+                  duration: 9,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                style={{ transformStyle: "preserve-3d" }}
+                className="relative"
+              >
+                <motion.div
+                  animate={{ scale: [1, 1.08, 1], opacity: [0.18, 0.28, 0.18] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute left-1/2 top-[103%] h-10 w-44 -translate-x-1/2 rounded-full bg-slate-400 blur-2xl"
+                />
+
+                <div className="relative h-[500px] w-[245px] rounded-[44px] border border-white/80 bg-[linear-gradient(180deg,_#edf3fa_0%,_#d8e4f1_100%)] p-[5px] shadow-[0_32px_70px_rgba(15,23,42,0.16)]">
+                  <div className="absolute -left-[2px] top-[112px] h-14 w-[3px] rounded-full bg-[#c8d4e3]" />
+                  <div className="absolute -right-[2px] top-[126px] h-20 w-[3px] rounded-full bg-[#c8d4e3]" />
+                  <div className="absolute left-1/2 top-[10px] h-[18px] w-[88px] -translate-x-1/2 rounded-full bg-[#d4ddea]" />
+
+                  <div className="relative h-full w-full overflow-hidden rounded-[38px] bg-[linear-gradient(180deg,_#ffffff_0%,_#f5f9fe_100%)] px-4 pb-4 pt-5">
+                    <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-sky-50/80 to-transparent" />
+
+                    <motion.div
+                      animate={{ x: [-55, 145, -55] }}
+                      transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute top-0 h-full w-12 rotate-[8deg] bg-white/25 blur-md"
+                    />
+
+                    <div className="relative z-20 flex items-center justify-between text-[12px] font-semibold text-slate-600">
+                      <span>9:41</span>
+                      <span>5G</span>
+                    </div>
+
+                    <div className="relative z-20 mt-5 text-center">
+                      <div className="text-[15px] font-semibold text-slate-800">Analyse intelligente</div>
+                      <div className="mt-1 text-[12px] text-slate-400">Vue synthétique du dossier</div>
+                    </div>
+
+                    {/* carte principale */}
+                    <motion.div
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+                      className="relative z-20 mt-6 rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_16px_32px_rgba(148,163,184,0.14)]"
+                    >
+                      <div className="flex items-center gap-4">
+                        {/* anneau score */}
+                        <div className="relative flex h-[82px] w-[82px] items-center justify-center rounded-full">
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 rounded-full border-[7px] border-slate-200 border-t-[#274b80] border-r-[#74a2e8]"
+                          />
+                          <motion.div
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 6.5, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-[8px] rounded-full border-[5px] border-transparent border-l-[#98d5c3] border-b-[#274b80]"
+                          />
+                          <div className="relative z-10 text-center">
+                            <div className="text-[22px] font-bold leading-none text-[#274b80]">8.2</div>
+                            <div className="mt-1 text-[9px] font-medium uppercase tracking-[0.08em] text-slate-400">
+                              score
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[14px] font-semibold text-slate-800">Achat bien sécurisé</div>
+                          <div className="mt-1 text-[11px] leading-5 text-slate-400">
+                            Synthèse rapide de la copropriété et des points de vigilance.
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* scan central premium */}
+                      <div className="relative mt-4 rounded-[20px] border border-slate-100 bg-[#f8fbff] p-4">
+                        <div className="space-y-3">
+                          <div className="h-2.5 w-[78%] rounded-full bg-slate-200" />
+                          <div className="h-2.5 w-[92%] rounded-full bg-slate-200" />
+                          <div className="h-2.5 w-[66%] rounded-full bg-slate-200" />
+                          <div className="h-2.5 w-[84%] rounded-full bg-slate-200" />
+                        </div>
+
+                        <motion.div
+                          animate={{
+                            opacity: [0.3, 0.85, 0.3],
+                            scale: [1, 1.01, 1],
+                          }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute inset-x-6 top-4 bottom-4 rounded-[16px] border-2 border-[#6b95db]/80 bg-sky-50/10"
+                        />
+
+                        <motion.div
+                          animate={{ top: ["16px", "96px", "16px"] }}
+                          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute left-1/2 h-[3px] w-[130px] -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-[#6b95db] to-transparent shadow-[0_0_16px_rgba(107,149,219,0.55)]"
+                        />
+
+                        <motion.div
+                          animate={{ top: ["6px", "86px", "6px"], opacity: [0, 0.5, 0] }}
+                          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute left-1/2 h-10 w-[138px] -translate-x-1/2 rounded-full bg-sky-100/60 blur-md"
+                        />
+                      </div>
+                    </motion.div>
+
+                    {/* cartes infos */}
+                    <div className="relative z-20 mt-4 space-y-3">
+                      {["Santé financière analysée", "Travaux à venir détectés", "Diagnostics vérifiés"].map(
+                        (item, index) => (
+                          <motion.div
+                            key={item}
+                            animate={{
+                              opacity: [0.75, 1, 0.75],
+                              x: [0, 3, 0],
+                            }}
+                            transition={{
+                              duration: 2.2,
+                              repeat: Infinity,
+                              delay: index * 0.35,
+                            }}
+                            className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white/94 px-3 py-3 shadow-[0_10px_20px_rgba(148,163,184,0.10)]"
+                          >
+                            <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
+                            <span className="text-[12px] font-medium text-slate-600">{item}</span>
+                          </motion.div>
+                        ),
+                      )}
+                    </div>
+
+                    {/* badges flottants */}
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute right-3 top-[150px] rounded-full border border-sky-100 bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-sky-700 shadow-sm"
+                    >
+                      Scan live
+                    </motion.div>
+
+                    <motion.div
+                      animate={{ y: [0, 5, 0] }}
+                      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-3 top-[238px] rounded-full border border-emerald-100 bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-emerald-700 shadow-sm"
+                    >
+                      IA active
+                    </motion.div>
+                  </div>
+                </div>
               </motion.div>
-              
-              {/* Barre de navigation fictive en bas */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-100 rounded-full" />
             </div>
           </div>
-          
-          {/* Éléments de design flottants autour du téléphone pour la "magie" */}
-          <motion.div 
-            animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-12 -right-12 w-36 h-36 border border-dashed border-slate-100 rounded-full -z-10 opacity-70"
-          />
-        </motion.div>
-
+        </div>
       </div>
     </div>
   );
-};
-
-export default ComingSoonPage;
+}
