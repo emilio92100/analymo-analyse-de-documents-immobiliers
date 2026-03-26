@@ -1,20 +1,31 @@
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function LaunchPage() {
-  const startDate = new Date("2026-03-26T00:00:00");
-  const launchDate = new Date("2026-04-25T00:00:00");
+  const startDate = new Date("2026-03-26T00:00:00").getTime();
+  const launchDate = new Date("2026-04-25T00:00:00").getTime();
 
-  const { progress, daysLeft, currentStep } = useMemo(() => {
-    const now = new Date();
+  const [now, setNow] = useState(Date.now());
 
-    const total = launchDate.getTime() - startDate.getTime();
-    const elapsed = Math.min(Math.max(now.getTime() - startDate.getTime(), 0), total);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
 
-    const percent = total > 0 ? Math.round((elapsed / total) * 100) : 0;
+    return () => clearInterval(timer);
+  }, []);
 
-    const remainingMs = Math.max(launchDate.getTime() - now.getTime(), 0);
-    const days = Math.ceil(remainingMs / (1000 * 60 * 60 * 24));
+  const { progress, daysLeft, hoursLeft, minutesLeft, secondsLeft, currentStep } = useMemo(() => {
+    const total = launchDate - startDate;
+    const elapsed = Math.min(Math.max(now - startDate, 0), total);
+    const percent = total > 0 ? (elapsed / total) * 100 : 0;
+
+    const remainingMs = Math.max(launchDate - now, 0);
+
+    const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
 
     let step = 1;
     if (percent >= 25) step = 2;
@@ -23,11 +34,14 @@ export default function LaunchPage() {
     if (percent >= 100) step = 5;
 
     return {
-      progress: percent,
+      progress: Math.max(0, Math.min(100, percent)),
       daysLeft: days,
+      hoursLeft: hours,
+      minutesLeft: minutes,
+      secondsLeft: seconds,
       currentStep: step,
     };
-  }, []);
+  }, [now, startDate, launchDate]);
 
   const steps = [
     { label: "Structure", threshold: 0 },
@@ -36,10 +50,6 @@ export default function LaunchPage() {
     { label: "Finalisation", threshold: 75 },
     { label: "Ouverture", threshold: 100 },
   ];
-
-  const radius = 54;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference - (progress / 100) * circumference;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f7f9fc] text-slate-800">
@@ -71,214 +81,216 @@ export default function LaunchPage() {
           <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </motion.div>
 
-        <div className="mx-auto grid w-full max-w-6xl flex-1 items-center gap-12 py-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          {/* Texte */}
-          <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.05 }}
-              className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm"
-            >
-              Ouverture prévue le 25 avril 2026
-            </motion.div>
+        <div className="mx-auto mt-8 flex w-full max-w-6xl flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.05 }}
+            className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm"
+          >
+            Ouverture prévue le 25 avril 2026
+          </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="mt-7 max-w-3xl text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-[#274b80] sm:text-5xl md:text-6xl lg:text-7xl"
-            >
-              Sécurisez votre
-              <br />
-              achat immobilier
-            </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="mt-7 max-w-4xl text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-[#274b80] sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            Sécurisez votre achat immobilier
+          </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-              className="mt-7 max-w-2xl text-base leading-8 text-slate-500 sm:text-lg md:text-xl"
-            >
-              Analysez les documents de façon claire, comprenez la santé financière de l’immeuble, les diagnostics, les
-              travaux à venir dans les PV d’assemblée générale, et avancez avec une vision plus sûre avant de signer.
-            </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="mt-7 max-w-3xl text-base leading-8 text-slate-500 sm:text-lg md:text-xl"
+          >
+            Analysez les documents de façon claire, détectez la santé financière de l’immeuble, les diagnostics, les
+            travaux à venir dans les PV, et avancez avec une vision plus sûre avant de signer.
+          </motion.p>
+        </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.22 }}
-              className="mt-10 w-full max-w-3xl rounded-[28px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_20px_50px_rgba(148,163,184,0.12)] backdrop-blur sm:p-6"
-            >
-              <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-                {/* Compte à rebours rond */}
-                <div className="flex justify-center lg:justify-start">
-                  <div className="relative flex h-32 w-32 items-center justify-center sm:h-36 sm:w-36">
-                    <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 120 120">
-                      <circle cx="60" cy="60" r={radius} fill="none" stroke="rgba(148,163,184,0.22)" strokeWidth="8" />
-                      <motion.circle
-                        cx="60"
-                        cy="60"
-                        r={radius}
-                        fill="none"
-                        stroke="#274b80"
-                        strokeWidth="8"
-                        strokeLinecap="round"
-                        strokeDasharray={circumference}
-                        animate={{ strokeDashoffset: dashOffset }}
-                        transition={{ duration: 1.2, ease: "easeInOut" }}
-                        style={{
-                          filter: "drop-shadow(0 4px 10px rgba(39,75,128,0.18))",
-                        }}
-                      />
-                    </svg>
+        <div className="mx-auto grid w-full max-w-6xl items-start gap-12 py-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(320px,420px)] lg:gap-16">
+          {/* Bloc progression plus large */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.22 }}
+            className="order-2 rounded-[30px] border border-slate-200/80 bg-white/90 p-5 shadow-[0_20px_50px_rgba(148,163,184,0.12)] backdrop-blur sm:p-6 lg:order-1"
+          >
+            <div className="flex flex-col gap-8">
+              {/* compte à rebours */}
+              <div className="grid grid-cols-4 gap-3 sm:gap-4">
+                {[
+                  { value: daysLeft, label: "Jours" },
+                  { value: hoursLeft, label: "Heures" },
+                  { value: minutesLeft, label: "Minutes" },
+                  { value: secondsLeft, label: "Secondes" },
+                ].map((item) => (
+                  <motion.div
+                    key={item.label}
+                    animate={{ y: [0, -2, 0] }}
+                    transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                    className="rounded-[22px] border border-slate-200 bg-[#fbfdff] px-3 py-4 text-center shadow-sm"
+                  >
+                    <div className="text-2xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-3xl">
+                      {String(item.value).padStart(2, "0")}
+                    </div>
+                    <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400 sm:text-xs">
+                      {item.label}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
 
-                    <motion.div
-                      animate={{ scale: [1, 1.03, 1] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="relative z-10 text-center"
-                    >
-                      <div className="text-3xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-4xl">{daysLeft}</div>
-                      <div className="mt-1 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400 sm:text-xs">
-                        jours
-                      </div>
-                    </motion.div>
-                  </div>
+              {/* texte progression */}
+              <div className="text-center lg:text-left">
+                <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
+                  Progression du lancement
                 </div>
-
-                {/* Texte + barre */}
-                <div className="flex-1">
-                  <div className="flex flex-col items-center gap-3 text-center lg:items-start lg:text-left">
-                    <div className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
-                      Progression du lancement
-                    </div>
-
-                    <div className="text-base text-slate-500 sm:text-lg">
-                      Disponibilité dans <span className="font-semibold text-[#274b80]">{daysLeft} jours</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 text-center lg:text-left">
-                    <span className="text-4xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-5xl">
-                      {progress}%
-                    </span>
-                  </div>
-
-                  <div className="mt-6">
-                    <div className="relative h-4 overflow-visible rounded-full bg-slate-200/80">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        transition={{ duration: 1.2, ease: "easeInOut" }}
-                        className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#9ed4c0]"
-                      />
-
-                      <motion.div
-                        animate={{ x: ["-120%", "420%"] }}
-                        transition={{ duration: 2.8, repeat: Infinity, ease: "linear" }}
-                        className="absolute top-0 h-full w-24 rounded-full bg-white/35 blur-md"
-                      />
-
-                      <motion.div
-                        animate={{ left: `calc(${progress}% - 16px)` }}
-                        transition={{ duration: 1.2, ease: "easeInOut" }}
-                        className="absolute top-1/2 h-8 w-8 -translate-y-1/2 rounded-full border-4 border-white bg-[#274b80] shadow-[0_8px_20px_rgba(39,75,128,0.22)]"
-                      />
-                    </div>
-
-                    <div className="mt-8 grid grid-cols-5 gap-2 sm:gap-3">
-                      {steps.map((step, index) => {
-                        const active = progress >= step.threshold;
-                        const current = currentStep === index + 1;
-
-                        return (
-                          <div key={step.label} className="flex flex-col items-center">
-                            <motion.div
-                              animate={current ? { scale: [1, 1.08, 1] } : {}}
-                              transition={{ duration: 1.8, repeat: Infinity }}
-                              className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold sm:h-10 sm:w-10 sm:text-sm ${
-                                active
-                                  ? "border-[#274b80] bg-[#274b80] text-white"
-                                  : "border-slate-300 bg-white text-slate-400"
-                              }`}
-                            >
-                              {index + 1}
-                            </motion.div>
-
-                            <div
-                              className={`mt-2 text-center text-[11px] font-medium leading-4 sm:mt-3 sm:text-sm ${
-                                active ? "text-slate-700" : "text-slate-400"
-                              }`}
-                            >
-                              {step.label}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
+                <div className="mt-3 text-base text-slate-500 sm:text-lg">
+                  L’application évolue en temps réel jusqu’à son ouverture.
                 </div>
               </div>
-            </motion.div>
-          </div>
 
-          {/* Téléphone plus bas */}
-          <div className="order-1 flex justify-center lg:order-2 lg:pt-16">
-            <div className="relative flex w-full max-w-[280px] items-center justify-center sm:max-w-[300px] md:max-w-[320px]">
+              {/* barre progressive vivante */}
+              <div>
+                <div className="mb-4 flex items-center justify-between">
+                  <span className="text-sm text-slate-400">Avancement global</span>
+                  <motion.span
+                    key={Math.floor(progress)}
+                    initial={{ scale: 0.94, opacity: 0.7 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.25 }}
+                    className="text-3xl font-bold tracking-[-0.04em] text-[#274b80] sm:text-4xl"
+                  >
+                    {Math.floor(progress)}%
+                  </motion.span>
+                </div>
+
+                <div className="relative h-5 overflow-hidden rounded-full bg-slate-200/80">
+                  <motion.div
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.9, ease: "easeInOut" }}
+                    className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-[#274b80] via-[#5d8fdb] to-[#9ed4c0]"
+                  />
+
+                  <motion.div
+                    animate={{ x: ["-120%", "450%"] }}
+                    transition={{ duration: 2.6, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-0 h-full w-28 rounded-full bg-white/35 blur-md"
+                  />
+
+                  <motion.div
+                    animate={{ left: `calc(${progress}% - 18px)` }}
+                    transition={{ duration: 0.9, ease: "easeInOut" }}
+                    className="absolute top-1/2 h-9 w-9 -translate-y-1/2 rounded-full border-4 border-white bg-[#274b80] shadow-[0_8px_20px_rgba(39,75,128,0.22)]"
+                  />
+                </div>
+              </div>
+
+              {/* paliers lisibles */}
+              <div className="grid grid-cols-5 gap-3 sm:gap-4">
+                {steps.map((step, index) => {
+                  const active = progress >= step.threshold;
+                  const current = currentStep === index + 1;
+
+                  return (
+                    <div key={step.label} className="flex min-w-0 flex-col items-center">
+                      <motion.div
+                        animate={current ? { scale: [1, 1.08, 1] } : {}}
+                        transition={{ duration: 1.8, repeat: Infinity }}
+                        className={`flex h-10 w-10 items-center justify-center rounded-full border text-sm font-semibold ${
+                          active
+                            ? "border-[#274b80] bg-[#274b80] text-white"
+                            : "border-slate-300 bg-white text-slate-400"
+                        }`}
+                      >
+                        {index + 1}
+                      </motion.div>
+
+                      <div
+                        className={`mt-3 break-words text-center text-[11px] font-medium leading-4 sm:text-sm ${
+                          active ? "text-slate-700" : "text-slate-400"
+                        }`}
+                      >
+                        {step.label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Téléphone plus bas + nouvelle animation */}
+          <div className="order-1 flex justify-center lg:order-2 lg:pt-28">
+            <div className="relative flex w-full max-w-[300px] items-center justify-center sm:max-w-[320px] md:max-w-[340px]">
               <motion.div
-                animate={{ y: [0, -8, 0], rotate: [0, 1.2, 0, -1.2, 0] }}
-                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ y: [0, -10, 0], rotate: [0, 0.8, 0, -0.8, 0] }}
+                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 className="relative"
               >
-                <div className="absolute left-1/2 top-1/2 h-[240px] w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/70 blur-3xl sm:h-[260px] sm:w-[260px]" />
+                <div className="absolute left-1/2 top-1/2 h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-100/70 blur-3xl sm:h-[280px] sm:w-[280px]" />
 
-                <div className="relative h-[390px] w-[190px] rounded-[32px] border-[7px] border-[#26374f] bg-[#26374f] p-[7px] shadow-[0_30px_60px_rgba(15,23,42,0.14)] sm:h-[420px] sm:w-[200px] md:h-[450px] md:w-[215px]">
-                  <div className="absolute left-1/2 top-[10px] h-[18px] w-[82px] -translate-x-1/2 rounded-full bg-[#26374f] sm:h-[20px] sm:w-[88px]" />
+                <div className="relative h-[420px] w-[205px] rounded-[34px] border-[7px] border-[#26374f] bg-[#26374f] p-[7px] shadow-[0_30px_60px_rgba(15,23,42,0.14)] sm:h-[450px] sm:w-[220px] md:h-[480px] md:w-[230px]">
+                  <div className="absolute left-1/2 top-[10px] h-[20px] w-[88px] -translate-x-1/2 rounded-full bg-[#26374f]" />
 
-                  <div className="relative h-full w-full overflow-hidden rounded-[24px] bg-[linear-gradient(180deg,_#fcfdff_0%,_#f2f6fb_100%)] p-3 sm:rounded-[26px] sm:p-4">
+                  <div className="relative h-full w-full overflow-hidden rounded-[26px] bg-[linear-gradient(180deg,_#fcfdff_0%,_#f2f6fb_100%)] p-4">
+                    {/* document qui monte */}
                     <motion.div
-                      animate={{ y: ["-20%", "115%"] }}
-                      transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-2 right-2 h-14 rounded-full bg-gradient-to-b from-transparent via-sky-100/80 to-transparent blur-md sm:h-16"
+                      animate={{ y: [80, 10, 80] }}
+                      transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-1/2 top-[115px] z-0 h-[170px] w-[120px] -translate-x-1/2 rounded-[18px] border border-slate-200 bg-white shadow-[0_10px_30px_rgba(148,163,184,0.16)]"
+                    >
+                      <div className="p-4">
+                        <div className="h-2.5 w-[70%] rounded-full bg-slate-200" />
+                        <div className="mt-3 h-2.5 w-[88%] rounded-full bg-slate-200" />
+                        <div className="mt-3 h-2.5 w-[62%] rounded-full bg-slate-200" />
+                        <div className="mt-3 h-2.5 w-[80%] rounded-full bg-slate-200" />
+                        <div className="mt-3 h-2.5 w-[55%] rounded-full bg-slate-200" />
+                      </div>
+                    </motion.div>
+
+                    {/* cadre d'analyse */}
+                    <motion.div
+                      animate={{ opacity: [0.55, 1, 0.55], scale: [1, 1.02, 1] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-1/2 top-[150px] z-10 h-[110px] w-[145px] -translate-x-1/2 rounded-[22px] border-2 border-[#5d8fdb] bg-sky-50/30"
                     />
 
-                    <div className="relative z-10 flex items-center justify-between text-[11px] font-semibold text-slate-700 sm:text-[12px]">
+                    {/* ligne scanner horizontale */}
+                    <motion.div
+                      animate={{ y: [145, 240, 145] }}
+                      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute left-1/2 z-20 h-[3px] w-[150px] -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-[#5d8fdb] to-transparent shadow-[0_0_16px_rgba(93,143,219,0.55)]"
+                    />
+
+                    <div className="relative z-30 flex items-center justify-between text-[12px] font-semibold text-slate-700">
                       <span>9:41</span>
                       <span>5G</span>
                     </div>
 
-                    <div className="relative z-10 mt-4 sm:mt-5">
-                      <div className="text-[13px] font-semibold text-slate-800 sm:text-[15px]">Analyse du document</div>
-                      <div className="mt-1 text-[11px] text-slate-400 sm:text-[12px]">Traitement intelligent</div>
+                    <div className="relative z-30 mt-5 text-center">
+                      <div className="text-[15px] font-semibold text-slate-800">Analyse en cours</div>
+                      <div className="mt-1 text-[12px] text-slate-400">Lecture intelligente du dossier</div>
                     </div>
 
-                    <motion.div
-                      animate={{ opacity: [0.82, 1, 0.82] }}
-                      transition={{ duration: 2.2, repeat: Infinity }}
-                      className="relative z-10 mt-5 rounded-[20px] border border-slate-200 bg-white/90 p-3 shadow-sm sm:mt-6 sm:rounded-[24px] sm:p-4"
-                    >
-                      <div className="space-y-2.5 sm:space-y-3">
-                        <div className="h-2.5 w-[84%] rounded-full bg-slate-200" />
-                        <div className="h-2.5 w-[67%] rounded-full bg-slate-200" />
-                        <div className="h-2.5 w-[90%] rounded-full bg-slate-200" />
-                        <div className="h-2.5 w-[58%] rounded-full bg-slate-200" />
-                      </div>
-                    </motion.div>
-
-                    <div className="relative z-10 mt-4 space-y-2.5 sm:mt-5 sm:space-y-3">
-                      {["Détection du document", "Lecture des données", "Préparation du rapport"].map((item, index) => (
+                    <div className="relative z-30 mt-[250px] space-y-3">
+                      {["Document identifié", "Données extraites", "Rapport en préparation"].map((item, index) => (
                         <motion.div
                           key={item}
-                          animate={{ opacity: [0.6, 1, 0.6], x: [0, 4, 0] }}
+                          animate={{ opacity: [0.6, 1, 0.6], x: [0, 3, 0] }}
                           transition={{
-                            duration: 2.2,
+                            duration: 2,
                             repeat: Infinity,
-                            delay: index * 0.35,
+                            delay: index * 0.3,
                           }}
-                          className="flex items-center gap-2.5 rounded-2xl bg-white/85 px-3 py-2.5 shadow-sm sm:gap-3 sm:px-3 sm:py-3"
+                          className="flex items-center gap-3 rounded-2xl bg-white/90 px-3 py-3 shadow-sm"
                         >
                           <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
-                          <span className="text-[11px] font-medium text-slate-600 sm:text-[12px]">{item}</span>
+                          <span className="text-[12px] font-medium text-slate-600">{item}</span>
                         </motion.div>
                       ))}
                     </div>
