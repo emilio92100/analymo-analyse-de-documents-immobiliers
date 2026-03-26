@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
 export default function LaunchPage() {
-  // Début il y a 30 jours
   const startDate = new Date("2026-02-24T00:00:00").getTime();
   const launchDate = new Date("2026-04-25T00:00:00").getTime();
 
@@ -26,10 +25,11 @@ export default function LaunchPage() {
     const seconds = Math.floor((remaining / 1000) % 60);
 
     let step = 1;
-    if (percent >= 25) step = 2;
-    if (percent >= 50) step = 3;
-    if (percent >= 75) step = 4;
-    if (percent >= 100) step = 5;
+    if (percent >= 20) step = 2;
+    if (percent >= 40) step = 3;
+    if (percent >= 60) step = 4;
+    if (percent >= 80) step = 5;
+    if (percent >= 100) step = 6;
 
     return {
       progress: Math.max(0, Math.min(100, percent)),
@@ -43,9 +43,10 @@ export default function LaunchPage() {
 
   const steps = [
     { label: "Structure", threshold: 0 },
-    { label: "Design", threshold: 25 },
-    { label: "Tests", threshold: 50 },
-    { label: "Finalisation", threshold: 75 },
+    { label: "Interface", threshold: 20 },
+    { label: "Analyse", threshold: 40 },
+    { label: "Tests", threshold: 60 },
+    { label: "Finalisation", threshold: 80 },
     { label: "Ouverture", threshold: 100 },
   ];
 
@@ -58,7 +59,6 @@ export default function LaunchPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f6f9fd] text-slate-800">
-      {/* Fond */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(191,219,254,0.34),_transparent_28%),radial-gradient(circle_at_right,_rgba(219,234,254,0.45),_transparent_26%),linear-gradient(180deg,_#fbfdff_0%,_#f3f8fc_100%)]" />
 
       <motion.div
@@ -78,7 +78,6 @@ export default function LaunchPage() {
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-8 sm:px-6 md:px-8 lg:px-10">
-        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -88,42 +87,46 @@ export default function LaunchPage() {
           <img src="/logo.png" alt="Analymo" className="h-16 w-auto md:h-22" />
         </motion.div>
 
-        {/* Hero */}
         <div className="mx-auto mt-8 flex w-full max-w-5xl flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.05 }}
-            className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm"
+            className="inline-flex items-center rounded-full border border-[#cfe0f7] bg-white/95 px-5 py-2.5 text-sm font-semibold text-[#274b80] shadow-sm"
           >
-            Ouverture prévue le 25 avril 2026
+            Ouverture le 25 avril 2026
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08 }}
+            className="mt-6 rounded-[24px] border border-slate-200/80 bg-white/90 px-6 py-5 shadow-[0_14px_35px_rgba(148,163,184,0.10)]"
+          >
+            <div className="text-sm uppercase tracking-[0.18em] text-slate-400">Date de lancement</div>
+            <div className="mt-2 text-2xl font-bold tracking-[-0.03em] text-[#274b80] sm:text-3xl">25 avril 2026</div>
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-7 max-w-4xl text-4xl font-bold leading-[0.96] tracking-[-0.04em] text-[#274b80] sm:text-5xl md:text-6xl lg:text-7xl"
+            transition={{ duration: 0.7, delay: 0.12 }}
+            className="mt-8 max-w-3xl text-3xl font-bold leading-[1] tracking-[-0.04em] text-[#274b80] sm:text-4xl md:text-5xl"
           >
-            Sécurisez votre
-            <br />
-            achat immobilier
+            Sécurisez votre achat immobilier
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-7 max-w-3xl text-base leading-8 text-slate-500 sm:text-lg md:text-xl"
+            transition={{ duration: 0.7, delay: 0.16 }}
+            className="mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base md:text-lg"
           >
-            Analysez les documents de façon claire, détectez la santé financière de l’immeuble, les diagnostics, les
-            travaux à venir dans les PV, et avancez avec une vision plus sûre avant de signer.
+            Une lecture plus claire des documents, des risques et des éléments financiers avant de signer.
           </motion.p>
         </div>
 
-        {/* Layout */}
         <div className="mx-auto mt-10 grid w-full max-w-6xl items-center gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,430px)] lg:gap-14">
-          {/* Progression */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
@@ -161,7 +164,7 @@ export default function LaunchPage() {
                   Progression du lancement
                 </div>
                 <div className="mt-3 text-base leading-7 text-slate-500 sm:text-lg">
-                  Le déploiement a commencé il y a 30 jours et progresse en continu jusqu’au 25 avril 2026.
+                  Le déploiement a commencé il y a 30 jours et progresse jusqu’au 25 avril 2026.
                 </div>
               </div>
 
@@ -202,42 +205,43 @@ export default function LaunchPage() {
                     className="absolute top-1/2 h-9 w-9 -translate-y-1/2 rounded-full border-4 border-white bg-[#274b80] shadow-[0_8px_22px_rgba(39,75,128,0.22)]"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-5 gap-2 sm:gap-4">
-                {steps.map((step, index) => {
-                  const active = progress >= step.threshold;
-                  const current = currentStep === index + 1;
+                <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
+                  {steps.map((step, index) => {
+                    const active = progress >= step.threshold;
+                    const current = currentStep === index + 1;
 
-                  return (
-                    <div key={step.label} className="flex min-w-0 flex-col items-center">
+                    return (
                       <motion.div
-                        animate={current ? { scale: [1, 1.08, 1] } : {}}
-                        transition={{ duration: 1.8, repeat: Infinity }}
-                        className={`flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold sm:h-10 sm:w-10 sm:text-sm ${
-                          active
-                            ? "border-[#274b80] bg-[#274b80] text-white"
-                            : "border-slate-300 bg-white text-slate-400"
+                        key={step.label}
+                        animate={current ? { y: [0, -3, 0] } : {}}
+                        transition={{ duration: 1.6, repeat: Infinity }}
+                        className={`rounded-[18px] border px-3 py-3 text-center ${
+                          active ? "border-[#d5e2f5] bg-[#f5f9ff]" : "border-slate-200 bg-white"
                         }`}
                       >
-                        {index + 1}
+                        <div
+                          className={`mx-auto flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold ${
+                            active ? "bg-[#274b80] text-white" : "bg-slate-200 text-slate-500"
+                          }`}
+                        >
+                          {index + 1}
+                        </div>
+                        <div
+                          className={`mt-2 text-[10px] font-medium leading-4 sm:text-xs ${
+                            active ? "text-slate-700" : "text-slate-400"
+                          }`}
+                        >
+                          {step.label}
+                        </div>
                       </motion.div>
-
-                      <div
-                        className={`mt-2 break-words text-center text-[10px] font-medium leading-4 sm:mt-3 sm:text-sm ${
-                          active ? "text-slate-700" : "text-slate-400"
-                        }`}
-                      >
-                        {step.label}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </motion.div>
 
-          {/* Téléphone entièrement refait */}
           <div className="order-1 flex justify-center lg:order-2">
             <div className="relative flex w-full items-center justify-center">
               <motion.div
@@ -287,18 +291,16 @@ export default function LaunchPage() {
                     </div>
 
                     <div className="relative z-20 mt-5 text-center">
-                      <div className="text-[15px] font-semibold text-slate-800">Analyse intelligente</div>
-                      <div className="mt-1 text-[12px] text-slate-400">Vue synthétique du dossier</div>
+                      <div className="text-[15px] font-semibold text-slate-800">Aperçu du rapport</div>
+                      <div className="mt-1 text-[12px] text-slate-400">Lecture claire du dossier</div>
                     </div>
 
-                    {/* carte principale */}
                     <motion.div
                       animate={{ y: [0, -4, 0] }}
                       transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
                       className="relative z-20 mt-6 rounded-[28px] border border-slate-200 bg-white/96 p-4 shadow-[0_16px_32px_rgba(148,163,184,0.14)]"
                     >
                       <div className="flex items-center gap-4">
-                        {/* anneau score */}
                         <div className="relative flex h-[82px] w-[82px] items-center justify-center rounded-full">
                           <motion.div
                             animate={{ rotate: 360 }}
@@ -319,85 +321,73 @@ export default function LaunchPage() {
                         </div>
 
                         <div className="min-w-0 flex-1">
-                          <div className="text-[14px] font-semibold text-slate-800">Achat bien sécurisé</div>
+                          <div className="text-[14px] font-semibold text-slate-800">Bien recommandé</div>
                           <div className="mt-1 text-[11px] leading-5 text-slate-400">
-                            Synthèse rapide de la copropriété et des points de vigilance.
+                            Vue synthétique des points clés avant signature.
                           </div>
                         </div>
                       </div>
 
-                      {/* scan central premium */}
-                      <div className="relative mt-4 rounded-[20px] border border-slate-100 bg-[#f8fbff] p-4">
-                        <div className="space-y-3">
-                          <div className="h-2.5 w-[78%] rounded-full bg-slate-200" />
-                          <div className="h-2.5 w-[92%] rounded-full bg-slate-200" />
-                          <div className="h-2.5 w-[66%] rounded-full bg-slate-200" />
-                          <div className="h-2.5 w-[84%] rounded-full bg-slate-200" />
+                      <div className="mt-4 grid gap-3">
+                        <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
+                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Santé financière</div>
+                          <div className="mt-2 h-2.5 rounded-full bg-slate-200">
+                            <motion.div
+                              animate={{ width: ["0%", "82%"] }}
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.6 }}
+                              className="h-2.5 rounded-full bg-[#274b80]"
+                            />
+                          </div>
                         </div>
 
-                        <motion.div
-                          animate={{
-                            opacity: [0.3, 0.85, 0.3],
-                            scale: [1, 1.01, 1],
-                          }}
-                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute inset-x-6 top-4 bottom-4 rounded-[16px] border-2 border-[#6b95db]/80 bg-sky-50/10"
-                        />
+                        <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
+                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Travaux à venir</div>
+                          <div className="mt-2 h-2.5 rounded-full bg-slate-200">
+                            <motion.div
+                              animate={{ width: ["0%", "58%"] }}
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 0.8 }}
+                              className="h-2.5 rounded-full bg-[#74a2e8]"
+                            />
+                          </div>
+                        </div>
 
-                        <motion.div
-                          animate={{ top: ["16px", "96px", "16px"] }}
-                          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute left-1/2 h-[3px] w-[130px] -translate-x-1/2 rounded-full bg-gradient-to-r from-transparent via-[#6b95db] to-transparent shadow-[0_0_16px_rgba(107,149,219,0.55)]"
-                        />
-
-                        <motion.div
-                          animate={{ top: ["6px", "86px", "6px"], opacity: [0, 0.5, 0] }}
-                          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute left-1/2 h-10 w-[138px] -translate-x-1/2 rounded-full bg-sky-100/60 blur-md"
-                        />
+                        <div className="rounded-[18px] border border-slate-100 bg-[#f8fbff] p-3">
+                          <div className="text-[11px] uppercase tracking-[0.08em] text-slate-400">Diagnostics</div>
+                          <div className="mt-2 h-2.5 rounded-full bg-slate-200">
+                            <motion.div
+                              animate={{ width: ["0%", "76%"] }}
+                              transition={{ duration: 1.8, repeat: Infinity, repeatDelay: 1 }}
+                              className="h-2.5 rounded-full bg-[#98d5c3]"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </motion.div>
 
-                    {/* cartes infos */}
                     <div className="relative z-20 mt-4 space-y-3">
-                      {["Santé financière analysée", "Travaux à venir détectés", "Diagnostics vérifiés"].map(
-                        (item, index) => (
-                          <motion.div
-                            key={item}
-                            animate={{
-                              opacity: [0.75, 1, 0.75],
-                              x: [0, 3, 0],
-                            }}
-                            transition={{
-                              duration: 2.2,
-                              repeat: Infinity,
-                              delay: index * 0.35,
-                            }}
-                            className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white/94 px-3 py-3 shadow-[0_10px_20px_rgba(148,163,184,0.10)]"
-                          >
-                            <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
-                            <span className="text-[12px] font-medium text-slate-600">{item}</span>
-                          </motion.div>
-                        ),
-                      )}
+                      {[
+                        "Santé financière analysée",
+                        "Travaux détectés dans les PV",
+                        "Documents vérifiés automatiquement",
+                      ].map((item, index) => (
+                        <motion.div
+                          key={item}
+                          animate={{
+                            opacity: [0.75, 1, 0.75],
+                            x: [0, 3, 0],
+                          }}
+                          transition={{
+                            duration: 2.2,
+                            repeat: Infinity,
+                            delay: index * 0.35,
+                          }}
+                          className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white/94 px-3 py-3 shadow-[0_10px_20px_rgba(148,163,184,0.10)]"
+                        >
+                          <div className="h-2.5 w-2.5 rounded-full bg-[#274b80]" />
+                          <span className="text-[12px] font-medium text-slate-600">{item}</span>
+                        </motion.div>
+                      ))}
                     </div>
-
-                    {/* badges flottants */}
-                    <motion.div
-                      animate={{ y: [0, -5, 0] }}
-                      transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute right-3 top-[150px] rounded-full border border-sky-100 bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-sky-700 shadow-sm"
-                    >
-                      Scan live
-                    </motion.div>
-
-                    <motion.div
-                      animate={{ y: [0, 5, 0] }}
-                      transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="absolute left-3 top-[238px] rounded-full border border-emerald-100 bg-white/95 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-emerald-700 shadow-sm"
-                    >
-                      IA active
-                    </motion.div>
                   </div>
                 </div>
               </motion.div>
