@@ -425,6 +425,60 @@ export default function LaunchPage() {
               </motion.div>
             </div>
           </div>
+
+          {/* Code d'accès */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="mx-auto mt-10 flex w-full max-w-sm flex-col items-center gap-3 pb-8"
+          >
+            <span className="text-sm font-medium uppercase tracking-[0.14em] text-slate-400">
+              Accès anticipé
+            </span>
+            <div className="flex w-full gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                value={accessCode}
+                onChange={(e) => {
+                  setAccessCode(e.target.value);
+                  setCodeError(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    if (accessCode === "7592") {
+                      navigate("/landing");
+                    } else {
+                      setCodeError(true);
+                    }
+                  }
+                }}
+                placeholder="Code d'accès"
+                className={`flex-1 rounded-2xl border px-4 py-3 text-center text-lg font-semibold tracking-[0.2em] outline-none transition ${
+                  codeError
+                    ? "border-red-300 bg-red-50 text-red-600"
+                    : "border-slate-200 bg-white text-[#274b80] focus:border-[#274b80]"
+                }`}
+              />
+              <button
+                onClick={() => {
+                  if (accessCode === "7592") {
+                    navigate("/landing");
+                  } else {
+                    setCodeError(true);
+                  }
+                }}
+                className="rounded-2xl bg-[#274b80] px-6 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-[#1e3a63]"
+              >
+                Entrer
+              </button>
+            </div>
+            {codeError && (
+              <span className="text-xs text-red-500">Code incorrect</span>
+            )}
+          </motion.div>
         </div>
       </div>
     </div>
