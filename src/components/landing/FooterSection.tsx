@@ -44,7 +44,7 @@ const FooterSection = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-10 items-start">
             <div className="md:col-span-2">
-              <Logo light />
+              <Logo light size="xl" />
               <p className="mt-4 text-white/40 text-sm leading-relaxed max-w-sm">
                 L'outil d'analyse intelligente pour sécuriser vos investissements
                 immobiliers. Score, risques et recommandations en 2 minutes.
