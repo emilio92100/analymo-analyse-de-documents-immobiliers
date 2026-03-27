@@ -60,6 +60,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<ComingSoonPage />} />
+      <Route path="/landing" element={<LandingPage user={user} onLogout={signOut} />} />
       <Route path="/pricing" element={<PricingPage user={user} onLogout={signOut} />} />
       <Route path="/example" element={<ExamplePage user={user} onLogout={signOut} />} />
       <Route path="/contact" element={<ContactPage user={user} onLogout={signOut} />} />
