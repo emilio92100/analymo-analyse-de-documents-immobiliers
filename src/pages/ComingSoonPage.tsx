@@ -8,6 +8,8 @@ export default function LaunchPage() {
   const launchDate = new Date("2026-04-25T00:00:00").getTime();
 
   const [now, setNow] = useState(Date.now());
+  const [accessCode, setAccessCode] = useState("");
+  const [codeError, setCodeError] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
