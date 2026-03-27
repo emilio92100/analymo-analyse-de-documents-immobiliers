@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LaunchPage() {
+  const navigate = useNavigate();
   const startDate = new Date("2026-02-24T00:00:00").getTime();
   const launchDate = new Date("2026-04-25T00:00:00").getTime();
 
